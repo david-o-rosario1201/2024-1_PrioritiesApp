@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using PrioritiesApp.Components;
+using PrioritiesApp.DAL;
+//using PrioritiesApp.BLL;
 
 namespace PrioritiesApp
 {
@@ -11,6 +14,12 @@ namespace PrioritiesApp
 			// Add services to the container.
 			builder.Services.AddRazorComponents()
 				.AddInteractiveServerComponents();
+
+			var ConStr = builder.Configuration.GetConnectionString("ConStr");
+
+			builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
+
+			//builder.Services.AddScoped<PrioritiesBLL>();
 
 			var app = builder.Build();
 
