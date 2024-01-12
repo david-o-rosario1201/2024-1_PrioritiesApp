@@ -1,7 +1,105 @@
 ﻿@page "/priorities"
+@inject PrioritiesBLL priorityBLL;
+@rendermode InteractiveServer
 
-<h1>REGISTRO PRIORIDADES</h1>
+<EditForm Model="Priority" OnValidSubmit="Guardar" FormName="PrioritiesForm">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3>REGISTRO DE PRIORIDADES</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+
+                <label><strong>ID:</strong></label><br />
+                <div class="id">
+                    <InputNumber class="form-control" @bind-Value="Priority.PriorityId"></InputNumber>
+                    <button @onclick="Buscar" class="btn btn-primary"> <i class="bi bi-search" /> Buscar</button>
+                </div><br /><br />
+
+                <label><strong>Descripci&oacute;n:</strong></label> <br />
+
+                <div class="descripcion">
+                    <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="Priority.Description"></InputText><br />
+                    <ValidationMessage For="@(() => Priority.Description)" />
+                </div>
+
+                <label><strong>Dias compromiso:</strong></label>
+
+                <div class="compromiso">
+                    <InputNumber class="form-control" @bind-Value="Priority.DaysCommitment"></InputNumber>
+                    <ValidationMessage For="@(() => Priority.DaysCommitment)" />
+                </div>
+                <div class="mb-3"></div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-center">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" @onclick="Nuevo">
+                        <i class="bi bi-file-earmark-plus-fill" /> Nuevo
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-floppy-fill" /> Guardar
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="Eliminar">
+                        <i class="bi bi-trash-fill" /> Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
 
 @code {
 
+    [Parameter]
+    public int? PriorityId { get; set; }
+    public Priorities Priority { get; set; } = new Priorities();
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        if (PriorityId.HasValue)
+        {
+            Priority.PriorityId = PriorityId.Value;
+            Buscar();
+        }
+    }
+
+    public void Nuevo()
+    {
+        Priority = new Priorities();
+    }
+
+    /*public void Guardar()
+    {
+        priorityBLL.Guardar(this.Priority);
+    }*/
+
+    public async Task Guardar()
+    {
+        var guardo = priorityBLL.Guardar(Priority);
+        if (guardo)
+        {
+            Mensaje = "Se guardo correctamente";
+            Nuevo();
+        }
+        else
+            Mensaje = "No se pudo guardar el ticket";
+    }
+
+    public async void Buscar()
+    {
+        var buscar = await priorityBLL.FindAsync(Priority.PriorityId);
+
+        if (buscar != null)
+            Priority = buscar;
+    }
+
+    public void Eliminar()
+    {
+        var eliminar = priorityBLL.Delete(Priority.PriorityId);
+    }
 }

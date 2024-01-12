@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PrioritiesApp.Components;
 using PrioritiesApp.DAL;
 using PrioritiesApp.BLL;
+using PrioritiesApp.ViewModels;
 
 namespace PrioritiesApp
 {
@@ -20,6 +21,7 @@ namespace PrioritiesApp
 			builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
 
 			builder.Services.AddScoped<PrioritiesBLL>();
+			builder.Services.AddScoped<PrioritiesViewModels>();
 
 			var app = builder.Build();
 

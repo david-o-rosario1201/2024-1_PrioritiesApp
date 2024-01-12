@@ -49,3 +49,30 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+
+/*Entradas*/
+.id{
+    display: inline-flex;
+}
+
+.id .form-control, .compromiso .form-control {
+    width: 400px;
+}
+
+.descripcion .form-control{
+    width: 850px;
+}
+/*
+.id {
+    display:inline-flex;
+    margin: 30px auto;
+}
+
+.id .form-control {
+    width: 400px;
+}
+
+.id button{
+    
+}*/
