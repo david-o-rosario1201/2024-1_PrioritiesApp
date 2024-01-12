@@ -2,7 +2,7 @@
 @inject PrioritiesBLL priorityBLL;
 @rendermode InteractiveServer
 
-<EditForm Model="Priority" OnValidSubmit="Guardar" FormName="PrioritiesForm">
+<EditForm Model="Priority" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
@@ -51,6 +51,7 @@
             </div>
         </div>
     </div>
+    @Mensaje
 </EditForm>
 
 @code {
@@ -73,30 +74,35 @@
         Priority = new Priorities();
     }
 
-    /*public void Guardar()
-        {
-        priorityBLL.Guardar(this.Priority);
-    }*/
-
     public async Task Guardar()
     {
+        if (Validar())
+        {
+            Mensaje = "Error, esta descripcion ya existe";
+            Nuevo();
+            return;
+        }
+
         var guardo = priorityBLL.Guardar(Priority);
         if (guardo)
         {
-            Mensaje = "Se guardo correctamente";
+            Mensaje = "Se guardo correctamente";    
             Nuevo();
         }
         else
             Mensaje = "No se pudo guardar el ticket";
     }
 
-    /*public async Task Buscar()
-        {
-        var buscar = await priorityBLL.FindAsync(Priority.PriorityId);
+    public bool Validar()
+    {
+        var valor = priorityBLL.Buscar(Priority.Description);
 
-        if (buscar != null)
-            Priority = buscar;
-    }*/
+        if (valor != null)
+            return true;
+
+        else
+            return false;
+    }
 
     public void Buscar()
     {
@@ -109,6 +115,7 @@
     public void Eliminar()
     {
         var eliminar = priorityBLL.Delete(Priority.PriorityId);
+        Mensaje = "El dato se ha elimiando con exito!";
         Nuevo();
     }
 }

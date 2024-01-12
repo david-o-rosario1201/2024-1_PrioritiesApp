@@ -54,15 +54,6 @@ namespace PrioritiesApp.BLL
 			return _context.SaveChanges() > 0;
 		}
 
-		/*public bool Guardar(Priorities Priority)
-		{
-			if (!Existe(Priority.PriorityId))
-				return Insertar(Priority);
-
-			else
-				return Modificar(Priority);
-		}*/
-
 		public bool Guardar(Priorities Priority)
 		{
 			if (Priority.PriorityId == 0)
@@ -81,14 +72,15 @@ namespace PrioritiesApp.BLL
 			return cantidad > 0;
 		}
 
-		/*public Priorities? Buscar(int PriorityId)
-		{
-			return _context.Priorities.AsNoTracking().FirstOrDefault(s => s.PriorityId ==PriorityId);
-		}*/ //XmlConfigurationExtensions
-
 		public Priorities? Buscar(int priorityId)
 		{
 			return _context.Priorities.Where(o => o.PriorityId == priorityId).
+				AsNoTracking().SingleOrDefault();
+		}
+
+		public Priorities? Buscar(string description)
+		{
+			return _context.Priorities.Where(des => des.Description.ToLower() == description.ToLower()).
 				AsNoTracking().SingleOrDefault();
 		}
 	}
