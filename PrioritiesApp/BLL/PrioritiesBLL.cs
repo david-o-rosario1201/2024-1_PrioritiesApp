@@ -1,6 +1,8 @@
 ﻿using PrioritiesApp.DAL;
 using PrioritiesApp.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Sockets;
+using System.Linq;
 
 namespace PrioritiesApp.BLL
 
@@ -9,7 +11,7 @@ namespace PrioritiesApp.BLL
 	{
 		private Context _context;
 
-		public PrioritiesBLL(Context context)
+        public PrioritiesBLL(Context context)
 		{
 			_context = context;
 		}
@@ -20,7 +22,7 @@ namespace PrioritiesApp.BLL
 			return priority;
 		}
 
-		public bool Delete(int id)
+        public bool Delete(int id)
 		{
 			var priority = _context.Priorities.Find(id);
 			_context.Priorities.Remove(priority);
@@ -77,6 +79,17 @@ namespace PrioritiesApp.BLL
 			_context.Priorities.Remove(Priority); 
 			int cantidad = _context.SaveChanges();
 			return cantidad > 0;
+		}
+
+		/*public Priorities? Buscar(int PriorityId)
+		{
+			return _context.Priorities.AsNoTracking().FirstOrDefault(s => s.PriorityId ==PriorityId);
+		}*/ //XmlConfigurationExtensions
+
+		public Priorities? Buscar(int priorityId)
+		{
+			return _context.Priorities.Where(o => o.PriorityId == priorityId).
+				AsNoTracking().SingleOrDefault();
 		}
 	}
 }

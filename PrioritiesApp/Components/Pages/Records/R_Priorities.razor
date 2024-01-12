@@ -16,7 +16,8 @@
                 <label><strong>ID:</strong></label><br />
                 <div class="id">
                     <InputNumber class="form-control" @bind-Value="Priority.PriorityId"></InputNumber>
-                    <button @onclick="Buscar" class="btn btn-primary"> <i class="bi bi-search" /> Buscar</button>
+                    
+                    <button @onclick="Buscar" class="btn btn-primary" type="button"> <i class="bi bi-search" /> Buscar</button>
                 </div><br /><br />
 
                 <label><strong>Descripci&oacute;n:</strong></label> <br />
@@ -24,7 +25,7 @@
                 <div class="descripcion">
                     <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="Priority.Description"></InputText><br />
                     <ValidationMessage For="@(() => Priority.Description)" />
-                </div>
+                </div>  
 
                 <label><strong>Dias compromiso:</strong></label>
 
@@ -53,7 +54,6 @@
 </EditForm>
 
 @code {
-
     [Parameter]
     public int? PriorityId { get; set; }
     public Priorities Priority { get; set; } = new Priorities();
@@ -74,7 +74,7 @@
     }
 
     /*public void Guardar()
-    {
+        {
         priorityBLL.Guardar(this.Priority);
     }*/
 
@@ -90,9 +90,17 @@
             Mensaje = "No se pudo guardar el ticket";
     }
 
-    public async void Buscar()
-    {
+    /*public async Task Buscar()
+        {
         var buscar = await priorityBLL.FindAsync(Priority.PriorityId);
+
+        if (buscar != null)
+            Priority = buscar;
+    }*/
+
+    public void Buscar()
+    {
+        var buscar =  priorityBLL.Buscar(Priority.PriorityId);
 
         if (buscar != null)
             Priority = buscar;
@@ -101,5 +109,6 @@
     public void Eliminar()
     {
         var eliminar = priorityBLL.Delete(Priority.PriorityId);
+        Nuevo();
     }
 }
