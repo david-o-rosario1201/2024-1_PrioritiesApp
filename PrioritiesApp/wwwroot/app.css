@@ -63,16 +63,7 @@ h1:focus {
 .descripcion .form-control{
     width: 850px;
 }
-/*
-.id {
-    display:inline-flex;
-    margin: 30px auto;
-}
 
-.id .form-control {
-    width: 400px;
+.mensaje p {
+    color: red;
 }
-
-.id button{
-    
-}*/

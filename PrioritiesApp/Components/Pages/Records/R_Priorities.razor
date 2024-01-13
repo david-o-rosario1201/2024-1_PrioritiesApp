@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    @Mensaje
+    <span class="mensaje"><p>@Mensaje</p></span>
 </EditForm>
 
 @code {
@@ -77,20 +77,23 @@
     public async Task Guardar()
     {
         if (Validar())
-        {
             Mensaje = "Error, esta descripcion ya existe";
-            Nuevo();
-            return;
+
+        else if (Priority.DaysCommitment == 0)
+            Mensaje = "El dia debe ser mayor que cero (0)";
+
+        else
+        {
+            var guardo = priorityBLL.Guardar(Priority);
+            if (guardo)
+            {
+                Mensaje = "Se guardo correctamente";  
+            }
+            else
+                Mensaje = "No se pudo guardar el ticket";            
         }
 
-        var guardo = priorityBLL.Guardar(Priority);
-        if (guardo)
-        {
-            Mensaje = "Se guardo correctamente";    
-            Nuevo();
-        }
-        else
-            Mensaje = "No se pudo guardar el ticket";
+        Nuevo();
     }
 
     public bool Validar()

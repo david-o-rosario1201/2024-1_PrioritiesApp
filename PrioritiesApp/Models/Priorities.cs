@@ -10,7 +10,7 @@ namespace PrioritiesApp.Models
 		[Required(ErrorMessage = "Error, campo obligatorio")]
 		public string Description { get; set; }
 
-		[Required(ErrorMessage = "Error, campo obligatorio")]
-		public int DaysCommitment { get; set; }
+        [Required(ErrorMessage = "Error, campo obligatorio")]
+        public int DaysCommitment { get; set; }
 	}
 }
