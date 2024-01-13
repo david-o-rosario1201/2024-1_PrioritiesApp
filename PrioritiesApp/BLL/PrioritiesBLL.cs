@@ -30,30 +30,6 @@ namespace PrioritiesApp.BLL
 			return deleted;
 		}
 
-		public List<Priorities> GetPriorities()
-		{
-			var priorities = _context.Priorities.ToList();
-			return priorities;
-		}
-
-		public bool Existe(int priorityId)
-		{
-			return _context.Priorities.Any(o => o.PriorityId == priorityId);
-		}
-
-		public bool Insertar(Priorities Priority)
-		{
-			_context.Priorities.Add(Priority);
-			int cantidad = _context.SaveChanges();
-			return cantidad > 0;
-		}
-
-		public bool Modificar(Priorities Priority)
-		{
-			_context.Entry(Priority).State = EntityState.Modified;
-			return _context.SaveChanges() > 0;
-		}
-
 		public bool Guardar(Priorities Priority)
 		{
 			if (Priority.PriorityId == 0)
@@ -63,13 +39,6 @@ namespace PrioritiesApp.BLL
 
 			var saved = _context.SaveChanges() > 0;
 			return saved;
-		}
-
-		public bool Eliminar(Priorities Priority)
-		{
-			_context.Priorities.Remove(Priority); 
-			int cantidad = _context.SaveChanges();
-			return cantidad > 0;
 		}
 
 		public Priorities? Buscar(int priorityId)

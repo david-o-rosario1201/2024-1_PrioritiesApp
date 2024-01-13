@@ -16,9 +16,7 @@ namespace PrioritiesApp
 				.AddInteractiveServerComponents();
 
 			var ConStr = builder.Configuration.GetConnectionString("ConStr");
-
 			builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
-
 			builder.Services.AddScoped<PrioritiesBLL>();
 
 			var app = builder.Build();
