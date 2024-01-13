@@ -9,33 +9,30 @@
             <div class="card-header">
                 <h3>REGISTRO DE PRIORIDADES</h3>
             </div>
-
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-
+                @*ID*@
                 <label><strong>ID:</strong></label><br />
                 <div class="id">
                     <InputNumber class="form-control" @bind-Value="Priority.PriorityId"></InputNumber>
                     
                     <button @onclick="Buscar" class="btn btn-primary" type="button"> <i class="bi bi-search" /> Buscar</button>
                 </div><br /><br />
-
+                @*Descripcion*@
                 <label><strong>Descripci&oacute;n:</strong></label> <br />
-
                 <div class="descripcion">
                     <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="Priority.Description"></InputText><br />
                     <ValidationMessage For="@(() => Priority.Description)" />
                 </div>  
-
+                @*Dias compromiso*@
                 <label><strong>Dias compromiso:</strong></label>
-
                 <div class="compromiso">
                     <InputNumber class="form-control" @bind-Value="Priority.DaysCommitment"></InputNumber>
                     <ValidationMessage For="@(() => Priority.DaysCommitment)" />
                 </div>
                 <div class="mb-3"></div>
             </div>
-
+            @*Botones*@
             <div class="card-footer d-flex justify-content-center">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-primary" @onclick="Nuevo">
@@ -51,6 +48,7 @@
             </div>
         </div>
     </div>
+    @*Mensaje*@
     <div class="mensaje">
         <span class="error"><p>@MensajeError</p></span>
         <span class="exito"><p>@MensajeExito</p></span>
