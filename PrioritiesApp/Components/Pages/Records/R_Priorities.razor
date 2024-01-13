@@ -7,7 +7,7 @@
     <div class="container">
         <div class="card shadow-lg">
             <div class="card-header">
-                <h3>REGISTRO DE PRIORIDADES</h3>
+                <h3><strong>REGISTRO DE PRIORIDADES</strong></h3>
             </div>
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
@@ -115,7 +115,11 @@
         var buscar =  priorityBLL.Buscar(Priority.PriorityId);
 
         if (buscar != null)
+        {
             Priority = buscar;
+            MensajeError = "";
+            MensajeExito = "";
+        }
 
         else
             MensajeError = $"No se encontraron dastos con el id: {Priority.PriorityId}";
