@@ -64,6 +64,14 @@ h1:focus {
     width: 850px;
 }
 
-.mensaje p {
+.error p {
     color: red;
+}
+
+.exito p{
+    color: green;
+}
+
+.mensaje{
+    display: inline-flex;
 }
