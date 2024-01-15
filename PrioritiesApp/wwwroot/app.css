@@ -64,6 +64,8 @@ h1:focus {
     width: 850px;
 }
 
+
+/*Mensaje*/
 .error p {
     color: red;
 }

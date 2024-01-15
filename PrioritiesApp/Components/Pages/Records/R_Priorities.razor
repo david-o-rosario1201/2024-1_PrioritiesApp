@@ -15,13 +15,13 @@
                 <label><strong>ID:</strong></label><br />
                 <div class="id">
                     <InputNumber class="form-control" @bind-Value="Priority.PriorityId"></InputNumber>
-                    
                     <button @onclick="Buscar" class="btn btn-primary" type="button"> <i class="bi bi-search" /> Buscar</button>
-                </div><br /><br />
+                </div><br />
+                <ValidationMessage For="@(() => Priority.PriorityId)" />
                 @*Descripcion*@
                 <label><strong>Descripci&oacute;n:</strong></label> <br />
                 <div class="descripcion">
-                    <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="Priority.Description"></InputText><br />
+                    <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="Priority.Description"></InputText>
                     <ValidationMessage For="@(() => Priority.Description)" />
                 </div>  
                 @*Dias compromiso*@
@@ -59,6 +59,7 @@
     [Parameter]
     public int? PriorityId { get; set; }
     public Priorities Priority { get; set; } = new Priorities();
+    public string GuardarPrioridad { get; set; } = string.Empty;
     public string MensajeError { get; set; } = string.Empty;
     public string MensajeExito { get; set; } = string.Empty;
 
@@ -80,12 +81,23 @@
 
     public async Task Guardar()
     {
-        if (Validar())
-            MensajeError = "Error, esta descripcion ya existe";
+        if (ValidarDescripcion())
+        {
+            if (Priority.PriorityId == 0)
+                MensajeError = "Error, esta descripcion ya existe";
 
-        else if (Priority.DaysCommitment <= 0)
-            MensajeError = "El dia debe ser mayor que cero (0)";
-
+            else if (GuardarPrioridad == Priority.Description)
+            {
+                var mensaje = priorityBLL.Guardar(Priority);
+                MensajeExito = "Los datos se han actualizado";
+                MensajeError = "";
+            }
+            else
+            {
+                MensajeError = "Los datos no se han podido actualizar";
+                MensajeExito = "";
+            }
+        }   
         else
         {
             var guardo = priorityBLL.Guardar(Priority);
@@ -95,13 +107,13 @@
                 MensajeExito = "Se guardo correctamente";  
             }
             else
-                MensajeError = "No se pudo guardar el ticket";
+                MensajeError = "No se pudo guardar";
         }
     }
 
-    public bool Validar()
+    public bool ValidarDescripcion()
     {
-        var valor = priorityBLL.Buscar(Priority.Description);
+        var valor = priorityBLL.BuscarDescripcion(Priority.Description);
 
         if (valor != null)
             return true;
@@ -112,11 +124,17 @@
 
     public void Buscar()
     {
+        if(Priority.PriorityId <= 0)
+        {
+            MensajeError = "Error, no se aceptan Id menores que 1";
+            return;
+        }
         var buscar =  priorityBLL.Buscar(Priority.PriorityId);
 
         if (buscar != null)
         {
             Priority = buscar;
+            GuardarPrioridad = Priority.Description;
             MensajeError = "";
             MensajeExito = "";
         }
@@ -127,7 +145,7 @@
 
     public void Eliminar()
     {
-        var eliminar = priorityBLL.Delete(Priority.PriorityId);
+        priorityBLL.Eliminar(Priority.PriorityId);
         MensajeError = "";
         MensajeExito = "El dato se ha elimiando con exito!";
     }

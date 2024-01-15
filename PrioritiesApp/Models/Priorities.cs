@@ -4,14 +4,14 @@ namespace PrioritiesApp.Models
 {
 	public class Priorities
 	{
-		[Key]
-		public int PriorityId { get; set; }
+        [Key]
+        public int PriorityId { get; set; }
 
-		[Required(ErrorMessage = "Error, campo obligatorio")]
+		[Required(ErrorMessage = "ERROR, CAMPO OBLIGATORIO")]
 		public string Description { get; set; }
 
-        [Required(ErrorMessage = "Error, campo obligatorio")]
-		[Range(1, 31, ErrorMessage = "Error, campo obligatorio")]
+        [Range(1, 31, ErrorMessage = "ERROR, CAMPO OBLIGATORIO, RANGO [1-31]")]
+        [Required(ErrorMessage = "ERROR, CAMPO OBLIGATORIO")]
         public int DaysCommitment { get; set; }
 	}
 }
