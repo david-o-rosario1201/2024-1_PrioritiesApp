@@ -55,7 +55,14 @@ public class PrioritiesBLL
     {
         return await _context.Priorities
             .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Description == description);
+            .FirstOrDefaultAsync(p => p.Description.ToLower() == description.ToLower());
+    }
+
+    public async Task<Priorities?> BuscarId(int priorityId)
+    {
+        return await _context.Priorities
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.PriorityId == priorityId);
     }
 
     public async Task<List<Priorities>> Listar(Expression<Func<Priorities, bool>> criterio)

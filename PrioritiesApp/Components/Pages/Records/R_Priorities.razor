@@ -2,7 +2,7 @@
 @inject PrioritiesBLL priorityBLL;
 @rendermode InteractiveServer
 
-<EditForm Model="Priority" OnValidSubmit="Guardar">
+<EditForm Model="priority" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
@@ -14,21 +14,21 @@
                 @*ID*@
                 <label><strong>ID:</strong></label><br />
                 <div class="id">
-                    <InputNumber class="form-control" @bind-Value="Priority.PriorityId"></InputNumber>
+                    <InputNumber class="form-control" @bind-Value="priority.PriorityId"></InputNumber>
                     <button @onclick="Buscar" class="btn btn-primary" type="button"> <i class="bi bi-search" /> Buscar</button>
                 </div><br />
-                <ValidationMessage For="@(() => Priority.PriorityId)" />
+                <ValidationMessage For="@(() => priority.PriorityId)" />
                 @*Descripcion*@
                 <label><strong>Descripci&oacute;n:</strong></label> <br />
                 <div class="descripcion">
-                    <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="Priority.Description"></InputText>
-                    <ValidationMessage For="@(() => Priority.Description)" />
+                    <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="priority.Description"></InputText>
+                    <ValidationMessage For="@(() => priority.Description)" />
                 </div>  
                 @*Dias compromiso*@
                 <label><strong>Dias compromiso:</strong></label>
                 <div class="compromiso">
-                    <InputNumber class="form-control" @bind-Value="Priority.DaysCommitment"></InputNumber>
-                    <ValidationMessage For="@(() => Priority.DaysCommitment)" />
+                    <InputNumber class="form-control" @bind-Value="priority.DaysCommitment"></InputNumber>
+                    <ValidationMessage For="@(() => priority.DaysCommitment)" />
                 </div>
                 <div class="mb-3"></div>
             </div>
@@ -50,103 +50,98 @@
     </div>
     @*Mensaje*@
     <div class="mensaje">
-        <span class="error"><p>@MensajeError</p></span>
-        <span class="exito"><p>@MensajeExito</p></span>
+        <span class="error"><p>@mensajeError</p></span>
+        <span class="exito"><p>@mensajeExito</p></span>
     </div>
 </EditForm>
 
 @code {
     [Parameter]
     public int? PriorityId { get; set; }
-    public Priorities Priority { get; set; } = new Priorities();
-    public string GuardarPrioridad { get; set; } = string.Empty;
-    public string MensajeError { get; set; } = string.Empty;
-    public string MensajeExito { get; set; } = string.Empty;
+    public Priorities priority { get; set; } = new Priorities();
+    public string guardarPrioridad { get; set; } = string.Empty;
+    public string mensajeError { get; set; } = string.Empty;
+    public string mensajeExito { get; set; } = string.Empty;
 
     protected override void OnInitialized()
     {
         if (PriorityId.HasValue)
         {
-            Priority.PriorityId = PriorityId.Value;
+            priority.PriorityId = PriorityId.Value;
             Buscar();
         }
     }
 
     public void Nuevo()
     {
-        Priority = new Priorities();
-        MensajeError = "";
-        MensajeExito = "";
+        priority = new Priorities();
+        mensajeError = string.Empty;
+        mensajeExito = string.Empty;
     }
 
     public async Task Guardar()
     {
-        if (ValidarDescripcion())
+        if (await ValidarDescripcion())//validar que la descripcion no exista
         {
-            if (Priority.PriorityId == 0)
-                MensajeError = "Error, esta descripcion ya existe";
+            if (priority.PriorityId == 0)//cuando se esta guardando una descripcion nueva
+                mensajeError = "Error, esta descripcion ya existe";
 
-            else if (GuardarPrioridad == Priority.Description)
+            else//Modificar
             {
-                var mensaje = priorityBLL.Guardar(Priority);
-                MensajeExito = "Los datos se han actualizado";
-                MensajeError = "";
-            }
-            else
-            {
-                MensajeError = "Los datos no se han podido actualizar";
-                MensajeExito = "";
+                var modificar = await priorityBLL.Guardar(priority);
+                if(modificar)
+                {
+                    mensajeError = string.Empty;
+                    mensajeExito = "Los datos se actualizaron con exito!";
+                }
             }
         }   
         else
         {
-            var guardo = priorityBLL.Guardar(Priority);
+            var guardo = await priorityBLL.Guardar(priority);
             if (guardo)
             {
-                MensajeError = "";
-                MensajeExito = "Se guardo correctamente";  
+                mensajeError = string.Empty;
+                mensajeExito = "Se guardo correctamente";  
             }
             else
-                MensajeError = "No se pudo guardar";
+                mensajeError = "No se pudo guardar";
         }
     }
 
-    public bool ValidarDescripcion()
+    public async Task<bool> ValidarDescripcion()
     {
-        var valor = priorityBLL.BuscarDescripcion(Priority.Description);
+        var valor = await priorityBLL.BuscarDescripcion(priority.Description);
 
-        if (valor != null)
-            return true;
-
-        else
-            return false;
+        return valor != null;
     }
 
-    public void Buscar()
+
+    public async Task Buscar()
     {
-        if(Priority.PriorityId <= 0)
+        if(priority.PriorityId <= 0)
         {
-            MensajeError = "Error, no se aceptan Id menores que 1";
+            mensajeError = "Error, no se aceptan Id menores que 1";
             return;
         }
-        var buscar =  priorityBLL.Buscar(Priority.PriorityId);
+        var buscar = await priorityBLL.BuscarId(priority.PriorityId);
 
         if (buscar != null)
         {
-            Priority = buscar;
-            GuardarPrioridad = Priority.Description;
-            MensajeError = "";
-            MensajeExito = "";
+            priority = buscar;
+            guardarPrioridad = priority.Description;
+            mensajeError = string.Empty;
+            mensajeExito = "Priodad encontrada";
         }
 
         else
-            MensajeError = $"No se encontraron dastos con el id: {Priority.PriorityId}";
+            mensajeError = $"No se encontraron dastos con el id: {priority.PriorityId}";
     }
 
-    public void Eliminar()
+    public async Task Eliminar()
     {
-        priorityBLL.Eliminar(Priority.PriorityId);
-        MensajeError = "";
-        MensajeExito = "El dato se ha elimiando con exito!";
+        await priorityBLL.Eliminar(priority);
+        mensajeError = string.Empty;
+        mensajeExito = "El dato se ha elimiando con exito!";
     }
 }
