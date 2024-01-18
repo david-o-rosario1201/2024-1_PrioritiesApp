@@ -18,7 +18,7 @@ public class PrioritiesBLL
 
     public async Task<bool> Guardar(Priorities priority)
     {
-        if (!await Existe(priority.PriorityId))
+        if (!await Existe(priority.Description))
             return await Insertar(priority);
         else
             return await Modificar(priority);
@@ -36,10 +36,10 @@ public class PrioritiesBLL
         return await _context.SaveChangesAsync() > 0;
     }
 
-    private async Task<bool> Existe(int priorityId)
+    private async Task<bool> Existe(string description)
     {
         return await _context.Priorities
-            .AnyAsync(p => p.PriorityId == priorityId);
+            .AnyAsync(p => p.Description == description);
     }
 
     public async Task<bool> Eliminar(Priorities priority)
@@ -51,7 +51,7 @@ public class PrioritiesBLL
         return cantidad > 0;
     }
 
-    public async Task<Priorities?> Buscar(int priorityId)
+    public async Task<Priorities?> BuscarId(int priorityId)
     {
         return await _context.Priorities
             .AsNoTracking()
