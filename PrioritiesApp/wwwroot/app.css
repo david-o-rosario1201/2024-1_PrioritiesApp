@@ -56,13 +56,13 @@ h1:focus {
     display: inline-flex;
 }
 
-.id .form-control, .compromiso .form-control {
+.id .form-control, .compromiso .form-control{
     width: 400px;
 }
 
-.descripcion .form-control{
-    width: 850px;
-}
+.descripcion .form-control {
+        width: 850px;
+    }
 
 
 /*Mensaje*/

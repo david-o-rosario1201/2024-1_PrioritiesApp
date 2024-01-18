@@ -12,22 +12,22 @@
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
                 @*ID*@
-                <label><strong>ID:</strong></label><br />
+                <label class="row" for="prioridadId"><strong>ID:</strong></label>
                 <div class="id">
-                    <InputNumber class="form-control" @bind-Value="priority.PriorityId"></InputNumber>
-                    <button @onclick="Buscar" class="btn btn-primary" type="button"> <i class="bi bi-search" /> Buscar</button>
-                </div><br />
-                <ValidationMessage For="@(() => priority.PriorityId)" />
+                    <InputNumber id="prioridadId" class="form-control" @bind-Value="priority.PriorityId"></InputNumber>
+                    <button @onclick="Buscar" class="btn btn-primary" type="button"><i class="bi bi-search" />Buscar</button>
+                    <ValidationMessage For="@(() => priority.PriorityId)" />
+                </div>
                 @*Descripcion*@
-                <label><strong>Descripci&oacute;n:</strong></label> <br />
+                <label class="row" for="entradaDescripcion"><strong>Descripci&oacute;n:</strong></label>
                 <div class="descripcion">
-                    <InputText class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="priority.Description"></InputText>
+                    <InputText id="entradaDescripcion" class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="priority.Description"></InputText>
                     <ValidationMessage For="@(() => priority.Description)" />
                 </div>  
                 @*Dias compromiso*@
-                <label><strong>Dias compromiso:</strong></label>
+                <label for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
                 <div class="compromiso">
-                    <InputNumber class="form-control" @bind-Value="priority.DaysCommitment"></InputNumber>
+                    <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="priority.DaysCommitment"></InputNumber>
                     <ValidationMessage For="@(() => priority.DaysCommitment)" />
                 </div>
                 <div class="mb-3"></div>
