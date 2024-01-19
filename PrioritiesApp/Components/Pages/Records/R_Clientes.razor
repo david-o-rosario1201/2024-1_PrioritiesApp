@@ -1,8 +1,97 @@
 ﻿@page "/clientes"
+@inject ClientesBLL clienteBLL;
+@rendermode InteractiveServer
 
+<PageTitle>Registro Clientes</PageTitle>
 
-<h3>R_Clientes</h3>
+<EditForm Model="cliente" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator/>
+	<div class="container">
+		<div class="card shadow-lg" >
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>REGISTRO CLIENTES</strong></h3>
+			</div>
+			@*Cuerpo*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@*ID*@
+				<label class="row" for="clienteId"><strong>ID:</strong></label>
+				<div class="id">
+					<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
+					<button @onclick="Buscar" class="btn btn-primary" type="button"><i class="bi bi-search"/>Buscar</button>
+					<ValidationMessage For="@(() => cliente.ClienteId)"></ValidationMessage>
+				</div>
+				<div class="compromiso">
+					@*Nombre*@
+					<label class="row" for="entradaNombre"><strong>Nombre:</strong></label>
+					<InputText id="entradaNombre" class="form-control" placeholder="Escriba su nombre" @bind-Value="cliente.Nombre"></InputText>
+					<ValidationMessage For="@(() => cliente.Nombre)"></ValidationMessage>
+					@*Telefono*@
+					<label class="row" for="telefono"><strong>Tel&eacute;fono:</strong></label>
+					<InputText id="telefono" class="form-control" placeholder="Escriba su numero de teléfono" @bind-Value="cliente.Telefono"></InputText>
+					<ValidationMessage For="@(() => cliente.Telefono)"></ValidationMessage>
+					@*Celular*@
+					<label class="row" for="celular"><strong>Celular:</strong></label>
+					<InputText id="celular" class="form-control" placeholder="Escriba su numero de celular" @bind-Value="cliente.Celular"></InputText>
+					<ValidationMessage For="@(() => cliente.Celular)"></ValidationMessage>
+					@*RNC*@
+					<label class="row" for="rnc"><strong>RNC:</strong></label>
+					<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC"></InputText>
+					<ValidationMessage For="@(() => cliente.RNC)"></ValidationMessage>
+					@*Email*@
+					<label class="row" for="email"><strong>Email:</strong></label>
+					<InputText id="email" class="form-control" placeholder="Escriba su direccion de email" @bind-Value="cliente.Email"></InputText>
+					<ValidationMessage For="@(() => cliente.Email)"></ValidationMessage>
+					@*Direccion*@
+					<label class="row" for="direccion"><strong>Direcci&oacute;n</strong></label>
+					<InputText id="direccion" class="form-control" placeholder="Escriba su direccion" @bind-Value="cliente.Direccion"></InputText>
+					<ValidationMessage For="@(() => cliente.Direccion)"></ValidationMessage>
+				</div>
+				<div class="mb-3"></div>
+			</div>
+			<div class="card-footer d-flex justify-content-center">
+				<div class="btn-group" role="group">
+					@*Nuevo*@
+					<button type="button" class="btn btn-primary" @onclick="Nuevo">
+						<i class="bi bi-file-earmark-plus-fill"/> Nuevo
+					</button>
+					@*Guardar*@
+					<button type="submit" class="btn btn-success">
+						<i class="bi bi-floppy-fill"/> Guardar
+					</button>
+					@*Eliminar*@
+					<button type="button" class="btn btn-danger" @onclick="Eliminar">
+						<i class="bi bi-trash-fill"/> Eliminar
+					</button>
+				</div>
+				<div class="mb-3"></div>
+			</div>
+		</div>
+	</div>
+</EditForm>
 
 @code {
+	[Parameter]
+	public Clientes cliente { get; set; } = new Clientes();
 
+	public void Nuevo()
+	{
+
+	}
+
+	public void Guardar()
+	{
+
+	}
+
+	public void Buscar()
+	{
+
+	}
+
+	public void Eliminar()
+	{
+		
+	}
 }
