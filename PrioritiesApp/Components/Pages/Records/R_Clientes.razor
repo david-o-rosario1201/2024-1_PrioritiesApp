@@ -81,6 +81,7 @@
 	public Clientes cliente { get; set; } = new Clientes();
 	public string mensajeError { get; set; } = string.Empty;
 	public string mensajeExito { get; set; } = string.Empty;
+	public Clientes guardarCliente { get; set; } = new Clientes();
 
 	public void Nuevo()
 	{
@@ -130,9 +131,28 @@
 		return false;
 	}
 
-	public void Buscar()
+	public async Task Buscar()
 	{
+		if (cliente.ClienteId <= 0)
+		{
+			mensajeError = "No se aceptan Id menores que 1";
+			mensajeExito = string.Empty;
+			return;
+		}
 
+		var buscar = await clienteBLL.BuscarId(cliente.ClienteId);
+		if(buscar != null)
+		{
+			cliente = buscar;
+			guardarCliente = cliente;
+			mensajeError = string.Empty;
+			mensajeExito = "Se ha encontrado el cliente";
+		}
+		else
+		{
+			mensajeError = $"No se ha encontrado ningun cliente con el Id {cliente.ClienteId}";
+			mensajeExito = string.Empty;
+		}
 	}
 
 	public void Eliminar()
