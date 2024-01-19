@@ -69,31 +69,42 @@
 			</div>
 		</div>
 	</div>
+	@*Mensaje*@
+	<div class="mensaje">
+		<span class="error"> <p>@mensajeError</p> </span>
+		<span class="exito"><p>@mensajeExito</p></span>
+	</div>
 </EditForm>
 
 @code {
 	[Parameter]
 	public Clientes cliente { get; set; } = new Clientes();
+	public string mensajeError { get; set; } = string.Empty;
+	public string mensajeExito { get; set; } = string.Empty;
 
 	public void Nuevo()
 	{
 		cliente = new Clientes();
+		mensajeError = string.Empty;
+		mensajeExito = string.Empty;
 	}
 
 	public async Task Guardar()
 	{
 		if(await Validar())
-		{
-			Console.WriteLine("Existe");
 			return;
-		}
 		else
 		{
-			Console.WriteLine("No existe");
 			var guardar = await clienteBLL.Guardar(cliente);
-			if(guardar)
+			if (guardar)
 			{
-
+				mensajeExito = "Los datos se han guardado correctamente";
+				mensajeError = string.Empty;
+			}
+			else
+			{
+				mensajeError = "No se han podido guardar los datos";
+				mensajeExito = string.Empty;
 			}
 		}
 	}
@@ -101,23 +112,19 @@
 	public async Task<bool> Validar()
 	{
 		var nombre = await clienteBLL.BuscarCliente(cliente.Nombre);
-		//var telefono = await clienteBLL.BuscarId();
 		var rnc = await clienteBLL.BuscarRNC(cliente.RNC);
 
 		if(nombre != null)
 		{
-
+			mensajeError = "Este nombre ya existe";
+			mensajeExito = string.Empty;
+			return true;
 		}
-		else
+		if(rnc != null)
 		{
-
-		}
-	else
-		{
-
-		}
-	else{
-
+			mensajeError = "Este RNC ya existe";
+			mensajeExito = string.Empty;
+			return true;
 		}
 
 		return false;
