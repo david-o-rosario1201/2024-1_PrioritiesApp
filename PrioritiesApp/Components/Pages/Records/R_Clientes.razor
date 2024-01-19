@@ -80,9 +80,47 @@
 		cliente = new Clientes();
 	}
 
-	public void Guardar()
+	public async Task Guardar()
 	{
+		if(await Validar())
+		{
+			Console.WriteLine("Existe");
+			return;
+		}
+		else
+		{
+			Console.WriteLine("No existe");
+			var guardar = await clienteBLL.Guardar(cliente);
+			if(guardar)
+			{
 
+			}
+		}
+	}
+
+	public async Task<bool> Validar()
+	{
+		var nombre = await clienteBLL.BuscarCliente(cliente.Nombre);
+		//var telefono = await clienteBLL.BuscarId();
+		var rnc = await clienteBLL.BuscarRNC(cliente.RNC);
+
+		if(nombre != null)
+		{
+
+		}
+		else
+		{
+
+		}
+	else
+		{
+
+		}
+	else{
+
+		}
+
+		return false;
 	}
 
 	public void Buscar()
