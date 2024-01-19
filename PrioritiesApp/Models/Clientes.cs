@@ -9,16 +9,16 @@ public class Clientes
     [Required (ErrorMessage = "Error, debe ingresar un nombre")]
     public string? Nombre { get; set; }
 
-    [Phone (ErrorMessage = $"Error, este numero de teléfono es invalido")]
+    [Phone(ErrorMessage = "Error, el formato del numero de telefono no es valido"), Required(ErrorMessage = "Error, debe ingresar un numero de teléfono")]
     public string? Telefono { get; set; }
 
-    [Phone (ErrorMessage = "Error, este numero de celular es invalido")]
+    [Phone (ErrorMessage = "Error, el formato del numero de telefono no es valido"), Required(ErrorMessage = "Error, debe ingresar un numero de celular")]
     public string? Celular { get; set; }
 
-    [Required (ErrorMessage = "Error, este RNC ya existe")]
+    [Required (ErrorMessage = "Error, debe ingresar un RNC")]
     public string? RNC { get; set; }
 
-    [EmailAddress (ErrorMessage = "Error, este email no es valido")]
+    [EmailAddress (ErrorMessage = "Error, el formato del email no es valido"), Required(ErrorMessage = "Error, debe un ingresar un email")]
     public string? Email { get; set; }
 
     [Required (ErrorMessage = "Error, debe una dirección")]
