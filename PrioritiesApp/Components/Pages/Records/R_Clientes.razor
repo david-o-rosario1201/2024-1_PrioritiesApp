@@ -37,7 +37,7 @@
 					<ValidationMessage For="@(() => cliente.Celular)"></ValidationMessage>
 					@*RNC*@
 					<label class="row" for="rnc"><strong>RNC:</strong></label>
-					<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC"></InputText>
+					<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC" @oninput="@(e => VolverMayusculas((string)e.Value))"></InputText>
 					<ValidationMessage For="@(() => cliente.RNC)"></ValidationMessage>
 					@*Email*@
 					<label class="row" for="email"><strong>Email:</strong></label>
@@ -90,13 +90,34 @@
 		mensajeExito = string.Empty;
 	}
 
+	public void VolverMayusculas(string valor)
+	{
+		cliente.RNC = valor.ToUpper();	
+	}
+
 	public async Task Guardar()
 	{
 		if(await Validar())
+		{
+			if(cliente.ClienteId != 0)//significa que estoy buscando clientes que ya existen
+			{
+				var modificar = await clienteBLL.Guardar(cliente,guardarCliente);
+				if(modificar)
+				{
+					mensajeError = string.Empty;
+					mensajeExito = "Los datos se han actualizado con exito";
+				}
+				else
+				{
+					mensajeError = "Los datos no se han podido actualizar revise el nombre o RNC";
+					mensajeExito = string.Empty;
+				}
+			}
 			return;
+		}
 		else
 		{
-			var guardar = await clienteBLL.Guardar(cliente);
+			var guardar = await clienteBLL.Guardar(cliente,guardarCliente);
 			if (guardar)
 			{
 				mensajeExito = "Los datos se han guardado correctamente";
@@ -155,8 +176,19 @@
 		}
 	}
 
-	public void Eliminar()
+	public async Task Eliminar()
 	{
-		
+		var eliminar = await clienteBLL.Eliminar(cliente);
+		if(eliminar)
+		{
+			mensajeError = string.Empty;
+			mensajeExito = "El cliente se ha eliminado con exito";
+		}
+		else
+		{
+			mensajeError = "El cliente no se ha podido eliminar";
+			mensajeExito = string.Empty;
+		}
+
 	}
 }
