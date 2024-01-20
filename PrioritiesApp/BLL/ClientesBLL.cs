@@ -14,12 +14,25 @@ public class ClientesBLL
         _context = context;
     }
 
-    public async Task<bool> Guardar(Clientes cliente)
+    public async Task<bool> Guardar(Clientes cliente, Clientes guardarCliente)
     {
         if (!await Existe(cliente.ClienteId))
             return await Insertar(cliente);
         else
-            return await Modificar(cliente);
+        {
+            if(guardarCliente.Nombre == cliente.Nombre)///si el nombre buscado no se ha cambiado
+            {
+                if(await BuscarRNC(cliente.RNC) == null)
+					return await Modificar(cliente);
+			}
+            else
+            {
+				if (await BuscarCliente(cliente.Nombre) == null && await BuscarRNC(cliente.RNC) == null)//nuevo nombre y nuevo RNC
+					return await Modificar(cliente);
+			}
+		}
+
+        return false;
     }
 
     public async Task<bool> Insertar(Clientes cliente)
