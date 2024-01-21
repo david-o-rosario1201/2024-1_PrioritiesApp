@@ -20,12 +20,21 @@ public class ClientesBLL
             return await Insertar(cliente);
         else
         {
-            if(guardarCliente.Nombre == cliente.Nombre)///si el nombre buscado no se ha cambiado
+            if(guardarCliente.Nombre == cliente.Nombre && guardarCliente.RNC == cliente.RNC)///si el nombre y el RNC buscado no se ha cambiado
+				return await Modificar(cliente);
+
+			else if(guardarCliente.Nombre == cliente.Nombre)//el nombre no se cambio
             {
-                if(await BuscarRNC(cliente.RNC) == null)
+				if (await BuscarRNC(cliente.RNC) == null)//nuevo nombre y nuevo RNC
 					return await Modificar(cliente);
 			}
-            else
+            else if(guardarCliente.RNC == cliente.RNC)//el RNC no se cambio
+            {
+                if(await BuscarCliente(cliente.Nombre) == null)
+                    return await Modificar(cliente);
+            }
+
+			else
             {
 				if (await BuscarCliente(cliente.Nombre) == null && await BuscarRNC(cliente.RNC) == null)//nuevo nombre y nuevo RNC
 					return await Modificar(cliente);
