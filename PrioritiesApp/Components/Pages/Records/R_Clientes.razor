@@ -1,0 +1,194 @@
+﻿@page "/clientes"
+@inject ClientesBLL clienteBLL;
+@rendermode InteractiveServer
+
+<PageTitle>Registro Clientes</PageTitle>
+
+<EditForm Model="cliente" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator/>
+	<div class="container">
+		<div class="card shadow-lg" >
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>REGISTRO CLIENTES</strong></h3>
+			</div>
+			@*Cuerpo*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@*ID*@
+				<label class="row" for="clienteId"><strong>ID:</strong></label>
+				<div class="id">
+					<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
+					<button @onclick="Buscar" class="btn btn-primary" type="button"><i class="bi bi-search"/>Buscar</button>
+					<ValidationMessage For="@(() => cliente.ClienteId)"></ValidationMessage>
+				</div>
+				<div class="compromiso">
+					@*Nombre*@
+					<label class="row" for="entradaNombre"><strong>Nombre:</strong></label>
+					<InputText id="entradaNombre" class="form-control" placeholder="Escriba su nombre" @bind-Value="cliente.Nombre"></InputText>
+					<ValidationMessage For="@(() => cliente.Nombre)"></ValidationMessage>
+					@*Telefono*@
+					<label class="row" for="telefono"><strong>Tel&eacute;fono:</strong></label>
+					<InputText id="telefono" class="form-control" placeholder="Escriba su numero de teléfono" @bind-Value="cliente.Telefono"></InputText>
+					<ValidationMessage For="@(() => cliente.Telefono)"></ValidationMessage>
+					@*Celular*@
+					<label class="row" for="celular"><strong>Celular:</strong></label>
+					<InputText id="celular" class="form-control" placeholder="Escriba su numero de celular" @bind-Value="cliente.Celular"></InputText>
+					<ValidationMessage For="@(() => cliente.Celular)"></ValidationMessage>
+					@*RNC*@
+					<label class="row" for="rnc"><strong>RNC:</strong></label>
+					<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC" @oninput="@(e => VolverMayusculas((string)e.Value))"></InputText>
+					<ValidationMessage For="@(() => cliente.RNC)"></ValidationMessage>
+					@*Email*@
+					<label class="row" for="email"><strong>Email:</strong></label>
+					<InputText id="email" class="form-control" placeholder="Escriba su direccion de email" @bind-Value="cliente.Email"></InputText>
+					<ValidationMessage For="@(() => cliente.Email)"></ValidationMessage>
+					@*Direccion*@
+					<label class="row" for="direccion"><strong>Direcci&oacute;n</strong></label>
+					<InputText id="direccion" class="form-control" placeholder="Escriba su direccion" @bind-Value="cliente.Direccion"></InputText>
+					<ValidationMessage For="@(() => cliente.Direccion)"></ValidationMessage>
+				</div>
+				<div class="mb-3"></div>
+			</div>
+			<div class="card-footer d-flex justify-content-center">
+				<div class="btn-group" role="group">
+					@*Nuevo*@
+					<button type="button" class="btn btn-primary" @onclick="Nuevo">
+						<i class="bi bi-file-earmark-plus-fill"/> Nuevo
+					</button>
+					@*Guardar*@
+					<button type="submit" class="btn btn-success">
+						<i class="bi bi-floppy-fill"/> Guardar
+					</button>
+					@*Eliminar*@
+					<button type="button" class="btn btn-danger" @onclick="Eliminar">
+						<i class="bi bi-trash-fill"/> Eliminar
+					</button>
+				</div>
+				<div class="mb-3"></div>
+			</div>
+		</div>
+	</div>
+	@*Mensaje*@
+	<div class="mensaje">
+		<span class="error"> <p>@mensajeError</p> </span>
+		<span class="exito"><p>@mensajeExito</p></span>
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public Clientes cliente { get; set; } = new Clientes();
+	public string mensajeError { get; set; } = string.Empty;
+	public string mensajeExito { get; set; } = string.Empty;
+	public Clientes guardarCliente { get; set; } = new Clientes();
+
+	public void Nuevo()
+	{
+		cliente = new Clientes();
+		mensajeError = string.Empty;
+		mensajeExito = string.Empty;
+	}
+
+	public void VolverMayusculas(string valor)
+	{
+		cliente.RNC = valor.ToUpper();	
+	}
+
+	public async Task Guardar()
+	{
+		if(await Validar())
+		{
+			if(cliente.ClienteId != 0)//significa que estoy buscando clientes que ya existen
+			{
+				var modificar = await clienteBLL.Guardar(cliente,guardarCliente);
+				if(modificar)
+				{
+					mensajeError = string.Empty;
+					mensajeExito = "Los datos se han actualizado con exito";
+				}
+				else
+				{
+					mensajeError = "Los datos no se han podido actualizar revise el nombre o RNC";
+					mensajeExito = string.Empty;
+				}
+			}
+			return;
+		}
+		else
+		{
+			var guardar = await clienteBLL.Guardar(cliente,guardarCliente);
+			if (guardar)
+			{
+				mensajeExito = "Los datos se han guardado correctamente";
+				mensajeError = string.Empty;
+			}
+			else
+			{
+				mensajeError = "No se han podido guardar los datos";
+				mensajeExito = string.Empty;
+			}
+		}
+	}
+
+	public async Task<bool> Validar()
+	{
+		var nombre = await clienteBLL.BuscarCliente(cliente.Nombre);
+		var rnc = await clienteBLL.BuscarRNC(cliente.RNC);
+
+		if(nombre != null)
+		{
+			mensajeError = "Este nombre ya existe";
+			mensajeExito = string.Empty;
+			return true;
+		}
+		if(rnc != null)
+		{
+			mensajeError = "Este RNC ya existe";
+			mensajeExito = string.Empty;
+			return true;
+		}
+
+		return false;
+	}
+
+	public async Task Buscar()
+	{
+		if (cliente.ClienteId <= 0)
+		{
+			mensajeError = "No se aceptan Id menores que 1";
+			mensajeExito = string.Empty;
+			return;
+		}
+
+		var buscar = await clienteBLL.BuscarId(cliente.ClienteId);
+		if(buscar != null)
+		{
+			cliente = buscar;
+			guardarCliente = cliente;
+			mensajeError = string.Empty;
+			mensajeExito = "Se ha encontrado el cliente";
+		}
+		else
+		{
+			mensajeError = $"No se ha encontrado ningun cliente con el Id {cliente.ClienteId}";
+			mensajeExito = string.Empty;
+		}
+	}
+
+	public async Task Eliminar()
+	{
+		var eliminar = await clienteBLL.Eliminar(cliente);
+		if(eliminar)
+		{
+			mensajeError = string.Empty;
+			mensajeExito = "El cliente se ha eliminado con exito";
+		}
+		else
+		{
+			mensajeError = "El cliente no se ha podido eliminar";
+			mensajeExito = string.Empty;
+		}
+
+	}
+}

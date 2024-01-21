@@ -11,4 +11,5 @@ public class Context : DbContext
     }
 
     public DbSet<Priorities> Priorities { get; set; }
+    public DbSet<Clientes> Clientes { get; set; }
 }
