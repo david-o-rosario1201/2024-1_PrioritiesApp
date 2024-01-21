@@ -2,6 +2,8 @@
 @inject PrioritiesBLL priorityBLL;
 @rendermode InteractiveServer
 
+<PageTitle>Registro Prioridades</PageTitle>
+
 <EditForm Model="priority" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="container">
@@ -84,7 +86,10 @@
         if (await ValidarDescripcion())//validar que la descripcion no exista
         {
             if (priority.PriorityId == 0)//cuando se esta guardando una descripcion nueva
+            {
                 mensajeError = "Error, esta descripcion ya existe";
+                mensajeExito = string.Empty;
+            }
 
             else//Modificar
             {
@@ -105,7 +110,10 @@
                 mensajeExito = "Se guardo correctamente";  
             }
             else
+            {
                 mensajeError = "No se pudo guardar";
+                mensajeExito = string.Empty;
+            }
         }
     }
 
@@ -122,6 +130,7 @@
         if(priority.PriorityId <= 0)
         {
             mensajeError = "Error, no se aceptan Id menores que 1";
+            mensajeExito = string.Empty;
             return;
         }
         var buscar = await priorityBLL.BuscarId(priority.PriorityId);
@@ -135,7 +144,10 @@
         }
 
         else
+        {
             mensajeError = $"No se encontraron dastos con el id: {priority.PriorityId}";
+            mensajeExito = string.Empty;
+        }
     }
 
     public async Task Eliminar()
