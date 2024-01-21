@@ -1,0 +1,54 @@
+﻿@page "/consultaclientes"
+@inject ClientesBLL clienteBLL
+@attribute [StreamRendering]
+
+<PageTitle>Cosulta Clientes</PageTitle>
+<h3><strong>Consulta Clientes</strong></h3>
+
+
+@if (cliente.Count == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nombre</th>
+				<th>Tel&eacute;fono</th>
+				<th>Celular</th>
+				<th>RNC</th>
+				<th>Email</th>
+				<th>Direcci&oacute;n</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var cli in cliente)
+			{
+				<tr>
+					<td>@cli.ClienteId</td>
+					<td>@cli.Nombre</td>
+					<td>@cli.Telefono</td>
+					<td>@cli.Celular</td>
+					<td>@cli.RNC</td>
+					<td>@cli.Email</td>
+					<td>@cli.Direccion</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	public List<Clientes> cliente = new List<Clientes>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
+
+		cliente = await clienteBLL.Listar(criterio);
+	}
+}
