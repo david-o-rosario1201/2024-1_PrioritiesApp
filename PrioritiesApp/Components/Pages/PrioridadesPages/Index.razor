@@ -1,5 +1,4 @@
 ﻿@page "/prioridades"
-@rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject PrioritiesServices prioritiesServices;
 
@@ -38,9 +37,9 @@
 						@foreach(var prioridades in prioridadesList)
 						{
 							<tr>
-								<th>@prioridades.PriorityId</th>
-								<th>@prioridades.Description</th>
-								<th>@prioridades.DaysCommitment</th>
+								<td>@prioridades.PriorityId</td>
+								<td>@prioridades.Description</td>
+								<td>@prioridades.DaysCommitment</td>
 							</tr>
 						}
 					</tbody>

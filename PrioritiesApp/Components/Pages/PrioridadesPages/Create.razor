@@ -1,5 +1,110 @@
-﻿<h3>Create</h3>
+﻿@page "/create"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject PrioritiesServices prioritiesServices;
+
+<PageTitle>Crear</PageTitle>
+<EditForm Model="prioridad" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3><strong>REGISTRO DE PRIORIDADES</strong></h3>
+                <a href="/details"><em>Detalles</em></a>
+            </div>
+            <div class="card-body">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+                @*ID*@
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="prioridadId"><strong>ID:</strong></label>
+                        <div class="input-group">
+                            <InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriorityId"></InputNumber>
+                            <button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                @*Descripcion*@
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="entradaDescripcion"><strong>Descripci&oacute;n:</strong></label>
+                        <InputText id="entradaDescripcion" class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="prioridad.Description"></InputText>
+                        <ValidationMessage For="@(() => prioridad.Description)" />
+                    </div>
+                </div>
+                @*Dias compromiso*@
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
+                        <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="prioridad.DaysCommitment"></InputNumber>
+                        <ValidationMessage For="@(() => prioridad.DaysCommitment)" />
+                    </div>
+                </div>
+                <div class="mb-3"></div>
+            </div>
+            @*Botones*@
+            <div class="card-footer d-flex justify-content-center">
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="bi bi-floppy-fill" /> Crear
+                </button>
+            </div>
+        </div>
+    </div>
+    @*Mensaje*@
+    @mensaje
+</EditForm>
 
 @code {
+    public Priorities prioridad { get; set; } = new Priorities();
+    public string mensaje { get; set; } = string.Empty;
 
+    public async Task Crear()
+    {
+        if (await Validar())
+            mensaje = "Error, ya existe una prioridad con esta descripción";
+        else
+        {
+            var crear = await prioritiesServices.Crear(prioridad);
+            if (crear)
+            {
+                mensaje = "Los datos se han crear con exito";
+                await Task.Delay(1000);
+                LimpriarPantalla();
+            }
+            else
+                mensaje = "Error, los datos no se han podido crear correctamente";
+        }
+    }
+
+    public async Task<bool> Validar()
+    {
+        var validar = await prioritiesServices.BuscarDescripcion(prioridad.Description);
+        if (validar != null)
+            return true;
+
+        return false;
+    }
+
+    public void LimpriarPantalla()
+    {   
+        prioridad = new Priorities();
+        mensaje = string.Empty;
+    }
+
+    public async Task Buscar()
+    {
+        if (prioridad.PriorityId <= 0)
+            mensaje = "No se permiten Id menores que 1";
+        else
+        {
+            var buscar = await prioritiesServices.BuscarId(prioridad.PriorityId);
+            if (buscar != null)
+            {
+                prioridad = buscar;
+                mensaje = "Prioridad encontrada con exito";
+            }
+            else
+                mensaje = $"No se ha encontrado ninguna prioridad con el Id {prioridad.PriorityId}";
+        }
+    }
 }
