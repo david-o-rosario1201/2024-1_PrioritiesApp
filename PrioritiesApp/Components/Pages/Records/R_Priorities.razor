@@ -14,33 +14,38 @@
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
                 @*ID*@
-                <label class="row" for="prioridadId"><strong>ID:</strong></label>
-                <div class="id">
-                    <InputNumber id="prioridadId" class="form-control" @bind-Value="priority.PriorityId"></InputNumber>
-                    <button @onclick="Buscar" class="btn btn-primary" type="button"><i class="bi bi-search" />Buscar</button>
-                    <ValidationMessage For="@(() => priority.PriorityId)" />
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="prioridadId"><strong>ID:</strong></label>
+                        <div class="input-group">
+                            <InputNumber id="prioridadId" class="form-control" @bind-Value="priority.PriorityId"></InputNumber>
+                            <button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
+                        </div>
+                    </div>
                 </div>
                 @*Descripcion*@
-                <label class="row" for="entradaDescripcion"><strong>Descripci&oacute;n:</strong></label>
-                <div class="descripcion">
-                    <InputText id="entradaDescripcion" class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="priority.Description"></InputText>
-                    <ValidationMessage For="@(() => priority.Description)" />
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="entradaDescripcion"><strong>Descripci&oacute;n:</strong></label>
+                        <InputText id="entradaDescripcion" class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="priority.Description"></InputText>
+                        <ValidationMessage For="@(() => priority.Description)" />
+                    </div>
                 </div>  
                 @*Dias compromiso*@
-                <label for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
-                <div class="compromiso">
-                    <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="priority.DaysCommitment"></InputNumber>
-                    <ValidationMessage For="@(() => priority.DaysCommitment)" />
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
+                        <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="priority.DaysCommitment"></InputNumber>
+                        <ValidationMessage For="@(() => priority.DaysCommitment)" />
+                    </div>
                 </div>
                 <div class="mb-3"></div>
             </div>
             @*Botones*@
             <div class="card-footer d-flex justify-content-center">
-                <div class="btn-group" role="group">
-                    <button type="submit" class="btn btn-success">
-                        <i class="bi bi-floppy-fill" /> Crear
-                    </button>
-                </div>
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="bi bi-floppy-fill" /> Crear
+                </button>
             </div>
         </div>
     </div>
