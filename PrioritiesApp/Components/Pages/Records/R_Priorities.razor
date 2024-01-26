@@ -1,10 +1,10 @@
 ﻿@page "/priorities"
-@inject PrioritiesBLL priorityBLL;
+@inject PrioritiesServices priorityBLL;
 @rendermode InteractiveServer
 
 <PageTitle>Registro Prioridades</PageTitle>
 
-<EditForm Model="priority" OnValidSubmit="Guardar">
+<EditForm Model="priority" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
@@ -37,14 +37,8 @@
             @*Botones*@
             <div class="card-footer d-flex justify-content-center">
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary" @onclick="Nuevo">
-                        <i class="bi bi-file-earmark-plus-fill" /> Nuevo
-                    </button>
                     <button type="submit" class="btn btn-success">
-                        <i class="bi bi-floppy-fill" /> Guardar
-                    </button>
-                    <button type="button" class="btn btn-danger" @onclick="Eliminar">
-                        <i class="bi bi-trash-fill" /> Eliminar
+                        <i class="bi bi-floppy-fill" /> Crear
                     </button>
                 </div>
             </div>
@@ -81,7 +75,7 @@
         mensajeExito = string.Empty;
     }
 
-    public async Task Guardar()
+    public async Task Crear()
     {
         if (await ValidarDescripcion())//validar que la descripcion no exista
         {

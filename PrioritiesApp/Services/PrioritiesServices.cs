@@ -5,18 +5,18 @@ using System.Net.Sockets;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace PrioritiesApp.BLL;
+namespace PrioritiesApp.Services;
 
-public class PrioritiesBLL
+public class PrioritiesServices
 {
     private readonly Context _context;
 
-    public PrioritiesBLL(Context context)
+    public PrioritiesServices(Context context)
     {
         _context = context;
     }
 
-    public async Task<bool> Guardar(Priorities priority)
+    public async Task<bool> Crear(Priorities priority)
     {
         if (!await Existe(priority.PriorityId))
             return await Insertar(priority);
