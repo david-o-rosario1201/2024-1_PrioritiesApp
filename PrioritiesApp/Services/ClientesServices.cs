@@ -3,7 +3,7 @@ using PrioritiesApp.DAL;
 using PrioritiesApp.Models;
 using System.Linq.Expressions;
 
-namespace PrioritiesApp.BLL;
+namespace PrioritiesApp.Services;
 
 public class ClientesServices
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PrioritiesApp.Components;
 using PrioritiesApp.DAL;
-using PrioritiesApp.BLL;
+using PrioritiesApp.Services;
 
 namespace PrioritiesApp
 {

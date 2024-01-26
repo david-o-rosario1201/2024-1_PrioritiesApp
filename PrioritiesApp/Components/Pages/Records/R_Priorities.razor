@@ -87,7 +87,7 @@
 
             else//Modificar
             {
-                var modificar = await priorityBLL.Guardar(priority);
+                var modificar = await priorityBLL.Crear(priority);
                 if(modificar)
                 {
                     mensajeError = string.Empty;
@@ -97,7 +97,7 @@
         }   
         else
         {
-            var guardo = await priorityBLL.Guardar(priority);
+            var guardo = await priorityBLL.Crear(priority);
             if (guardo)
             {
                 mensajeError = string.Empty;
