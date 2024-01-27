@@ -9,12 +9,12 @@ public class Clientes
 	[Required(ErrorMessage = "Error, debe ingresar un nombre")]
 	public string? Nombre { get; set; }
 
-	[Phone(ErrorMessage = "Error, el formato del numero de telefono no es valido")]
-	[Required(ErrorMessage = "Error, debe ingresar un numero de teléfono")]
+	[Phone(ErrorMessage = "Error, el formato del número de teléfono no es válido")]
+	[Required(ErrorMessage = "Error, debe ingresar un número de teléfono")]
 	public string? Telefono { get; set; }
 
-	[Phone(ErrorMessage = "Error, el formato del numero de telefono no es valido")]
-	[Required(ErrorMessage = "Error, debe ingresar un numero de celular")]
+	[Phone(ErrorMessage = "Error, el formato del número de celular no es válido")]
+	[Required(ErrorMessage = "Error, debe ingresar un número de celular")]
 	public string? Celular { get; set; }
 
 	[Required(ErrorMessage = "Error, debe ingresar un RNC")]
@@ -22,10 +22,11 @@ public class Clientes
 	public string RNC { get; set; }
 
 
-	[EmailAddress(ErrorMessage = "Error, el formato del email no es valido")]
+	[EmailAddress(ErrorMessage = "Error, el formato del email no es válido")]
 	[Required(ErrorMessage = "Error, debe un ingresar un email")]
 	public string? Email { get; set; }
 
 	[Required(ErrorMessage = "Error, debe una dirección")]
 	public string? Direccion { get; set; }
+
 }
