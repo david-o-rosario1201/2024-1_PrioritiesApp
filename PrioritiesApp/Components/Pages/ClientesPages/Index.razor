@@ -1,0 +1,64 @@
+﻿@page "/clientes"
+@inject ClientesServices clienteBLL
+@attribute [StreamRendering]
+
+<PageTitle>Clientes</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Clientes</strong></h3>
+			<div class="d-flex align-items-start">
+				<div class="px-2">
+					<a href="/createclientes"><em>Crear</em></a>
+				</div>
+				<a href="/detailsClientes"><em>Detalles</em></a>
+			</div>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nombre</th>
+						<th>Tel&eacute;fono</th>
+						<th>Celular</th>
+						<th>RNC</th>
+						<th>Email</th>
+						<th>Direcci&oacute;n</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var cli in cliente)
+					{
+						<tr>
+							<td>@cli.ClienteId</td>
+							<td>@cli.Nombre</td>
+							<td>@cli.Telefono</td>
+							<td>@cli.Celular</td>
+							<td>@cli.RNC</td>
+							<td>@cli.Email</td>
+							<td>@cli.Direccion</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="mb-3"></div>
+	</div>
+	<div class="card-footer d-flex justify-content-center"></div>
+</div>
+
+@code {
+	public List<Clientes> cliente = new List<Clientes>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
+
+		cliente = await clienteBLL.Listar(criterio);
+	}
+}
