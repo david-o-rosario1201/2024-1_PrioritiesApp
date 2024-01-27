@@ -1,0 +1,68 @@
+﻿@page "/detailsclientes"
+@attribute [StreamRendering]
+@inject ClientesServices clientesServices
+
+<PageTitle>Detalles de Clientes</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Detalles de Clientes</strong></h3>
+			<a href="/createclientes"><em>Crear</em></a>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			@if(clientesList.Count == 0)
+			{
+				<p><em>Cargando...</em></p>
+			}
+			else
+			{
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Nombre</th>
+							<th>Tel&eacute;fono</th>
+							<th>Celular</th>
+							<th>RNC</th>
+							<th>Email</th>
+							<th>Direcci&oacute;n</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach(var clientes in clientesList)
+						{
+							<tr>
+								<td>@clientes.ClienteId</td>
+								<td>@clientes.Nombre</td>
+								<td>@clientes.Telefono</td>
+								<td>@clientes.Celular</td>
+								<td>@clientes.RNC</td>
+								<td>@clientes.Email</td>
+								<td>@clientes.Direccion</td>
+								<td><a href="/editclientes/clienteId=@clientes.ClienteId"><em>Editar</em></a></td>
+								<td><a href="/deleteclientes/clienteId=@clientes.ClienteId"><em>Eliminar</em></a></td>
+							</tr>	
+						}
+					</tbody>
+				</table>
+			}
+		</div>
+	</div>
+</div>
+
+@code {
+	public Clientes cliente { get; set; } = new Clientes();
+	public List<Clientes> clientesList = new List<Clientes>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
+		clientesList = await clientesServices.Listar(criterio);
+	}
+}
