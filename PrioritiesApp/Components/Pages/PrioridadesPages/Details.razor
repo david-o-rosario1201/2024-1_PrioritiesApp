@@ -1,5 +1,60 @@
-﻿<h3>Details</h3>
+﻿@page "/details"
+@attribute [StreamRendering]
+@inject PrioritiesServices prioritiesServices;
+
+<PageTitle>Detalles</PageTitle>
+<div class="cotainer">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Detalles</strong></h3>
+			<a href="/create"><em>Crear</em></a>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			@if(prioridadesList.Count == 0)
+			{
+				<p><em>Cargando..</em></p>
+			}
+			else
+			{
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Descripci&oacute;n</th>
+							<th>D&iacute;as</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<thBody>
+						@foreach(var prioridades in prioridadesList)
+						{
+							<tr>
+								<td>@prioridades.PriorityId</td>
+								<td>@prioridades.Description</td>
+								<td>@prioridades.DaysCommitment</td>
+								<td><a href="/edit/prioridad=@prioridades.PriorityId"><em>Editar</em></a></td>
+								<td><a href="/eliminar/prioridad=@prioridades.PriorityId"><em>Eliminar</em></a></td>
+							</tr>
+						}
+					</thBody>
+				</table>
+			}
+		</div>
+	</div>
+</div>
 
 @code {
+	public Priorities prioridad { get; set; } = new Priorities();
+	public List<Priorities> prioridadesList = new List<Priorities>();
 
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Priorities, bool>> criterio = prioridad => prioridad.PriorityId > 0;
+		prioridadesList = await prioritiesServices.Listar(criterio);
+	}
 }
