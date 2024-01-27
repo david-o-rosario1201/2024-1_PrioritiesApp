@@ -11,7 +11,7 @@
         <div class="card shadow-lg">
             @*Header*@
             <div class="card-header">
-                <h3><strong>Editar</strong></h3>
+                <h3><strong>Editar Prioridad</strong></h3>
                 <a href="/detailsprioridades"><em>Detalles</em></a>
             </div>
             @*Body*@
@@ -106,6 +106,18 @@
 
     public async Task Buscar()
     {
-        
+        if (prioridad.PriorityId <= 0)
+            mensaje = "No se permiten Id menores que 1";
+        else
+        {
+            var buscar = await prioritiesServices.BuscarId(prioridad.PriorityId);
+            if (buscar != null)
+            {
+                prioridad = buscar;
+                mensaje = "Prioridad encontrada con exito";
+            }
+            else
+                mensaje = $"No se ha encontrado ninguna prioridad con el Id {prioridad.PriorityId}";
+        }
     }
 }

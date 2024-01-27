@@ -1,4 +1,4 @@
-﻿@page "/clientes"
+﻿@page "/cccclientes"
 @inject ClientesServices clienteBLL;
 @rendermode InteractiveServer
 
@@ -97,38 +97,38 @@
 
 	public async Task Guardar()
 	{
-		if (await Validar())
-		{
-			if (cliente.ClienteId != 0)//significa que estoy buscando clientes que ya existen
-			{
-				var modificar = await clienteBLL.Guardar(cliente, guardarCliente);
-				if (modificar)
-				{
-					mensajeError = string.Empty;
-					mensajeExito = "Los datos se han actualizado con exito";
-				}
-				else
-				{
-					mensajeError = "Los datos no se han podido actualizar revise el nombre o RNC";
-					mensajeExito = string.Empty;
-				}
-			}
-			return;
-		}
-		else
-		{
-			var guardar = await clienteBLL.Guardar(cliente, guardarCliente);
-			if (guardar)
-			{
-				mensajeExito = "Los datos se han guardado correctamente";
-				mensajeError = string.Empty;
-			}
-			else
-			{
-				mensajeError = "No se han podido guardar los datos";
-				mensajeExito = string.Empty;
-			}
-		}
+		// if (await Validar())
+		// {
+		// 	if (cliente.ClienteId != 0)//significa que estoy buscando clientes que ya existen
+		// 	{
+		// 		var modificar = await clienteBLL.Guardar(cliente, guardarCliente);
+		// 		if (modificar)
+		// 		{
+		// 			mensajeError = string.Empty;
+		// 			mensajeExito = "Los datos se han actualizado con exito";
+		// 		}
+		// 		else
+		// 		{
+		// 			mensajeError = "Los datos no se han podido actualizar revise el nombre o RNC";
+		// 			mensajeExito = string.Empty;
+		// 		}
+		// 	}
+		// 	return;
+		// }
+		// else
+		// {
+		// 	var guardar = await clienteBLL.Guardar(cliente, guardarCliente);
+		// 	if (guardar)
+		// 	{
+		// 		mensajeExito = "Los datos se han guardado correctamente";
+		// 		mensajeError = string.Empty;
+		// 	}
+		// 	else
+		// 	{
+		// 		mensajeError = "No se han podido guardar los datos";
+		// 		mensajeExito = string.Empty;
+		// 	}
+		// }
 	}
 
 	public async Task<bool> Validar()
