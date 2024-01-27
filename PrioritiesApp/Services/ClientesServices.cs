@@ -14,34 +14,12 @@ public class ClientesServices
 		_context = context;
 	}
 
-	public async Task<bool> Guardar(Clientes cliente, Clientes guardarCliente)
+	public async Task<bool> Crear(Clientes cliente)
 	{
 		if (!await Existe(cliente.ClienteId))
 			return await Insertar(cliente);
 		else
-		{
-			if (guardarCliente.Nombre == cliente.Nombre && guardarCliente.RNC == cliente.RNC)///si el nombre y el RNC buscado no se ha cambiado
-				return await Modificar(cliente);
-
-			else if (guardarCliente.Nombre == cliente.Nombre)//el nombre no se cambio
-			{
-				if (await BuscarRNC(cliente.RNC) == null)//nuevo nombre y nuevo RNC
-					return await Modificar(cliente);
-			}
-			else if (guardarCliente.RNC == cliente.RNC)//el RNC no se cambio
-			{
-				if (await BuscarCliente(cliente.Nombre) == null)
-					return await Modificar(cliente);
-			}
-
-			else
-			{
-				if (await BuscarCliente(cliente.Nombre) == null && await BuscarRNC(cliente.RNC) == null)//nuevo nombre y nuevo RNC
-					return await Modificar(cliente);
-			}
-		}
-
-		return false;
+			return await Modificar(cliente);
 	}
 
 	public async Task<bool> Insertar(Clientes cliente)
