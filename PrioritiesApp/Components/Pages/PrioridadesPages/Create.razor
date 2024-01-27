@@ -1,4 +1,4 @@
-﻿@page "/create"
+﻿@page "/createPrioridades"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject PrioritiesServices prioritiesServices;
@@ -10,7 +10,7 @@
         <div class="card shadow-lg">
             <div class="card-header">
                 <h3><strong>Registro Prioridades</strong></h3>
-                <a href="/details"><em>Detalles</em></a>
+                <a href="/detailsPrioridades"><em>Detalles</em></a>
             </div>
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
@@ -69,7 +69,7 @@
             {
                 mensaje = "Los datos se han crear con exito";
                 await Task.Delay(2000);
-                LimpriarPantalla();
+                LimpiarPantalla();
             }
             else
                 mensaje = "Error, los datos no se han podido crear correctamente";
@@ -85,7 +85,7 @@
         return false;
     }
 
-    public void LimpriarPantalla()
+    public void LimpiarPantalla()
     {   
         prioridad = new Priorities();
         mensaje = string.Empty;

@@ -1,4 +1,4 @@
-﻿@page "/details"
+﻿@page "/detailsPrioridades"
 @attribute [StreamRendering]
 @inject PrioritiesServices prioritiesServices;
 
@@ -8,7 +8,7 @@
 		@*Header*@
 		<div class="card-header">
 			<h3><strong>Detalles</strong></h3>
-			<a href="/create"><em>Crear</em></a>
+			<a href="/createPrioridades"><em>Crear</em></a>
 		</div>
 		@*Body*@
 		<div class="card-body">
@@ -36,8 +36,8 @@
 								<td>@prioridades.PriorityId</td>
 								<td>@prioridades.Description</td>
 								<td>@prioridades.DaysCommitment</td>
-								<td><a href="/edit/prioridadId=@prioridades.PriorityId"><em>Editar</em></a></td>
-								<td><a href="/delete/prioridadId=@prioridades.PriorityId"><em>Eliminar</em></a></td>
+								<td><a href="/editPrioridades/prioridadId=@prioridades.PriorityId"><em>Editar</em></a></td>
+								<td><a href="/deletePrioridades/prioridadId=@prioridades.PriorityId"><em>Eliminar</em></a></td>
 							</tr>
 						}
 					</thBody>
