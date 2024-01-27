@@ -1,5 +1,111 @@
-﻿<h3>Edit</h3>
+﻿@page "/edit"
+@page "/edit/prioridadId={prioridadId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject PrioritiesServices prioritiesServices
+
+<PageTitle>Editar</PageTitle>
+<EditForm Model="prioridad" OnValidSubmit="Modificar">
+    <DataAnnotationsValidator/>
+    <div class="container">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header">
+                <h3><strong>Editar</strong></h3>
+                <a href="/details"><em>Detalles</em></a>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl4"></div>
+                @*ID*@
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="prioridadId"><strong>ID:</strong></label>
+                        <div class="input-group">
+                            <InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriorityId"></InputNumber>
+                            <button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                @*Descripcion*@
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="entradaDescripcion"><strong>Descripci&oacute;n:</strong></label>
+                        <InputText id="entradaDescripcion" class="form-control" placeholder="Escribe una descripci&oacute;n" @bind-Value="prioridad.Description"></InputText>
+                        <ValidationMessage For="@(() => prioridad.Description)" />
+                    </div>
+                </div>
+                @*Dias compromiso*@
+                <div class="mb-3">
+                    <div class="col-4">
+                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
+                        <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="prioridad.DaysCommitment"></InputNumber>
+                        <ValidationMessage For="@(() => prioridad.DaysCommitment)" />
+                    </div>
+                </div>
+                <div class="mb-3"></div>
+            </div>
+            @*Boton*@
+            <div class="card-footer d-flex justify-content-center">
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="bi bi-floppy-fill" /> Modificar
+                </button>
+            </div>
+        </div>
+    </div>
+    @*Mensaje*@
+    @mensaje
+</EditForm>
 
 @code {
+    [Parameter]
+    public int prioridadId { get; set; }
+    public Priorities prioridad { get; set; } = new Priorities();
+    public string mensaje { get; set; } = string.Empty;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+
+        if (prioridadId > 0)
+            prioridad = await prioritiesServices.BuscarId(prioridadId);
+    }
+
+    public async Task Modificar()
+    {
+        if (await Validar())
+            mensaje = "Error, ya existe una prioridad con esta descripción";
+        else
+        {
+            var modificar = await prioritiesServices.Crear(prioridad);
+            if (modificar)
+            {
+                mensaje = "Los datos se han modificado con exito";
+                await Task.Delay(2000);
+                IrAPaginaDestino();
+
+            }
+            else
+                mensaje = "Error, los datos no se han podido crear correctamente";
+        }
+    }
+
+    void IrAPaginaDestino()
+    {
+        NavigationManager.NavigateTo("/details");
+    }
+
+    public async Task<bool> Validar()
+    {
+        var validar = await prioritiesServices.BuscarDescripcion(prioridad.Description);
+        if (validar != null)
+            return true;
+
+        return false;        
+    }
+
+    public async Task Buscar()
+    {
+        
+    }
 }
