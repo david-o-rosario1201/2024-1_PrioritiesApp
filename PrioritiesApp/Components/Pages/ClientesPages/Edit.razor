@@ -1,0 +1,161 @@
+﻿@page "/editclientes"
+@page "/editclientes/clienteId={clienteId:int}"
+@inject ClientesServices clientesServices;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Editar Cliente</PageTitle>
+<EditForm Model="cliente" OnValidSubmit="Modificar">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<div class="card shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>Editar Cliente</strong></h3>
+				<a href="/detailsclientes"><em>Detalles</em></a>
+			</div>
+			@*Cuerpo*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@*ID*@
+				<div class="mb-3">
+					<div class="col-4">
+						<label class="row" for="clienteId"><strong>ID:</strong></label>
+						<div class="input-group">
+							<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
+							<button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
+						</div>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Nombre*@
+						<label class="row" for="entradaNombre"><strong>Nombre:</strong></label>
+						<InputText id="entradaNombre" class="form-control" placeholder="Escriba su nombre" @bind-Value="cliente.Nombre"></InputText>
+						<ValidationMessage For="@(() => cliente.Nombre)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Telefono*@
+						<label class="row" for="telefono"><strong>Tel&eacute;fono:</strong></label>
+						<InputText id="telefono" class="form-control" placeholder="Escriba su numero de teléfono" @bind-Value="cliente.Telefono"></InputText>
+						<ValidationMessage For="@(() => cliente.Telefono)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Celular*@
+						<label class="row" for="celular"><strong>Celular:</strong></label>
+						<InputText id="celular" class="form-control" placeholder="Escriba su numero de celular" @bind-Value="cliente.Celular"></InputText>
+						<ValidationMessage For="@(() => cliente.Celular)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*RNC*@
+						<label class="row" for="rnc"><strong>RNC:</strong></label>
+						<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC"></InputText>
+						<ValidationMessage For="@(() => cliente.RNC)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Email*@
+						<label class="row" for="email"><strong>Email:</strong></label>
+						<InputText id="email" class="form-control" placeholder="Escriba su direccion de email" @bind-Value="cliente.Email"></InputText>
+						<ValidationMessage For="@(() => cliente.Email)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Direccion*@
+						<label class="row" for="direccion"><strong>Direcci&oacute;n</strong></label>
+						<InputText id="direccion" class="form-control" placeholder="Escriba su direccion" @bind-Value="cliente.Direccion"></InputText>
+						<ValidationMessage For="@(() => cliente.Direccion)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3"></div>
+			</div>
+			<div class="card-footer d-flex justify-content-center">
+				@*Boton*@
+				<button type="submit" class="btn btn-outline-primary">
+					<i class="bi bi-floppy-fill" /> Modificar
+				</button>
+			</div>
+		</div>
+	</div>
+	@*Mensaje*@
+	@mensaje
+</EditForm>
+
+@code {
+	[Parameter]
+	public int clienteId { get; set; }
+	public Clientes cliente { get; set; } = new Clientes();
+	public string mensaje { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (clienteId > 0)
+			cliente = await clientesServices.BuscarId(clienteId);
+	}
+
+	public async Task Modificar()
+	{
+		if (await Validar())
+			return;
+		else
+		{
+			var modificar = await clientesServices.Crear(cliente);
+			if (modificar)
+			{
+				mensaje = "El cliente se ha modificado con exito";
+				await Task.Delay(2000);
+				IrAPaginaDestino();
+			}
+			else
+				mensaje = "No se pudo modificar el cliente correctamente";
+		}
+	}
+
+	void IrAPaginaDestino()
+	{
+		NavigationManager.NavigateTo("/detailsclientes");
+	}
+
+	public async Task<bool> Validar()
+	{
+		var nombre = await clientesServices.BuscarCliente(cliente.Nombre);
+		var rnc = await clientesServices.BuscarRNC(cliente.RNC);
+		if (nombre != null)
+		{
+			mensaje = "Error, ya existe un cliente con este nombre";
+			return true;
+		}
+		if (rnc != null)
+		{
+			mensaje = "Error, ya existe un cliente con este RNC";
+			return true;
+		}
+
+		return false;
+	}
+
+	public async Task Buscar()
+	{
+		if (cliente.ClienteId <= 0)
+			mensaje = "No se permiten Id menores que 1";
+		else
+		{
+			var buscar = await clientesServices.BuscarId(cliente.ClienteId);
+			if (buscar != null)
+			{
+				cliente = buscar;
+				mensaje = "Cliente encontrado con exito";
+			}
+			else
+				mensaje = $"No se ha encontrado ningun cliente con el Id {cliente.ClienteId}";
+		}
+	}
+}
