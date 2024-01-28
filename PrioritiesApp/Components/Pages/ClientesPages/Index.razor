@@ -18,33 +18,40 @@
 		@*Body*@
 		<div class="card-body">
 			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Cliente_Id</th>
-						<th>Nombre</th>
-						<th>Tel&eacute;fono</th>
-						<th>Celular</th>
-						<th>RNC</th>
-						<th>Email</th>
-						<th>Direcci&oacute;n</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var cli in cliente)
-					{
+			@if(cliente.Count == 0)
+			{
+				<p><em>Cargando...</em></p>
+			}
+			else
+			{
+				<table class="table table-bordered">
+					<thead>
 						<tr>
-							<td>@cli.ClienteId</td>
-							<td>@cli.Nombre</td>
-							<td>@cli.Telefono</td>
-							<td>@cli.Celular</td>
-							<td>@cli.RNC</td>
-							<td>@cli.Email</td>
-							<td>@cli.Direccion</td>
+							<th>Cliente_Id</th>
+							<th>Nombre</th>
+							<th>Tel&eacute;fono</th>
+							<th>Celular</th>
+							<th>RNC</th>
+							<th>Email</th>
+							<th>Direcci&oacute;n</th>
 						</tr>
-					}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						@foreach (var cli in cliente)
+						{
+							<tr>
+								<td>@cli.ClienteId</td>
+								<td>@cli.Nombre</td>
+								<td>@cli.Telefono</td>
+								<td>@cli.Celular</td>
+								<td>@cli.RNC</td>
+								<td>@cli.Email</td>
+								<td>@cli.Direccion</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
 		</div>
 		<div class="mb-3"></div>
 		@*Footer*@

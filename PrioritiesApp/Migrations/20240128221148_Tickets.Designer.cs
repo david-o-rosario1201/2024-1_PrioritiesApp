@@ -11,7 +11,7 @@ using PrioritiesApp.DAL;
 namespace PrioritiesApp.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240128180735_Tickets")]
+    [Migration("20240128221148_Tickets")]
     partial class Tickets
     {
         /// <inheritdoc />
