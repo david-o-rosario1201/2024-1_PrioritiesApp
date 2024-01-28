@@ -1,5 +1,204 @@
-﻿<h3>Edit</h3>
+﻿@page "/edittickets"
+@page "/edittickets/ticketId={ticketId:int}"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject TicketsServices ticketsServices;
+@inject ClientesServices clientesServices;
+@inject SistemasServices sistemasServices;
+@inject PrioritiesServices prioridadesServices;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Editar Ticket</PageTitle>
+<EditForm Model="ticket" OnValidSubmit="Modificar">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<div class="card shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>Editar Ticket</strong></h3>
+				<a href="/detailstickets"><em>Detalles</em></a>
+			</div>
+			@*Cuerpo*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Ticket ID*@
+						<label class="form-label" for="ticketId"><strong>Ticket Id:</strong></label>
+						<div class="input-group">
+							<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId"></InputNumber>
+							<button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
+						</div>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Fecha*@
+						<label class="form-label" for="fecha"><strong>Fecha:</strong></label>
+						<InputDate id="fecha" class="form-control" @bind-Value="ticket.Fecha"></InputDate>
+						<ValidationMessage For="@(() => ticket.Fecha)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Solicitado Por*@
+						<label class="form-label" for="solicitado"><strong>Solicitado Por:</strong></label>
+						<InputSelect id="solicitado" class="form-select" @bind-Value="ticket.SolicitadoPor" @oninput="(e) => ActualizarClienteId(e.Value.ToString())">
+							<option>------------------</option>
+							@foreach (var clientes in clientesList)
+							{
+								<option value="@clientes.ClienteId">@clientes.Nombre</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => ticket.SolicitadoPor)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Cliente ID*@
+						<label class="form-label" for="clienteid"><strong>Cliente Id:</strong></label>
+						<InputNumber id="clienteid" class="form-control" @bind-Value="ticket.ClienteId" readonly></InputNumber>
+						<ValidationMessage For="@(() => ticket.ClienteId)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Sistema ID*@
+						<label class="form-label" for="sistemaid"><strong>Sistema Id:</strong></label>
+						<InputSelect id="sistemaid" class="form-select" @bind-Value="ticket.SistemaId">
+							<option>------------------</option>
+							@foreach (var sistemas in sistemasList)
+							{
+								<option value="@sistemas.SistemaId">@sistemas.Nombre</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => ticket.SistemaId)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Descripción*@
+						<label class="form-label" for="descripcion"><strong>Descripci&oacute;n:</strong></label>
+						<InputSelect id="descripcion" class="form-select" @bind-Value="ticket.Descripcion" @oninput="(e) => ActualizarPrioridadId(e.Value.ToString())">
+							<option>------------------</option>
+							@foreach (var prioridades in prioridadesList)
+							{
+								<option value="@prioridades.PriorityId">@prioridades.Description</option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => ticket.Descripcion)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Prioridad ID*@
+						<label class="form-label" for="prioridadid"><strong>Prioridad Id:</strong></label>
+						<InputNumber id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId" readonly></InputNumber>
+						<ValidationMessage For="@(() => ticket.PriorityId)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
+						@*Asunto*@
+						<label class="form-label" for="asunto"><strong>Asunto:</strong></label>
+						<InputText id="asunto" class="form-control" @bind-Value="ticket.Asunto" placeholder="Ingrese un asunto"></InputText>
+						<ValidationMessage For="@(() => ticket.Asunto)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3"></div>
+			</div>
+			<div class="card-footer d-flex justify-content-center">
+				@*Boton*@
+				<button type="submit" class="btn btn-outline-primary">
+					<i class="bi bi-floppy-fill" /> Modificar
+				</button>
+			</div>
+		</div>
+	</div>
+	@*Mensaje*@
+	@mensaje
+</EditForm>
 
 @code {
+	[Parameter]
+	public int ticketId { get; set; }
+	public Tickets ticket { get; set; } = new Tickets();
+	public string mensaje { get; set; } = string.Empty;
+	public List<Clientes> clientesList = new List<Clientes>();
+	public List<Sistemas> sistemasList = new List<Sistemas>();
+	public List<Priorities> prioridadesList = new List<Priorities>();
 
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Clientes, bool>> criterioCliente = cliente => cliente.ClienteId > 0;
+		clientesList = await clientesServices.Listar(criterioCliente);
+
+		Expression<Func<Sistemas, bool>> criterioSistema = sistema => sistema.SistemaId > 0;
+		sistemasList = await sistemasServices.Listar(criterioSistema);
+
+		Expression<Func<Priorities, bool>> criterioPrioridad = prioridad => prioridad.PriorityId > 0;
+		prioridadesList = await prioridadesServices.Listar(criterioPrioridad);
+
+		if (ticketId > 0)
+			ticket = await ticketsServices.BuscarId(ticketId);
+	}
+
+	public async Task Modificar()
+	{
+		var crear = await ticketsServices.Crear(ticket);
+		if (crear)
+		{
+			mensaje = "El ticket se ha creado con exito";
+			await Task.Delay(2000);
+			LimpiarPantalla();
+		}
+		else
+			mensaje = "No se pudo crear el ticket correctamente";
+	}
+
+	public void LimpiarPantalla()
+	{
+		ticket = new Tickets();
+		mensaje = string.Empty;
+	}
+
+	public async Task Buscar()
+	{
+		if (ticket.TicketId <= 0)
+			mensaje = "No se aceptan Id menores que 1";
+		else
+		{
+			var buscar = await ticketsServices.BuscarId(ticket.TicketId);
+			if (buscar != null)
+			{
+				ticket = buscar;
+				mensaje = "Ticket encontrado con exito";
+			}
+			else
+				mensaje = $"No se ha encontrado ningun ticket con el Id {ticket.TicketId}";
+		}
+	}
+
+	public async Task ActualizarClienteId(string valor)
+	{
+		if (valor != null)
+		{
+			int clienteid = int.Parse(valor);
+			var id = await clientesServices.BuscarId(clienteid);
+			if (id != null)
+				ticket.ClienteId = id.ClienteId;
+		}
+	}
+
+	public async Task ActualizarPrioridadId(string valor)
+	{
+		if (valor != null)
+		{
+			int prioridadid = int.Parse(valor);
+			var id = await prioridadesServices.BuscarId(prioridadid);
+			if (id != null)
+				ticket.PriorityId = id.PriorityId;
+		}
+	}
 }
