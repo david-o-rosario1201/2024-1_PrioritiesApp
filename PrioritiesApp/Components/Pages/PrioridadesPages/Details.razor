@@ -22,11 +22,11 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th>PrioridadId</th>
 							<th>Descripci&oacute;n</th>
 							<th>D&iacute;as</th>
-							<th></th>
-							<th></th>
+							<th>Editar</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
 					<thBody>
@@ -36,13 +36,17 @@
 								<td>@prioridades.PriorityId</td>
 								<td>@prioridades.Description</td>
 								<td>@prioridades.DaysCommitment</td>
-								<td><a href="/editprioridades/prioridadId=@prioridades.PriorityId"><em>Editar</em></a></td>
-								<td><a href="/deleteprioridades/prioridadId=@prioridades.PriorityId"><em>Eliminar</em></a></td>
+								<td><a href="/editprioridades/prioridadId=@prioridades.PriorityId"><em><i class="bi bi-pencil-square" /></em></a></td>
+								<td><a href="/deleteprioridades/prioridadId=@prioridades.PriorityId"><em><i class="bi bi-trash3-fill" /></em></a></td>
 							</tr>
 						}
 					</thBody>
 				</table>
 			}
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Prioridades:</strong> @prioridadesList.Count</p>
 		</div>
 	</div>
 </div>
