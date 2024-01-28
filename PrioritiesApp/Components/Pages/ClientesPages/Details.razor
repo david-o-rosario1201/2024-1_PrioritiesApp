@@ -22,15 +22,15 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th>ClienteId</th>
 							<th>Nombre</th>
 							<th>Tel&eacute;fono</th>
 							<th>Celular</th>
 							<th>RNC</th>
 							<th>Email</th>
 							<th>Direcci&oacute;n</th>
-							<th></th>
-							<th></th>
+							<th>Editar</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -44,13 +44,17 @@
 								<td>@clientes.RNC</td>
 								<td>@clientes.Email</td>
 								<td>@clientes.Direccion</td>
-								<td><a href="/editclientes/clienteId=@clientes.ClienteId"><em>Editar</em></a></td>
-								<td><a href="/deleteclientes/clienteId=@clientes.ClienteId"><em>Eliminar</em></a></td>
+								<td><a href="/editclientes/clienteId=@clientes.ClienteId"><em><i class="bi bi-pencil-square" /></em></a></td>
+								<td><a href="/deleteclientes/clienteId=@clientes.ClienteId"><em><i class="bi bi-trash3-fill" /></em></a></td>
 							</tr>	
 						}
 					</tbody>
 				</table>
 			}
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Clientes:</strong> @clientesList.Count</p>
 		</div>
 	</div>
 </div>

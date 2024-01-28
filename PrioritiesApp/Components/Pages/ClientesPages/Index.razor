@@ -1,5 +1,5 @@
 ﻿@page "/clientes"
-@inject ClientesServices clienteBLL
+@inject ClientesServices clientesServices
 @attribute [StreamRendering]
 
 <PageTitle>Clientes</PageTitle>
@@ -21,7 +21,7 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Id</th>
+						<th>ClienteId</th>
 						<th>Nombre</th>
 						<th>Tel&eacute;fono</th>
 						<th>Celular</th>
@@ -47,6 +47,10 @@
 			</table>
 		</div>
 		<div class="mb-3"></div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Clientes:</strong> @cliente.Count</p>
+		</div>
 	</div>
 	<div class="card-footer d-flex justify-content-center"></div>
 </div>
@@ -59,6 +63,6 @@
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
 
-		cliente = await clienteBLL.Listar(criterio);
+		cliente = await clientesServices.Listar(criterio);
 	}
 }
