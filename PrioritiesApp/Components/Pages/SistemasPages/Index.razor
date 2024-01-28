@@ -1,0 +1,63 @@
+﻿@page "/sistemas"
+@attribute [StreamRendering]
+@inject SistemasServices sistemasServices;
+
+<PageTitle>Sistemas</PageTitle>
+<div class="container">
+	<did class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Sistemas</strong></h3>
+			<div class="d-flex align-items-start">
+				<div class="px-2">
+					<a href="createsistemas"><em>Crear</em></a>
+				</div>
+				<a href="detailssistemas"><em>Detalles</em></a>
+			</div>
+		</div>
+		@*Body*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@if(sistemasList.Count == 0)
+				{
+					<p><em>Cargando...</em></p>
+				}
+				else
+				{
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Nombre</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach(var sistemas in sistemasList)
+							{
+								<tr>
+									<td>@sistemas.SistemaId</td>
+									<td>@sistemas.Nombre</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+			@*Footer*@
+			<div class="card-footer">
+				<p><strong>Total de Sistemas:</strong> @sistemasList.Count</p>
+			</div>
+	</did>
+</div>
+
+@code {
+	public Sistemas sistema { get; set; } = new Sistemas();
+	public List<Sistemas> sistemasList = new List<Sistemas>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
+		sistemasList = await sistemasServices.Listar(criterio);
+	}
+}

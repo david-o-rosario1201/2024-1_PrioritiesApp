@@ -1,0 +1,101 @@
+﻿@page "/createsistemas"
+@rendermode InteractiveServer
+@inject SistemasServices sistemasServices;
+
+<PageTitle>Crear Nuevo Sistema</PageTitle>
+<EditForm Model="sistema" OnValidSubmit="Crear">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<did class="card shadow-lg">
+			@*Header*@
+			<div class="card-header">
+				<h3><strong>Crear Nuevo Sistema</strong></h3>
+				<a href="detailssistemas"><em>Detalles</em></a>
+			</div>
+			@*Body*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@*Id*@
+				<div class="mb-3">
+					<div class="col-4">
+						<label class="form-label" for="sistemaid"><strong>Id:</strong></label>
+						<div class="input-group">
+							<InputNumber id="sistemaid" class="form-control" @bind-Value="sistema.SistemaId"></InputNumber>
+							<button type="button" class="btn btn-outline-primary" @onclick="Buscar">Buscar</button>
+						</div>
+					</div>
+				</div>
+				@*Nombre*@
+				<div class="mb-3">
+					<div class="col-4">
+						<label class="form-label" for="nombre"><strong>Nombre:</strong></label>
+						<InputText id="nombre" class="form-control" @bind-Value="sistema.Nombre" placeholder="Escriba un nombre para el sistema"></InputText>
+						<ValidationMessage For="@(() => sistema.Nombre)"></ValidationMessage>
+					</div>
+				</div>
+			</div>
+			@*Boton*@
+			<div class="card-footer d-flex justify-content-center">
+				<button type="submit" class="btn btn-outline-primary">
+					<i class="bi bi-floppy-fill" />Crear
+				</button>
+			</div>
+		</did>
+	</div>
+	@mensaje
+</EditForm>
+
+@code {
+	public Sistemas sistema { get; set; } = new Sistemas();
+	public string mensaje { get; set; } = string.Empty;
+
+	public async Task Crear()
+	{
+		if (await Validar())
+			mensaje = "Error, ya existe un sistema con este nombre";
+		else
+		{
+			var crear = await sistemasServices.Crear(sistema);
+			if (crear)
+			{
+				mensaje = "Los datos se han crear con exito";
+				await Task.Delay(2000);
+				LimpiarPantalla();
+			}
+			else
+				mensaje = "Error, los datos no se han podido crear correctamente";
+		}
+	}
+
+	public async Task<bool> Validar()
+	{
+		var validar = await sistemasServices.BuscarSistema(sistema.Nombre);
+		if (validar != null)
+			return true;
+
+		return false;
+	}
+
+	public void LimpiarPantalla()
+	{
+		sistema = new Sistemas();
+		mensaje = string.Empty;
+	}
+
+	public async Task Buscar()
+	{
+		if (sistema.SistemaId <= 0)
+			mensaje = "No se permiten Id menores que 1";
+		else
+		{
+			var buscar = await sistemasServices.BuscarId(sistema.SistemaId);
+			if (buscar != null)
+			{
+				sistema = buscar;
+				mensaje = "Sistema encontrado con exito";
+			}
+			else
+				mensaje = $"No se ha encontrado ningun sistema con el Id {sistema.SistemaId}";
+		}
+	}
+}

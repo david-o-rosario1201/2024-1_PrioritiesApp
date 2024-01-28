@@ -1,0 +1,64 @@
+﻿@page "/deletesistemas"
+@page "/deletesistemas/sistemaId={sistemaId:int}"
+@rendermode InteractiveServer
+@inject SistemasServices sistemasServices;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Eliminar Sistema</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Eliminar Sistema</strong></h3>
+		</div>
+		@*Body*@
+		<div class="card-body col-5">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			<h4><strong>¿Est&aacute;s seguro de que quieres eliminar este sistema?</strong></h4>
+			@*Datos*@
+			<div class="mb-1">
+				<p class="mb-0">Id: @sistema.SistemaId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Descripci&oacute;n: @sistema.Nombre</p>
+			</div>
+		
+			<button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+			<button type="button" class="btn btn-dark" @onclick="IrAPaginaDestino">Cancelar</button>
+		</div>
+		@*Mensaje*@
+		@mensaje
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int sistemaId { get; set; }
+	public Sistemas sistema { get; set; } = new Sistemas();
+	public string mensaje { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (sistemaId > 0)
+			sistema = await sistemasServices.BuscarId(sistemaId);
+	}
+
+	public async Task Eliminar()
+	{
+		var eliminar = await sistemasServices.Eliminar(sistema);
+		if (eliminar)
+		{
+			mensaje = "El sistema ha sido eliminado con exito";
+			await Task.Delay(2000);
+			IrAPaginaDestino();
+		}
+		else
+			mensaje = "No se ha podido eliminar el sistema correctamente";
+	}
+
+	void IrAPaginaDestino()
+	{
+		NavigationManager.NavigateTo("/detailssistemas");
+	}
+}
