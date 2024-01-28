@@ -1,0 +1,77 @@
+﻿@page "/tickets"
+@inject TicketsServices ticketsServices
+@attribute [StreamRendering]
+
+<PageTitle>Tickets</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Tickets</strong></h3>
+			<div class="d-flex align-items-start">
+				<div class="px-2">
+					<a href="/createtickets"><em>Crear</em></a>
+				</div>
+				<a href="/detailstickets"><em>Detalles</em></a>
+			</div>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			@if(ticketsList.Count == 0)
+			{
+				<p><em>Cargando...</em></p>
+			}
+			else
+			{
+				<table class="table">
+					<thead>
+						<tr>
+							<th>TikectId</th>
+							<th>Fecha</th>
+							<th>Solicitado Por</th>
+							<th>ClienteId</th>
+							<th>SistemaId</th>
+							<th>Descripci&oacute;n</th>
+							<th>PrioridadId</th>
+							<th>Asunto</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var tickets in ticketsList)
+						{
+							<tr>
+								<td>@tickets.TicketId</td>
+								<td>@tickets.Fecha</td>
+								<td>@tickets.SolicitadoPor</td>
+								<td>@tickets.ClienteId</td>
+								<td>@tickets.SistemaId</td>
+								<td>@tickets.PriorityId</td>
+								<td>@tickets.Descripcion</td>
+								<td>@tickets.Asunto</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		</div>
+		<div class="mb-3"></div>
+		<div class="card-footer">
+			<p><strong>Total de Tickets:</strong> @ticketsList.Count</p>
+		</div>
+	</div>
+	<div class="card-footer d-flex justify-content-center"></div>
+</div>
+
+@code {
+	public List<Tickets> ticketsList = new List<Tickets>();
+	public Tickets ticket { get; set; } = new Tickets();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Tickets, bool>> criterio = ticket => ticket.ClienteId > 0;
+
+		ticketsList = await ticketsServices.Listar(criterio);
+	}
+}
