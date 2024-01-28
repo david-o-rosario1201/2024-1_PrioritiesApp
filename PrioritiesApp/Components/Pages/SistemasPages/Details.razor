@@ -22,10 +22,10 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th>SistemaId</th>
 							<th>Nombre</th>
-							<th></th>
-							<th></th>
+							<th>Editar</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
 					<tBody>
@@ -34,8 +34,8 @@
 							<tr>
 								<td>@sistemas.SistemaId</td>
 								<td>@sistemas.Nombre</td>
-								<td><a href="/editsistemas/sistemaId=@sistemas.SistemaId"><em>Editar</em></a></td>
-								<td><a href="/deletesistemas/sistemaId=@sistemas.SistemaId"><em>Eliminar</em></a></td>
+								<td><a href="/editsistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-pencil-square"/></em></a></td>
+								<td><a href="/deletesistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-trash3-fill"/></em></a></td>
 							</tr>
 						}
 					</tBody>
