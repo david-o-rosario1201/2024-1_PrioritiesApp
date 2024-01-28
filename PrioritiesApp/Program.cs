@@ -20,6 +20,7 @@ namespace PrioritiesApp
 			builder.Services.AddScoped<PrioritiesServices>();
 			builder.Services.AddScoped<ClientesServices>();
 			builder.Services.AddScoped<SistemasServices>();
+			builder.Services.AddScoped<TicketsServices>();
 
 			var app = builder.Build();
 
