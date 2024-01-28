@@ -19,6 +19,7 @@ namespace PrioritiesApp
 			builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
 			builder.Services.AddScoped<PrioritiesServices>();
 			builder.Services.AddScoped<ClientesServices>();
+			builder.Services.AddScoped<SistemasServices>();
 
 			var app = builder.Build();
 
