@@ -5,6 +5,7 @@
 @inject ClientesServices clientesServices;
 @inject SistemasServices sistemasServices;
 @inject PrioritiesServices prioridadesServices;
+@inject NavigationManager NavigationManager; 
 
 <PageTitle>Crear Nuevo Ticket</PageTitle>
 <EditForm Model="ticket" OnValidSubmit="Crear">
@@ -14,7 +15,6 @@
 			@*Header*@
 			<div class="card-header">
 				<h3><strong>Crear Nuevo Ticket</strong></h3>
-				<a href="/detailstickets"><em>Detalles</em></a>
 			</div>
 			@*Cuerpo*@
 			<div class="card-body">
@@ -103,8 +103,10 @@
 				<div class="mb-3"></div>
 			</div>
 			<div class="card-footer d-flex justify-content-center">
-				@*Boton*@
-				<button type="submit" class="btn btn-outline-primary">
+				<div class="px-2">
+					<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+				</div>
+				<button type="submit" class="btn btn-outline-success">
 					<i class="bi bi-floppy-fill" /> Crear
 				</button>
 			</div>
@@ -179,5 +181,10 @@
 					ticket.PriorityId = id.PriorityId;
 			}
 		}
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/tickets");
 	}
 }

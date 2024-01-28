@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject PrioritiesServices prioritiesServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Crear Nueva Prioridad</PageTitle>
 <EditForm Model="prioridad" OnValidSubmit="Crear">
@@ -10,7 +11,6 @@
         <div class="card shadow-lg">
             <div class="card-header">
                 <h3><strong>Crear Nueva Prioridad</strong></h3>
-                <a href="/detailsprioridades"><em>Detalles</em></a>
             </div>
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
@@ -41,7 +41,10 @@
             </div>
             @*Boton*@
             <div class="card-footer d-flex justify-content-center">
-                <button type="submit" class="btn btn-outline-primary">
+                <div class="px-2">
+                    <button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+                </div>
+                <button type="submit" class="btn btn-outline-success">
                     <i class="bi bi-floppy-fill" /> Crear
                 </button>
             </div>
@@ -86,5 +89,10 @@
     {   
         prioridad = new Priorities();
         mensaje = string.Empty;
+    }
+
+    void VolverAInicio()
+    {
+        NavigationManager.NavigateTo("/prioridades");
     }
 }

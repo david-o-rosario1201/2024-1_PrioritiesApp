@@ -1,6 +1,7 @@
 ﻿@page "/createsistemas"
 @rendermode InteractiveServer
 @inject SistemasServices sistemasServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Crear Nuevo Sistema</PageTitle>
 <EditForm Model="sistema" OnValidSubmit="Crear">
@@ -10,7 +11,6 @@
 			@*Header*@
 			<div class="card-header">
 				<h3><strong>Crear Nuevo Sistema</strong></h3>
-				<a href="detailssistemas"><em>Detalles</em></a>
 			</div>
 			@*Body*@
 			<div class="card-body">
@@ -33,8 +33,11 @@
 			</div>
 			@*Boton*@
 			<div class="card-footer d-flex justify-content-center">
-				<button type="submit" class="btn btn-outline-primary">
-					<i class="bi bi-floppy-fill" />Crear
+				<div class="px-2">
+					<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+				</div>
+				<button type="submit" class="btn btn-outline-success">
+					<i class="bi bi-floppy-fill" /> Crear
 				</button>
 			</div>
 		</did>
@@ -77,5 +80,10 @@
 	{
 		sistema = new Sistemas();
 		mensaje = string.Empty;
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/sistemas");
 	}
 }

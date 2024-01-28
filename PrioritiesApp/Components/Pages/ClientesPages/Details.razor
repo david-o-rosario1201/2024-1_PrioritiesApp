@@ -1,6 +1,8 @@
 ﻿@page "/detailsclientes"
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 @inject ClientesServices clientesServices
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Detalles de Clientes</PageTitle>
 <div class="container">
@@ -8,7 +10,7 @@
 		@*Header*@
 		<div class="card-header">
 			<h3><strong>Detalles de Clientes</strong></h3>
-			<a href="/createclientes"><em>Crear</em></a>
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
 		</div>
 		@*Body*@
 		<div class="card-body">
@@ -68,5 +70,10 @@
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
 		clientesList = await clientesServices.Listar(criterio);
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/clientes");
 	}
 }

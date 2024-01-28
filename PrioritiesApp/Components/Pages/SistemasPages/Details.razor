@@ -1,6 +1,7 @@
 ﻿@page "/detailssistemas"
 @rendermode InteractiveServer
 @inject SistemasServices sistemasServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Detalles de Sistemas</PageTitle>
 <div class="container">
@@ -8,7 +9,7 @@
 		@*Header*@
 		<div class="card-header">
 			<h3><strong>Detalles de Sistemas</strong></h3>
-			<a href="/createsistemas"><em>Crear</em></a>
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
 		</div>
 		@*Body*@
 		<div class="card-body">
@@ -58,5 +59,10 @@
 		await Task.Delay(500);
 		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
 		sistemasList = await sistemasServices.Listar(criterio);
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/sistemas");
 	}
 }

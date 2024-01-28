@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject ClientesServices clientesServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Crear Nuevo Cliente</PageTitle>
 <EditForm Model="cliente" OnValidSubmit="Crear">
@@ -11,7 +12,6 @@
 			@*Header*@
 			<div class="card-header">
 				<h3><strong>Crear Nuevo Cliente</strong></h3>
-				<a href="/detailsclientes"><em>Detalles</em></a>
 			</div>
 			@*Cuerpo*@
 			<div class="card-body">
@@ -75,7 +75,10 @@
 			</div>
 			<div class="card-footer d-flex justify-content-center">
 				@*Boton*@
-				<button type="submit" class="btn btn-outline-primary">
+				<div class="px-2">
+					<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+				</div>
+				<button type="submit" class="btn btn-outline-success">
 					<i class="bi bi-floppy-fill" /> Crear
 				</button>
 			</div>
@@ -130,5 +133,10 @@
 		}
 
 		return false;
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/clientes");
 	}
 }

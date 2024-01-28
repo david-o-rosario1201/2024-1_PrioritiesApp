@@ -1,6 +1,8 @@
 ﻿@page "/sistemas"
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 @inject SistemasServices sistemasServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Sistemas</PageTitle>
 <div class="container">
@@ -10,9 +12,9 @@
 			<h3><strong>Sistemas</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<a href="/createsistemas"><em>Crear</em></a>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
 				</div>
-				<a href="detailssistemas"><em>Detalles</em></a>
+				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
@@ -59,5 +61,15 @@
 		await Task.Delay(500);
 		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
 		sistemasList = await sistemasServices.Listar(criterio);
+	}
+
+	void IrACrear()
+	{
+		NavigationManager.NavigateTo("/createsistemas");
+	}
+
+	void IrADetalles()
+	{
+		NavigationManager.NavigateTo("/detailssistemas");
 	}
 }

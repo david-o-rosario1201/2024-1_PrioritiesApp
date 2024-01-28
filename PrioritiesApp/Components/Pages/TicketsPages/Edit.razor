@@ -16,7 +16,6 @@
 			@*Header*@
 			<div class="card-header">
 				<h3><strong>Editar Ticket</strong></h3>
-				<a href="/detailstickets"><em>Detalles</em></a>
 			</div>
 			@*Cuerpo*@
 			<div class="card-body">
@@ -107,10 +106,13 @@
 				</div>
 				<div class="mb-3"></div>
 			</div>
+			@*Boton*@
 			<div class="card-footer d-flex justify-content-center">
-				@*Boton*@
-				<button type="submit" class="btn btn-outline-primary">
-					<i class="bi bi-floppy-fill" /> Modificar
+				<div class="px-2">
+					<button type="button" class="btn btn-outline-primary" @onclick="IrAPaginaDestino">Volver</button>
+				</div>
+				<button type="submit" class="btn btn-outline-success">
+					<i class="bi bi-floppy-fill" /> Crear
 				</button>
 			</div>
 		</div>
@@ -151,16 +153,15 @@
 		{
 			mensaje = "El ticket se ha creado con exito";
 			await Task.Delay(2000);
-			LimpiarPantalla();
+			IrAPaginaDestino();
 		}
 		else
 			mensaje = "No se pudo crear el ticket correctamente";
 	}
 
-	public void LimpiarPantalla()
+	void IrAPaginaDestino()
 	{
-		ticket = new Tickets();
-		mensaje = string.Empty;
+		NavigationManager.NavigateTo("/detailstickets");
 	}
 
 	public async Task Buscar()

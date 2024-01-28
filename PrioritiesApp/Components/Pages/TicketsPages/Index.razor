@@ -1,6 +1,8 @@
 ﻿@page "/tickets"
 @inject TicketsServices ticketsServices
 @attribute [StreamRendering]
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Tickets</PageTitle>
 <div class="container">
@@ -10,9 +12,9 @@
 			<h3><strong>Tickets</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<a href="/createtickets"><em>Crear</em></a>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
 				</div>
-				<a href="/detailstickets"><em>Detalles</em></a>
+				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
@@ -73,5 +75,15 @@
 		Expression<Func<Tickets, bool>> criterio = ticket => ticket.ClienteId > 0;
 
 		ticketsList = await ticketsServices.Listar(criterio);
+	}
+
+	void IrACrear()
+	{
+		NavigationManager.NavigateTo("/createtickets");
+	}
+
+	void IrADetalles()
+	{
+		NavigationManager.NavigateTo("/detailstickets");
 	}
 }
