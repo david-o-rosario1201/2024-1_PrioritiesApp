@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Sockets;
 using System.Linq;
 using System.Linq.Expressions;
+using PrioritiesApp.Migrations;
 
 namespace PrioritiesApp.Services;
 
@@ -32,9 +33,11 @@ public class PrioritiesServices
 
     private async Task<bool> Modificar(Priorities priority)
     {
-        _context.Update(priority);
-        return await _context.SaveChangesAsync() > 0;
-    }
+		_context.Update(priority);
+		var modifico = await _context.SaveChangesAsync() > 0;
+		_context.Entry(priority).State = EntityState.Detached;
+		return modifico;
+	}
 
     private async Task<bool> Existe(int priorityId)
     {
