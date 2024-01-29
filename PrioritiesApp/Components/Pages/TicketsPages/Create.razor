@@ -22,7 +22,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Ticket ID*@
-						<label class="form-label" for="ticketId"><strong>Ticket Id:</strong></label>
+						<label class="form-label" for="ticketId"><strong>Ticket_Id:</strong></label>
 						<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId"></InputNumber>
 					</div>
 				</div>
@@ -87,7 +87,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Prioridad ID*@
-						<label class="form-label" for="prioridadid"><strong>Prioridad Id:</strong></label>
+						<label class="form-label" for="prioridadid"><strong>Prioridad_Id:</strong></label>
 						<InputNumber id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId" readonly></InputNumber>
 						<ValidationMessage For="@(() => ticket.PriorityId)"></ValidationMessage>
 					</div>

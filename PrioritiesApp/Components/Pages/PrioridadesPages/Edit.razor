@@ -19,7 +19,7 @@
                 @*ID*@
                 <div class="mb-3">
                     <div class="col-4">
-                        <label class="form-label" for="prioridadId"><strong>ID:</strong></label>
+                        <label class="form-label" for="prioridadId"><strong>Prioridad_Id:</strong></label>
                         <div class="input-group">
                             <InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriorityId"></InputNumber>
                             <button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
@@ -37,7 +37,7 @@
                 @*Dias compromiso*@
                 <div class="mb-3">
                     <div class="col-4">
-                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
+                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias_compromiso:</strong></label>
                         <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="prioridad.DaysCommitment"></InputNumber>
                         <ValidationMessage For="@(() => prioridad.DaysCommitment)" />
                     </div>

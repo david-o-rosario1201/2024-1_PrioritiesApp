@@ -19,7 +19,7 @@
 				@*ID*@
 				<div class="mb-3">
 					<div class="col-4">
-						<label class="row" for="clienteId"><strong>ID:</strong></label>
+						<label class="row" for="clienteId"><strong>Cliente_Id:</strong></label>
 						<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
 					</div>
 				</div>
@@ -35,7 +35,7 @@
 					<div class="col-4">
 						@*Telefono*@
 						<label class="row" for="telefono"><strong>Tel&eacute;fono:</strong></label>
-						<InputText id="telefono" class="form-control" placeholder="Escriba su numero de teléfono" @bind-Value="cliente.Telefono"></InputText>
+						<InputText id="telefono" class="form-control" placeholder="Escriba su número de teléfono" @bind-Value="cliente.Telefono"></InputText>
 						<ValidationMessage For="@(() => cliente.Telefono)"></ValidationMessage>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 					<div class="col-4">
 						@*Celular*@
 						<label class="row" for="celular"><strong>Celular:</strong></label>
-						<InputText id="celular" class="form-control" placeholder="Escriba su numero de celular" @bind-Value="cliente.Celular"></InputText>
+						<InputText id="celular" class="form-control" placeholder="Escriba su número de celular" @bind-Value="cliente.Celular"></InputText>
 						<ValidationMessage For="@(() => cliente.Celular)"></ValidationMessage>
 					</div>
 				</div>
@@ -51,7 +51,7 @@
 					<div class="col-4">
 						@*RNC*@
 						<label class="row" for="rnc"><strong>RNC:</strong></label>
-						<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC"></InputText>
+						<InputText id="rnc" class="form-control" placeholder="Escriba su número de RNC" @bind-Value="cliente.RNC"></InputText>
 						<ValidationMessage For="@(() => cliente.RNC)"></ValidationMessage>
 					</div>
 				</div>
@@ -59,7 +59,7 @@
 					<div class="col-4">
 						@*Email*@
 						<label class="row" for="email"><strong>Email:</strong></label>
-						<InputText id="email" class="form-control" placeholder="Escriba su direccion de email" @bind-Value="cliente.Email"></InputText>
+						<InputText id="email" class="form-control" placeholder="Escriba su dirección de email" @bind-Value="cliente.Email"></InputText>
 						<ValidationMessage For="@(() => cliente.Email)"></ValidationMessage>
 					</div>
 				</div>
@@ -67,7 +67,7 @@
 					<div class="col-4">
 						@*Direccion*@
 						<label class="row" for="direccion"><strong>Direcci&oacute;n</strong></label>
-						<InputText id="direccion" class="form-control" placeholder="Escriba su direccion" @bind-Value="cliente.Direccion"></InputText>
+						<InputText id="direccion" class="form-control" placeholder="Escriba su dirección" @bind-Value="cliente.Direccion"></InputText>
 						<ValidationMessage For="@(() => cliente.Direccion)"></ValidationMessage>
 					</div>
 				</div>
