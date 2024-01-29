@@ -161,11 +161,7 @@
 		{
 			var buscar = await clientesServices.BuscarCliente(valor);//Busco el cliente
 			if (buscar != null)
-			{
-				var id = await clientesServices.BuscarId(buscar.ClienteId);//Busco el Id
-				if (id != null)
-					ticket.ClienteId = id.ClienteId;
-			}
+				ticket.ClienteId = buscar.ClienteId;
 		}
 	}
 
@@ -175,11 +171,7 @@
 		{
 			var buscar = await prioridadesServices.BuscarDescripcion(valor);//Busco la descripcion
 			if (buscar != null)
-			{
-				var id = await prioridadesServices.BuscarId(buscar.PriorityId);//Busco el Id
-				if (id != null)
-					ticket.PriorityId = id.PriorityId;
-			}
+				ticket.PriorityId = buscar.PriorityId;
 		}
 	}
 
