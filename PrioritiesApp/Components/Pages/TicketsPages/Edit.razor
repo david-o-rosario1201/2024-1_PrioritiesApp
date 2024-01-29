@@ -26,7 +26,6 @@
 						<label class="form-label" for="ticketId"><strong>Ticket_Id:</strong></label>
 						<div class="input-group">
 							<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId"></InputNumber>
-							<button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
 						</div>
 					</div>
 				</div>
@@ -162,23 +161,6 @@
 	void IrAPaginaDestino()
 	{
 		NavigationManager.NavigateTo("/detailstickets");
-	}
-
-	public async Task Buscar()
-	{
-		if (ticket.TicketId <= 0)
-			mensaje = "No se aceptan Id menores que 1";
-		else
-		{
-			var buscar = await ticketsServices.BuscarId(ticket.TicketId);
-			if (buscar != null)
-			{
-				ticket = buscar;
-				mensaje = "Ticket encontrado con exito";
-			}
-			else
-				mensaje = $"No se ha encontrado ningun ticket con el Id {ticket.TicketId}";
-		}
 	}
 
 	public async Task ActualizarClienteId(string valor)

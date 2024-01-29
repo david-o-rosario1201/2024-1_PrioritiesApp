@@ -22,7 +22,6 @@
 						<label class="form-label" for="clienteId"><strong>Cliente_Id:</strong></label>
 						<div class="input-group">
 							<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
-							<button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
 						</div>
 					</div>
 				</div>
@@ -143,22 +142,5 @@
 		}
 
 		return false;
-	}
-
-	public async Task Buscar()
-	{
-		if (cliente.ClienteId <= 0)
-			mensaje = "No se permiten Id menores que 1";
-		else
-		{
-			var buscar = await clientesServices.BuscarId(cliente.ClienteId);
-			if (buscar != null)
-			{
-				cliente = buscar;
-				mensaje = "Cliente encontrado con exito";
-			}
-			else
-				mensaje = $"No se ha encontrado ningun cliente con el Id {cliente.ClienteId}";
-		}
 	}
 }

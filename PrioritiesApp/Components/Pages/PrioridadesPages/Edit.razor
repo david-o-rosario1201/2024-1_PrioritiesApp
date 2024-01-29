@@ -22,7 +22,6 @@
                         <label class="form-label" for="prioridadId"><strong>Prioridad_Id:</strong></label>
                         <div class="input-group">
                             <InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriorityId"></InputNumber>
-                            <button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -104,22 +103,5 @@
             return true;
 
         return false;        
-    }
-
-    public async Task Buscar()
-    {
-        if (prioridad.PriorityId <= 0)
-            mensaje = "No se permiten Id menores que 1";
-        else
-        {
-            var buscar = await prioritiesServices.BuscarId(prioridad.PriorityId);
-            if (buscar != null)
-            {
-                prioridad = buscar;
-                mensaje = "Prioridad encontrada con exito";
-            }
-            else
-                mensaje = $"No se ha encontrado ninguna prioridad con el Id {prioridad.PriorityId}";
-        }
     }
 }

@@ -22,7 +22,6 @@
                         <label class="form-label" for="sistemaid"><strong>Sistema_Id:</strong></label>
                         <div class="input-group">
                             <InputNumber id="sistemaid" class="form-control" @bind-Value="sistema.SistemaId"></InputNumber>
-                            <button type="button" class="btn btn-outline-primary" @onclick="Buscar">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -93,22 +92,5 @@
             return true;
 
         return false;
-    }
-
-    public async Task Buscar()
-    {
-        if (sistema.SistemaId <= 0)
-            mensaje = "No se permiten Id menores que 1";
-        else
-        {
-            var buscar = await sistemasServices.BuscarId(sistema.SistemaId);
-            if (buscar != null)
-            {
-                sistema = buscar;
-                mensaje = "Sistema encontrado con exito";
-            }
-            else
-                mensaje = $"No se ha encontrado ningun sistema con el Id {sistema.SistemaId}";
-        }
     }
 }
