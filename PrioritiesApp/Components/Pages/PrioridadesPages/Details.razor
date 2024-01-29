@@ -1,6 +1,8 @@
 ﻿@page "/detailsprioridades"
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 @inject PrioritiesServices prioritiesServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Detalles de Prioridades</PageTitle>
 <div class="cotainer">
@@ -8,7 +10,7 @@
 		@*Header*@
 		<div class="card-header">
 			<h3><strong>Detalles de Prioridades</strong></h3>
-			<a href="/createprioridades"><em>Crear</em></a>
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
 		</div>
 		@*Body*@
 		<div class="card-body">
@@ -19,30 +21,34 @@
 			}
 			else
 			{
-				<table class="table">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th>Prioridad_Id</th>
 							<th>Descripci&oacute;n</th>
-							<th>D&iacute;as</th>
-							<th></th>
-							<th></th>
+							<th>D&iacute;as_Compromiso</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
-					<thBody>
+					<tBody>
 						@foreach(var prioridades in prioridadesList)
 						{
 							<tr>
 								<td>@prioridades.PriorityId</td>
 								<td>@prioridades.Description</td>
 								<td>@prioridades.DaysCommitment</td>
-								<td><a href="/editPrioridades/prioridadId=@prioridades.PriorityId"><em>Editar</em></a></td>
-								<td><a href="/deletePrioridades/prioridadId=@prioridades.PriorityId"><em>Eliminar</em></a></td>
+								<td><a href="/editprioridades/prioridadId=@prioridades.PriorityId"><em><i class="bi bi-pencil-square" /></em></a></td>
+								<td><a href="/deleteprioridades/prioridadId=@prioridades.PriorityId"><em><i class="bi bi-trash3-fill" /></em></a></td>
 							</tr>
 						}
-					</thBody>
+					</tBody>
 				</table>
 			}
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Prioridades:</strong> @prioridadesList.Count</p>
 		</div>
 	</div>
 </div>
@@ -56,5 +62,10 @@
 		await Task.Delay(500);
 		Expression<Func<Priorities, bool>> criterio = prioridad => prioridad.PriorityId > 0;
 		prioridadesList = await prioritiesServices.Listar(criterio);
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/prioridades");
 	}
 }

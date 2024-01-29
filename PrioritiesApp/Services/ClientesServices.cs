@@ -31,7 +31,9 @@ public class ClientesServices
 	public async Task<bool> Modificar(Clientes cliente)
 	{
 		_context.Update(cliente);
-		return await _context.SaveChangesAsync() > 0;
+		var modifico = await _context.SaveChangesAsync() > 0;
+		_context.Entry(cliente).State = EntityState.Detached;
+		return modifico;
 	}
 
 	private async Task<bool> Existe(int clienteId)

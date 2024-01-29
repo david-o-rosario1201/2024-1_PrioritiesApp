@@ -1,6 +1,8 @@
 ﻿@page "/prioridades"
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 @inject PrioritiesServices prioritiesServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Prioridades</PageTitle>
 
@@ -11,9 +13,9 @@
 			<h3><strong>Prioridades</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<a href="/createprioridades"><em>Crear</em></a>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
 				</div>
-				<a href="/detailsprioridades"><em>Detalles</em></a>
+				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
@@ -25,12 +27,12 @@
 			}
 			else
 			{
-				<table class="table">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th>Prioridad_Id</th>
 							<th>Descripci&oacute;n</th>
-							<th>D&iacute;as Compromiso</th>
+							<th>D&iacute;as_Compromiso</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,6 +48,10 @@
 				</table>
 			}
 		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Prioridades:</strong> @prioridadesList.Count</p>
+		</div>
 	</div>
 </div>
 
@@ -58,5 +64,15 @@
 		await Task.Delay(500);
 		Expression<Func<Priorities, bool>> criterio = prioridad => prioridad.PriorityId > 0;
 		prioridadesList = await prioritiesServices.Listar(criterio);
+	}
+
+	void IrACrear()
+	{
+		NavigationManager.NavigateTo("/createprioridades");
+	}
+
+	void IrADetalles()
+	{
+		NavigationManager.NavigateTo("/detailsprioridades");
 	}
 }

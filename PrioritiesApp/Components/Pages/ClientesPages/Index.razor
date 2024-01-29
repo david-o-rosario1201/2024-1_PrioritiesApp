@@ -1,6 +1,8 @@
 ﻿@page "/clientes"
-@inject ClientesServices clienteBLL
+@inject ClientesServices clientesServices;
+@rendermode InteractiveServer
 @attribute [StreamRendering]
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Clientes</PageTitle>
 <div class="container">
@@ -10,43 +12,54 @@
 			<h3><strong>Clientes</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<a href="/createclientes"><em>Crear</em></a>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
 				</div>
-				<a href="/detailsClientes"><em>Detalles</em></a>
+				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
 		<div class="card-body">
 			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Nombre</th>
-						<th>Tel&eacute;fono</th>
-						<th>Celular</th>
-						<th>RNC</th>
-						<th>Email</th>
-						<th>Direcci&oacute;n</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var cli in cliente)
-					{
+			@if(cliente.Count == 0)
+			{
+				<p><em>Cargando...</em></p>
+			}
+			else
+			{
+				<table class="table table-bordered">
+					<thead>
 						<tr>
-							<td>@cli.ClienteId</td>
-							<td>@cli.Nombre</td>
-							<td>@cli.Telefono</td>
-							<td>@cli.Celular</td>
-							<td>@cli.RNC</td>
-							<td>@cli.Email</td>
-							<td>@cli.Direccion</td>
+							<th>Cliente_Id</th>
+							<th>Nombre</th>
+							<th>Tel&eacute;fono</th>
+							<th>Celular</th>
+							<th>RNC</th>
+							<th>Email</th>
+							<th>Direcci&oacute;n</th>
 						</tr>
-					}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						@foreach (var cli in cliente)
+						{
+							<tr>
+								<td>@cli.ClienteId</td>
+								<td>@cli.Nombre</td>
+								<td>@cli.Telefono</td>
+								<td>@cli.Celular</td>
+								<td>@cli.RNC</td>
+								<td>@cli.Email</td>
+								<td>@cli.Direccion</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
 		</div>
 		<div class="mb-3"></div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Clientes:</strong> @cliente.Count</p>
+		</div>
 	</div>
 	<div class="card-footer d-flex justify-content-center"></div>
 </div>
@@ -59,6 +72,16 @@
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
 
-		cliente = await clienteBLL.Listar(criterio);
+		cliente = await clientesServices.Listar(criterio);
+	}
+
+	void IrACrear()
+	{
+		NavigationManager.NavigateTo("/createclientes");
+	}
+
+	void IrADetalles()
+	{
+		NavigationManager.NavigateTo("/detailsclientes");
 	}
 }

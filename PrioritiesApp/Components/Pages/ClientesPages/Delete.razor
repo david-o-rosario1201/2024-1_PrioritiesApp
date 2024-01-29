@@ -13,10 +13,10 @@
 		</div>
 		<div class="card-body col-5">
 			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			<h4><strong>¿Estas seguro de que quieres eliminar a este cliente?</strong></h4>
+			<h4><strong>¿Est&aacute;s seguro de que quieres eliminar a este cliente?</strong></h4>
 			@*Datos*@
 			<div class="mb-1">
-				<p class="mb-0">Id: @cliente.ClienteId</p>
+				<p class="mb-0">Cliente_Id: @cliente.ClienteId</p>
 			</div>
 			<div class="mb-1">
 				<p class="mb-0">Nombre: @cliente.Nombre</p>
@@ -36,8 +36,8 @@
 			<div class="mb-1">
 				<p class="mb-0">Direcci&oacute;n: @cliente.Direccion</p>
 			</div>
-			<button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-			<button type="button" class="btn btn-dark" @onclick="IrAPaginaDestino">Cancelar</button>
+			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+			<button type="button" class="btn btn-outline-dark" @onclick="IrAPaginaDestino">Cancelar</button>
 		</div>
 		@*Mensaje*@
 		@mensaje

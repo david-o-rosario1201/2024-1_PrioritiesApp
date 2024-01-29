@@ -1,17 +1,17 @@
 ﻿@page "/editclientes"
 @page "/editclientes/clienteId={clienteId:int}"
+@rendermode InteractiveServer
 @inject ClientesServices clientesServices;
 @inject NavigationManager NavigationManager;
 
 <PageTitle>Editar Cliente</PageTitle>
-<EditForm Model="cliente" OnValidSubmit="Modificar">
+<EditForm Model="cliente" OnValidSubmit="Modificar" FormName="formularioclientes">
 	<DataAnnotationsValidator />
 	<div class="container">
 		<div class="card shadow-lg">
 			@*Header*@
 			<div class="card-header">
 				<h3><strong>Editar Cliente</strong></h3>
-				<a href="/detailsclientes"><em>Detalles</em></a>
 			</div>
 			@*Cuerpo*@
 			<div class="card-body">
@@ -19,17 +19,16 @@
 				@*ID*@
 				<div class="mb-3">
 					<div class="col-4">
-						<label class="row" for="clienteId"><strong>ID:</strong></label>
+						<label class="form-label" for="clienteId"><strong>Cliente_Id:</strong></label>
 						<div class="input-group">
 							<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
-							<button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
 						</div>
 					</div>
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
 						@*Nombre*@
-						<label class="row" for="entradaNombre"><strong>Nombre:</strong></label>
+						<label class="form-label" for="entradaNombre"><strong>Nombre:</strong></label>
 						<InputText id="entradaNombre" class="form-control" placeholder="Escriba su nombre" @bind-Value="cliente.Nombre"></InputText>
 						<ValidationMessage For="@(() => cliente.Nombre)"></ValidationMessage>
 					</div>
@@ -37,7 +36,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Telefono*@
-						<label class="row" for="telefono"><strong>Tel&eacute;fono:</strong></label>
+						<label class="form-label" for="telefono"><strong>Tel&eacute;fono:</strong></label>
 						<InputText id="telefono" class="form-control" placeholder="Escriba su numero de teléfono" @bind-Value="cliente.Telefono"></InputText>
 						<ValidationMessage For="@(() => cliente.Telefono)"></ValidationMessage>
 					</div>
@@ -45,7 +44,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Celular*@
-						<label class="row" for="celular"><strong>Celular:</strong></label>
+						<label class="form-label" for="celular"><strong>Celular:</strong></label>
 						<InputText id="celular" class="form-control" placeholder="Escriba su numero de celular" @bind-Value="cliente.Celular"></InputText>
 						<ValidationMessage For="@(() => cliente.Celular)"></ValidationMessage>
 					</div>
@@ -53,7 +52,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*RNC*@
-						<label class="row" for="rnc"><strong>RNC:</strong></label>
+						<label class="form-label" for="rnc"><strong>RNC:</strong></label>
 						<InputText id="rnc" class="form-control" placeholder="Escriba su numero de RNC" @bind-Value="cliente.RNC"></InputText>
 						<ValidationMessage For="@(() => cliente.RNC)"></ValidationMessage>
 					</div>
@@ -61,7 +60,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Email*@
-						<label class="row" for="email"><strong>Email:</strong></label>
+						<label class="form-label" for="email"><strong>Email:</strong></label>
 						<InputText id="email" class="form-control" placeholder="Escriba su direccion de email" @bind-Value="cliente.Email"></InputText>
 						<ValidationMessage For="@(() => cliente.Email)"></ValidationMessage>
 					</div>
@@ -69,7 +68,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Direccion*@
-						<label class="row" for="direccion"><strong>Direcci&oacute;n</strong></label>
+						<label class="form-label" for="direccion"><strong>Direcci&oacute;n</strong></label>
 						<InputText id="direccion" class="form-control" placeholder="Escriba su direccion" @bind-Value="cliente.Direccion"></InputText>
 						<ValidationMessage For="@(() => cliente.Direccion)"></ValidationMessage>
 					</div>
@@ -78,7 +77,10 @@
 			</div>
 			<div class="card-footer d-flex justify-content-center">
 				@*Boton*@
-				<button type="submit" class="btn btn-outline-primary">
+				<div class="px-2">
+					<button type="button" class="btn btn-outline-primary" @onclick="IrAPaginaDestino">Volver</button>
+				</div>
+				<button type="submit" class="btn btn-outline-success">
 					<i class="bi bi-floppy-fill" /> Modificar
 				</button>
 			</div>
@@ -140,22 +142,5 @@
 		}
 
 		return false;
-	}
-
-	public async Task Buscar()
-	{
-		if (cliente.ClienteId <= 0)
-			mensaje = "No se permiten Id menores que 1";
-		else
-		{
-			var buscar = await clientesServices.BuscarId(cliente.ClienteId);
-			if (buscar != null)
-			{
-				cliente = buscar;
-				mensaje = "Cliente encontrado con exito";
-			}
-			else
-				mensaje = $"No se ha encontrado ningun cliente con el Id {cliente.ClienteId}";
-		}
 	}
 }

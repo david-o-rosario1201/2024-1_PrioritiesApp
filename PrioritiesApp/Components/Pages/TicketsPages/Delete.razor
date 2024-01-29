@@ -1,0 +1,80 @@
+﻿@page "/deletetickets"
+@page "/deletetickets/ticketId={ticketId:int}"
+@rendermode InteractiveServer
+@inject TicketsServices ticketsServices;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Eliminar Ticket</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Eliminar Ticket</strong></h3>
+		</div>
+		<div class="card-body col-5">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			<h4><strong>¿Est&aacute;s seguro de que quieres eliminar este ticket?</strong></h4>
+			@*Datos*@
+			<div class="mb-1">
+				<p class="mb-0">Ticket_Id: @ticket.TicketId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Fecha: @ticket.Fecha</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Solicitado_Por: @ticket.SolicitadoPor</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Cliente_Id: @ticket.ClienteId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Sistema_Id: @ticket.SistemaId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Descripci&oacute;n: @ticket.Descripcion</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Prioridad_Id: @ticket.PriorityId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Asunto: @ticket.Asunto</p>
+			</div>
+			<button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+			<button type="button" class="btn btn-outline-dark" @onclick="IrAPaginaDestino">Cancelar</button>
+		</div>
+		@*Mensaje*@
+		@mensaje
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int ticketId { get; set; }
+	public Tickets ticket { get; set; } = new Tickets();
+	public string mensaje { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		if (ticketId > 0)
+			ticket = await ticketsServices.BuscarId(ticketId);
+	}
+
+	public async Task Eliminar()
+	{
+		var eliminar = await ticketsServices.Eliminar(ticket);
+		if (eliminar)
+		{
+			mensaje = "El ticket se ha eliminado con exito";
+			await Task.Delay(2000);
+			IrAPaginaDestino();
+		}
+		else
+			mensaje = "No se ha podido eliminar el ticket correctamente";
+	}
+
+	void IrAPaginaDestino()
+	{
+		NavigationManager.NavigateTo("/detailstickets");
+	}
+}

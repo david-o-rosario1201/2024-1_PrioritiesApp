@@ -1,0 +1,75 @@
+﻿@page "/sistemas"
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+@inject SistemasServices sistemasServices;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Sistemas</PageTitle>
+<div class="container">
+	<did class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Sistemas</strong></h3>
+			<div class="d-flex align-items-start">
+				<div class="px-2">
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
+				</div>
+				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
+			</div>
+		</div>
+		@*Body*@
+			<div class="card-body">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+				@if(sistemasList.Count == 0)
+				{
+					<p><em>Cargando...</em></p>
+				}
+				else
+				{
+				<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Sistema_Id</th>
+								<th>Nombre</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach(var sistemas in sistemasList)
+							{
+								<tr>
+									<td>@sistemas.SistemaId</td>
+									<td>@sistemas.Nombre</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+			@*Footer*@
+			<div class="card-footer">
+				<p><strong>Total de Sistemas:</strong> @sistemasList.Count</p>
+			</div>
+	</did>
+</div>
+
+@code {
+	public Sistemas sistema { get; set; } = new Sistemas();
+	public List<Sistemas> sistemasList = new List<Sistemas>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
+		sistemasList = await sistemasServices.Listar(criterio);
+	}
+
+	void IrACrear()
+	{
+		NavigationManager.NavigateTo("/createsistemas");
+	}
+
+	void IrADetalles()
+	{
+		NavigationManager.NavigateTo("/detailssistemas");
+	}
+}

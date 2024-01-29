@@ -1,0 +1,68 @@
+﻿@page "/detailssistemas"
+@rendermode InteractiveServer
+@inject SistemasServices sistemasServices;
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Detalles de Sistemas</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header">
+			<h3><strong>Detalles de Sistemas</strong></h3>
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
+			@if (sistemasList.Count == 0)
+			{
+				<p><em>Cargando..</em></p>
+			}
+			else
+			{
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Sistema_Id</th>
+							<th>Nombre</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tBody>
+						@foreach (var sistemas in sistemasList)
+						{
+							<tr>
+								<td>@sistemas.SistemaId</td>
+								<td>@sistemas.Nombre</td>
+								<td><a href="/editsistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-pencil-square"/></em></a></td>
+								<td><a href="/deletesistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-trash3-fill"/></em></a></td>
+							</tr>
+						}
+					</tBody>
+				</table>
+			}
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Total de Sistemas:</strong> @sistemasList.Count</p>
+		</div>
+	</div>
+</div>
+
+@code {
+	public Sistemas sistema { get; set; } = new Sistemas();
+	public List<Sistemas> sistemasList = new List<Sistemas>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await Task.Delay(500);
+		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
+		sistemasList = await sistemasServices.Listar(criterio);
+	}
+
+	void VolverAInicio()
+	{
+		NavigationManager.NavigateTo("/sistemas");
+	}
+}

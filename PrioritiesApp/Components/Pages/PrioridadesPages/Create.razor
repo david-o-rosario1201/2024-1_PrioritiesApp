@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject PrioritiesServices prioritiesServices;
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Crear Nueva Prioridad</PageTitle>
 <EditForm Model="prioridad" OnValidSubmit="Crear">
@@ -10,18 +11,14 @@
         <div class="card shadow-lg">
             <div class="card-header">
                 <h3><strong>Crear Nueva Prioridad</strong></h3>
-                <a href="/detailsprioridades"><em>Detalles</em></a>
             </div>
             <div class="card-body">
                 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
                 @*ID*@
                 <div class="mb-3">
                     <div class="col-4">
-                        <label class="form-label" for="prioridadId"><strong>ID:</strong></label>
-                        <div class="input-group">
-                            <InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriorityId"></InputNumber>
-                            <button @onclick="Buscar" class="btn btn-outline-primary" type="button"><i class="bi bi-search" />Buscar</button>
-                        </div>
+                        <label class="form-label" for="prioridadId"><strong>Proridad_Id:</strong></label>
+                        <InputNumber id="prioridadId" class="form-control" @bind-Value="prioridad.PriorityId"></InputNumber>
                     </div>
                 </div>
                 @*Descripcion*@
@@ -35,7 +32,7 @@
                 @*Dias compromiso*@
                 <div class="mb-3">
                     <div class="col-4">
-                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias compromiso:</strong></label>
+                        <label class="form-label" for="entradaDiasCompromiso"><strong>Dias_compromiso:</strong></label>
                         <InputNumber id="entradaDiasCompromiso" class="form-control" @bind-Value="prioridad.DaysCommitment"></InputNumber>
                         <ValidationMessage For="@(() => prioridad.DaysCommitment)" />
                     </div>
@@ -44,7 +41,10 @@
             </div>
             @*Boton*@
             <div class="card-footer d-flex justify-content-center">
-                <button type="submit" class="btn btn-outline-primary">
+                <div class="px-2">
+                    <button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+                </div>
+                <button type="submit" class="btn btn-outline-success">
                     <i class="bi bi-floppy-fill" /> Crear
                 </button>
             </div>
@@ -91,20 +91,8 @@
         mensaje = string.Empty;
     }
 
-    public async Task Buscar()
+    void VolverAInicio()
     {
-        if (prioridad.PriorityId <= 0)
-            mensaje = "No se permiten Id menores que 1";
-        else
-        {
-            var buscar = await prioritiesServices.BuscarId(prioridad.PriorityId);
-            if (buscar != null)
-            {
-                prioridad = buscar;
-                mensaje = "Prioridad encontrada con exito";
-            }
-            else
-                mensaje = $"No se ha encontrado ninguna prioridad con el Id {prioridad.PriorityId}";
-        }
+        NavigationManager.NavigateTo("/prioridades");
     }
 }
