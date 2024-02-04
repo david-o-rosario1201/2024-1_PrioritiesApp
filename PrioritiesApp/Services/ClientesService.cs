@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 
 namespace PrioritiesApp.Services;
 
-public class ClientesServices
+public class ClientesService
 {
 	private readonly Context _context;
 
-	public ClientesServices(Context context)
+	public ClientesService(Context context)
 	{
 		_context = context;
 	}

@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 
 namespace PrioritiesApp.Services;
 
-public class TicketsServices
+public class TicketsService
 {
 	private readonly Context _context;
 
-	public TicketsServices(Context context)
+	public TicketsService(Context context)
 	{
 		_context = context;
 	}

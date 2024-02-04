@@ -8,11 +8,11 @@ using PrioritiesApp.Migrations;
 
 namespace PrioritiesApp.Services;
 
-public class PrioritiesServices
+public class PrioritiesService
 {
     private readonly Context _context;
 
-    public PrioritiesServices(Context context)
+    public PrioritiesService(Context context)
     {
         _context = context;
     }

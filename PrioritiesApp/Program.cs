@@ -17,10 +17,10 @@ namespace PrioritiesApp
 
 			var ConStr = builder.Configuration.GetConnectionString("ConStr");
 			builder.Services.AddDbContext<Context>(Options => Options.UseSqlite(ConStr));
-			builder.Services.AddScoped<PrioritiesServices>();
-			builder.Services.AddScoped<ClientesServices>();
-			builder.Services.AddScoped<SistemasServices>();
-			builder.Services.AddScoped<TicketsServices>();
+			builder.Services.AddScoped<PrioritiesService>();
+			builder.Services.AddScoped<ClientesService>();
+			builder.Services.AddScoped<SistemasService>();
+			builder.Services.AddScoped<TicketsService>();
 
 			var app = builder.Build();
 
