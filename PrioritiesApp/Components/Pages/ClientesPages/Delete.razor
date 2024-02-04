@@ -1,5 +1,5 @@
-﻿@page "/deleteclientes"
-@page "/deleteclientes/clienteId={clienteId:int}"
+﻿@page "/DeletEclientes"
+@page "/DeleteClientes/clienteId={clienteId:int}"
 @rendermode InteractiveServer
 @inject ClientesService clienteServices;
 @inject NavigationManager NavigationManager;
@@ -72,6 +72,6 @@
 
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/detailsclientes");
+		NavigationManager.NavigateTo("/DetailsClientes");
 	}
 }

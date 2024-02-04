@@ -1,4 +1,4 @@
-﻿@page "/sistemas"
+﻿@page "/Sistemas"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @inject SistemasService sistemasServices;
@@ -65,11 +65,11 @@
 
 	void IrACrear()
 	{
-		NavigationManager.NavigateTo("/createsistemas");
+		NavigationManager.NavigateTo("/CreateSistemas");
 	}
 
 	void IrADetalles()
 	{
-		NavigationManager.NavigateTo("/detailssistemas");
+		NavigationManager.NavigateTo("/DetailsSistemas");
 	}
 }

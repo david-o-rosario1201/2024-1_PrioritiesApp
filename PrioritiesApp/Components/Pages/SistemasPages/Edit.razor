@@ -1,5 +1,5 @@
-﻿@page "/editsistemas"
-@page "/editsistemas/sistemaId={sistemaId:int}"
+﻿@page "/EditSistemas"
+@page "/EditSistemas/sistemaId={sistemaId:int}"
 @rendermode InteractiveServer
 @inject SistemasService sistemasServices;
 @inject NavigationManager NavigationManager;
@@ -82,7 +82,7 @@
 
     void IrAPaginaDestino()
     {
-        NavigationManager.NavigateTo("/detailssistemas");
+        NavigationManager.NavigateTo("/DetailsSistemas");
     }
 
     public async Task<bool> Validar()

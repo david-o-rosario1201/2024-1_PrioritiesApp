@@ -1,5 +1,5 @@
-﻿@page "/deleteprioridades"
-@page "/deleteprioridades/prioridadId={prioridadId:int}"
+﻿@page "/DeletePrioridades"
+@page "/DeletePrioridades/prioridadId={prioridadId:int}"
 @rendermode InteractiveServer
 @inject PrioritiesService prioritiesServices;
 @inject NavigationManager NavigationManager;
@@ -61,6 +61,6 @@
 
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/detailsprioridades");
+		NavigationManager.NavigateTo("/DetailsPrioridades");
 	}
 }

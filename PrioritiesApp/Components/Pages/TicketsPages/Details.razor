@@ -1,4 +1,4 @@
-﻿@page "/detailstickets"
+﻿@page "/DetailsTickets"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @inject TicketsService ticketsServices;
@@ -48,8 +48,8 @@
 								<td>@tickets.Descripcion</td>
 								<td>@tickets.PriorityId</td>
 								<td>@tickets.Asunto</td>
-								<td><a href="/edittickets/ticketId=@tickets.TicketId"><em><i class="bi bi-pencil-square" /></em></a></td>
-								<td><a href="/deletetickets/ticketId=@tickets.TicketId"><em><i class="bi bi-trash3-fill" /></em></a></td>
+								<td><a href="/EditTickets/ticketId=@tickets.TicketId"><em><i class="bi bi-pencil-square" /></em></a></td>
+								<td><a href="/DeleteTickets/ticketId=@tickets.TicketId"><em><i class="bi bi-trash3-fill" /></em></a></td>
 							</tr>
 						}
 					</tbody>
@@ -76,6 +76,6 @@
 
 	void VolverAInicio()
 	{
-		NavigationManager.NavigateTo("/tickets");
+		NavigationManager.NavigateTo("/Tickets");
 	}
 }

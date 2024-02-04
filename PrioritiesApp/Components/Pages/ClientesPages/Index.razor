@@ -1,4 +1,4 @@
-﻿@page "/clientes"
+﻿@page "/Clientes"
 @inject ClientesService clientesServices;
 @rendermode InteractiveServer
 @attribute [StreamRendering]
@@ -77,11 +77,11 @@
 
 	void IrACrear()
 	{
-		NavigationManager.NavigateTo("/createclientes");
+		NavigationManager.NavigateTo("/CreateClientes");
 	}
 
 	void IrADetalles()
 	{
-		NavigationManager.NavigateTo("/detailsclientes");
+		NavigationManager.NavigateTo("/DetailsClientes");
 	}
 }

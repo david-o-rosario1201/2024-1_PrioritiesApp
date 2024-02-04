@@ -1,5 +1,5 @@
-﻿@page "/deletetickets"
-@page "/deletetickets/ticketId={ticketId:int}"
+﻿@page "/DeleteTickets"
+@page "/DeleteTickets/ticketId={ticketId:int}"
 @rendermode InteractiveServer
 @inject TicketsService ticketsServices;
 @inject NavigationManager NavigationManager;
@@ -75,6 +75,6 @@
 
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/detailstickets");
+		NavigationManager.NavigateTo("/DetailsTickets");
 	}
 }

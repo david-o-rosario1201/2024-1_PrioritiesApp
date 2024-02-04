@@ -1,5 +1,5 @@
-﻿@page "/editclientes"
-@page "/editclientes/clienteId={clienteId:int}"
+﻿@page "/EditClientes"
+@page "/EditClientes/clienteId={clienteId:int}"
 @rendermode InteractiveServer
 @inject ClientesService clientesServices;
 @inject NavigationManager NavigationManager;
@@ -123,7 +123,7 @@
 
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/detailsclientes");
+		NavigationManager.NavigateTo("/DetailsClientes");
 	}
 
 	public async Task<bool> Validar()

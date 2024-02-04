@@ -1,5 +1,5 @@
-﻿@page "/editprioridades"
-@page "/editprioridades/prioridadId={prioridadId:int}"
+﻿@page "/EditPrioridades"
+@page "/EditPrioridades/prioridadId={prioridadId:int}"
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject PrioritiesService prioritiesServices
@@ -93,7 +93,7 @@
 
     void IrAPaginaDestino()
     {
-        NavigationManager.NavigateTo("/detailsprioridades");
+        NavigationManager.NavigateTo("/DetailsPrioridades");
     }
 
     public async Task<bool> Validar()

@@ -1,4 +1,4 @@
-﻿@page "/detailssistemas"
+﻿@page "/DetailsSistemas"
 @rendermode InteractiveServer
 @inject SistemasService sistemasServices;
 @inject NavigationManager NavigationManager;
@@ -35,8 +35,8 @@
 							<tr>
 								<td>@sistemas.SistemaId</td>
 								<td>@sistemas.Nombre</td>
-								<td><a href="/editsistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-pencil-square"/></em></a></td>
-								<td><a href="/deletesistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-trash3-fill"/></em></a></td>
+								<td><a href="/EditSistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-pencil-square"/></em></a></td>
+								<td><a href="/DeleteSistemas/sistemaId=@sistemas.SistemaId"><em><i class="bi bi-trash3-fill"/></em></a></td>
 							</tr>
 						}
 					</tBody>
@@ -63,6 +63,6 @@
 
 	void VolverAInicio()
 	{
-		NavigationManager.NavigateTo("/sistemas");
+		NavigationManager.NavigateTo("/Sistemas");
 	}
 }

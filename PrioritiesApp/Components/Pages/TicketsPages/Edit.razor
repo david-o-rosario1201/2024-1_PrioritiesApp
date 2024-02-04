@@ -1,5 +1,5 @@
-﻿@page "/edittickets"
-@page "/edittickets/ticketId={ticketId:int}"
+﻿@page "/EditTickets"
+@page "/EditTickets/ticketId={ticketId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
 @inject TicketsService ticketsServices;
@@ -160,7 +160,7 @@
 
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/detailstickets");
+		NavigationManager.NavigateTo("/DetailsTickets");
 	}
 
 	public async Task ActualizarClienteId(string valor)

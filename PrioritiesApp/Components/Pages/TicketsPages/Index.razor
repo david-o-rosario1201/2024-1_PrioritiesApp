@@ -1,4 +1,4 @@
-﻿@page "/tickets"
+﻿@page "/Tickets"
 @inject TicketsService ticketsServices
 @attribute [StreamRendering]
 @rendermode InteractiveServer
@@ -79,11 +79,11 @@
 
 	void IrACrear()
 	{
-		NavigationManager.NavigateTo("/createtickets");
+		NavigationManager.NavigateTo("/CreateTickets");
 	}
 
 	void IrADetalles()
 	{
-		NavigationManager.NavigateTo("/detailstickets");
+		NavigationManager.NavigateTo("/DetailsTickets");
 	}
 }
