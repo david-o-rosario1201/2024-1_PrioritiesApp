@@ -1,7 +1,7 @@
 ﻿@page "/EditClientes"
 @page "/EditClientes/clienteId={clienteId:int}"
 @rendermode InteractiveServer
-@inject ClientesService clientesServices;
+@inject ClientesService clientesService
 @inject NavigationManager NavigationManager;
 
 <PageTitle>Editar Cliente</PageTitle>
@@ -100,7 +100,7 @@
 	{
 		await Task.Delay(500);
 		if (clienteId > 0)
-			cliente = await clientesServices.BuscarId(clienteId);
+			cliente = await clientesService.BuscarId(clienteId);
 	}
 
 	public async Task Modificar()
@@ -109,7 +109,7 @@
 			return;
 		else
 		{
-			var modificar = await clientesServices.Crear(cliente);
+			var modificar = await clientesService.Crear(cliente);
 			if (modificar)
 			{
 				mensaje = "El cliente se ha modificado con exito";
@@ -128,8 +128,8 @@
 
 	public async Task<bool> Validar()
 	{
-		var nombre = await clientesServices.BuscarCliente(cliente.Nombre);
-		var rnc = await clientesServices.BuscarRNC(cliente.RNC);
+		var nombre = await clientesService.BuscarCliente(cliente.Nombre);
+		var rnc = await clientesService.BuscarRNC(cliente.RNC);
 		if (nombre != null)
 		{
 			mensaje = "Error, ya existe un cliente con este nombre";

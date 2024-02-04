@@ -1,7 +1,7 @@
 ﻿@page "/CreateSistemas"
 @rendermode InteractiveServer
-@inject SistemasService sistemasServices;
-@inject NavigationManager NavigationManager;
+@inject SistemasService sistemasService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Crear Nuevo Sistema</PageTitle>
 <EditForm Model="sistema" OnValidSubmit="Crear">
@@ -55,7 +55,7 @@
 			mensaje = "Error, ya existe un sistema con este nombre";
 		else
 		{
-			var crear = await sistemasServices.Crear(sistema);
+			var crear = await sistemasService.Crear(sistema);
 			if (crear)
 			{
 				mensaje = "Los datos se han crear con exito";
@@ -69,7 +69,7 @@
 
 	public async Task<bool> Validar()
 	{
-		var validar = await sistemasServices.BuscarSistema(sistema.Nombre);
+		var validar = await sistemasService.BuscarSistema(sistema.Nombre);
 		if (validar != null)
 			return true;
 

@@ -1,8 +1,8 @@
 ﻿@page "/DetailsTickets"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
-@inject TicketsService ticketsServices;
-@inject NavigationManager NavigationManager;
+@inject TicketsService ticketsService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Detalles de Tickets</PageTitle>
 <div class="container">
@@ -71,7 +71,7 @@
 	{
 		await Task.Delay(500);
 		Expression<Func<Tickets, bool>> criterio = cliente => cliente.ClienteId > 0;
-		ticketsList = await ticketsServices.Listar(criterio);
+		ticketsList = await ticketsService.Listar(criterio);
 	}
 
 	void VolverAInicio()

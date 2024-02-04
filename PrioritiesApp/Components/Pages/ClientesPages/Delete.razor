@@ -1,8 +1,8 @@
 ﻿@page "/DeletEclientes"
 @page "/DeleteClientes/clienteId={clienteId:int}"
 @rendermode InteractiveServer
-@inject ClientesService clienteServices;
-@inject NavigationManager NavigationManager;
+@inject ClientesService clienteService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Eliminar Cliente</PageTitle>
 <div class="container">
@@ -54,12 +54,12 @@
 	{
 		await Task.Delay(500);
 		if (clienteId > 0)
-			cliente = await clienteServices.BuscarId(clienteId);
+			cliente = await clienteService.BuscarId(clienteId);
 	}
 
 	public async Task Eliminar()
 	{
-		var eliminar = await clienteServices.Eliminar(cliente);
+		var eliminar = await clienteService.Eliminar(cliente);
 		if (eliminar)
 		{
 			mensaje = "El cliente se ha eliminado con exito";

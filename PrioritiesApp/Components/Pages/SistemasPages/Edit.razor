@@ -1,8 +1,8 @@
 ﻿@page "/EditSistemas"
 @page "/EditSistemas/sistemaId={sistemaId:int}"
 @rendermode InteractiveServer
-@inject SistemasService sistemasServices;
-@inject NavigationManager NavigationManager;
+@inject SistemasService sistemasService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Editar Sistema</PageTitle>
 <EditForm Model="sistema" OnValidSubmit="Modificar">
@@ -59,7 +59,7 @@
         await Task.Delay(500);
 
         if (sistemaId > 0)
-            sistema = await sistemasServices.BuscarId(sistemaId);
+            sistema = await sistemasService.BuscarId(sistemaId);
     }
 
     public async Task Modificar()
@@ -68,7 +68,7 @@
             mensaje = "Error, ya existe un sistema con este nombre";
         else
         {
-            var modificar = await sistemasServices.Crear(sistema);
+            var modificar = await sistemasService.Crear(sistema);
             if (modificar)
             {
                 mensaje = "Los datos se han modificado con exito";
@@ -87,7 +87,7 @@
 
     public async Task<bool> Validar()
     {
-        var validar = await sistemasServices.BuscarSistema(sistema.Nombre);
+        var validar = await sistemasService.BuscarSistema(sistema.Nombre);
         if (validar != null)
             return true;
 

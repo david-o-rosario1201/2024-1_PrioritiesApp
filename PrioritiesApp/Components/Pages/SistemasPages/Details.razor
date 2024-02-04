@@ -1,7 +1,7 @@
 ﻿@page "/DetailsSistemas"
 @rendermode InteractiveServer
-@inject SistemasService sistemasServices;
-@inject NavigationManager NavigationManager;
+@inject SistemasService sistemasService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Detalles de Sistemas</PageTitle>
 <div class="container">
@@ -58,7 +58,7 @@
 	{
 		await Task.Delay(500);
 		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
-		sistemasList = await sistemasServices.Listar(criterio);
+		sistemasList = await sistemasService.Listar(criterio);
 	}
 
 	void VolverAInicio()

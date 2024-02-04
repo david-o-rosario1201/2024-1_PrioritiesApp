@@ -1,8 +1,8 @@
 ﻿@page "/DeleteTickets"
 @page "/DeleteTickets/ticketId={ticketId:int}"
 @rendermode InteractiveServer
-@inject TicketsService ticketsServices;
-@inject NavigationManager NavigationManager;
+@inject TicketsService ticketsService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Eliminar Ticket</PageTitle>
 <div class="container">
@@ -57,12 +57,12 @@
 	{
 		await Task.Delay(500);
 		if (ticketId > 0)
-			ticket = await ticketsServices.BuscarId(ticketId);
+			ticket = await ticketsService.BuscarId(ticketId);
 	}
 
 	public async Task Eliminar()
 	{
-		var eliminar = await ticketsServices.Eliminar(ticket);
+		var eliminar = await ticketsService.Eliminar(ticket);
 		if (eliminar)
 		{
 			mensaje = "El ticket se ha eliminado con exito";

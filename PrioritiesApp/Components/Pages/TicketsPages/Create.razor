@@ -1,11 +1,11 @@
 ﻿@page "/CreateTickets"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject TicketsService ticketsServices;
-@inject ClientesService clientesServices;
-@inject SistemasService sistemasServices;
-@inject PrioritiesService prioridadesServices;
-@inject NavigationManager NavigationManager; 
+@inject TicketsService ticketsService
+@inject ClientesService clientesService
+@inject SistemasService sistemasService
+@inject PrioritiesService prioridadesService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Crear Nuevo Ticket</PageTitle>
 <EditForm Model="ticket" OnValidSubmit="Crear">
@@ -127,18 +127,18 @@
 	{
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterioCliente = cliente => cliente.ClienteId > 0;
-		clientesList = await clientesServices.Listar(criterioCliente);
+		clientesList = await clientesService.Listar(criterioCliente);
 
 		Expression<Func<Sistemas, bool>> criterioSistema = sistema => sistema.SistemaId > 0;
-		sistemasList = await sistemasServices.Listar(criterioSistema);
+		sistemasList = await sistemasService.Listar(criterioSistema);
 
 		Expression<Func<Priorities, bool>> criterioPrioridad = prioridad => prioridad.PriorityId > 0;
-		prioridadesList = await prioridadesServices.Listar(criterioPrioridad);
+		prioridadesList = await prioridadesService.Listar(criterioPrioridad);
 	}
 
 	public async Task Crear()
 	{
-		var crear = await ticketsServices.Crear(ticket);
+		var crear = await ticketsService.Crear(ticket);
 		if (crear)
 		{
 			mensaje = "El ticket se ha creado con exito";
@@ -159,7 +159,7 @@
 	{
 		if (valor != null)
 		{
-			var buscar = await clientesServices.BuscarCliente(valor);//Busco el cliente
+			var buscar = await clientesService.BuscarCliente(valor);//Busco el cliente
 			if (buscar != null)
 				ticket.ClienteId = buscar.ClienteId;
 		}
@@ -169,7 +169,7 @@
 	{
 		if(valor != null)
 		{
-			var buscar = await prioridadesServices.BuscarDescripcion(valor);//Busco la descripcion
+			var buscar = await prioridadesService.BuscarDescripcion(valor);//Busco la descripcion
 			if (buscar != null)
 				ticket.PriorityId = buscar.PriorityId;
 		}

@@ -1,8 +1,8 @@
 ﻿@page "/Prioridades"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
-@inject PrioritiesService prioritiesServices;
-@inject NavigationManager NavigationManager;
+@inject PrioritiesService prioritiesService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Prioridades</PageTitle>
 
@@ -63,7 +63,7 @@
 	{
 		await Task.Delay(500);
 		Expression<Func<Priorities, bool>> criterio = prioridad => prioridad.PriorityId > 0;
-		prioridadesList = await prioritiesServices.Listar(criterio);
+		prioridadesList = await prioritiesService.Listar(criterio);
 	}
 
 	void IrACrear()

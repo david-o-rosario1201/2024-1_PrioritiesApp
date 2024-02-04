@@ -1,8 +1,8 @@
 ﻿@page "/DeleteSistemas"
 @page "/DeleteSistemas/sistemaId={sistemaId:int}"
 @rendermode InteractiveServer
-@inject SistemasService sistemasServices;
-@inject NavigationManager NavigationManager;
+@inject SistemasService sistemasService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Eliminar Sistema</PageTitle>
 <div class="container">
@@ -41,12 +41,12 @@
 	{
 		await Task.Delay(500);
 		if (sistemaId > 0)
-			sistema = await sistemasServices.BuscarId(sistemaId);
+			sistema = await sistemasService.BuscarId(sistemaId);
 	}
 
 	public async Task Eliminar()
 	{
-		var eliminar = await sistemasServices.Eliminar(sistema);
+		var eliminar = await sistemasService.Eliminar(sistema);
 		if (eliminar)
 		{
 			mensaje = "El sistema ha sido eliminado con exito";

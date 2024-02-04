@@ -1,8 +1,8 @@
 ﻿@page "/CreatePrioridades"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject PrioritiesService prioritiesServices;
-@inject NavigationManager NavigationManager;
+@inject PrioritiesService prioritiesService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Crear Nueva Prioridad</PageTitle>
 <EditForm Model="prioridad" OnValidSubmit="Crear">
@@ -64,7 +64,7 @@
             mensaje = "Error, ya existe una prioridad con esta descripción";
         else
         {
-            var crear = await prioritiesServices.Crear(prioridad);
+            var crear = await prioritiesService.Crear(prioridad);
             if (crear)
             {
                 mensaje = "Los datos se han crear con exito";
@@ -78,7 +78,7 @@
 
     public async Task<bool> Validar()
     {
-        var validar = await prioritiesServices.BuscarDescripcion(prioridad.Description);
+        var validar = await prioritiesService.BuscarDescripcion(prioridad.Description);
         if (validar != null)
             return true;
 

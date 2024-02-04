@@ -2,7 +2,7 @@
 @page "/EditPrioridades/prioridadId={prioridadId:int}"
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-@inject PrioritiesService prioritiesServices
+@inject PrioritiesService prioritiesService
 
 <PageTitle>Editar Prioridad</PageTitle>
 <EditForm Model="prioridad" OnValidSubmit="Modificar">
@@ -69,7 +69,7 @@
         await Task.Delay(500);
 
         if (prioridadId > 0)
-            prioridad = await prioritiesServices.BuscarId(prioridadId);
+            prioridad = await prioritiesService.BuscarId(prioridadId);
     }
 
     public async Task Modificar()
@@ -78,7 +78,7 @@
             mensaje = "Error, ya existe una prioridad con esta descripción";
         else
         {
-            var modificar = await prioritiesServices.Crear(prioridad);
+            var modificar = await prioritiesService.Crear(prioridad);
             if (modificar)
             {
                 mensaje = "Los datos se han modificado con exito";
@@ -98,7 +98,7 @@
 
     public async Task<bool> Validar()
     {
-        var validar = await prioritiesServices.BuscarDescripcion(prioridad.Description);
+        var validar = await prioritiesService.BuscarDescripcion(prioridad.Description);
         if (validar != null)
             return true;
 

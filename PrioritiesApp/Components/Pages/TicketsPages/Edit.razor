@@ -2,11 +2,11 @@
 @page "/EditTickets/ticketId={ticketId:int}"
 @rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject TicketsService ticketsServices;
-@inject ClientesService clientesServices;
-@inject SistemasService sistemasServices;
-@inject PrioritiesService prioridadesServices;
-@inject NavigationManager NavigationManager;
+@inject TicketsService ticketsService
+@inject ClientesService clientesService
+@inject SistemasService sistemasService
+@inject PrioritiesService prioridadesService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Editar Ticket</PageTitle>
 <EditForm Model="ticket" OnValidSubmit="Modificar">
@@ -133,21 +133,21 @@
 	{
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterioCliente = cliente => cliente.ClienteId > 0;
-		clientesList = await clientesServices.Listar(criterioCliente);
+		clientesList = await clientesService.Listar(criterioCliente);
 
 		Expression<Func<Sistemas, bool>> criterioSistema = sistema => sistema.SistemaId > 0;
-		sistemasList = await sistemasServices.Listar(criterioSistema);
+		sistemasList = await sistemasService.Listar(criterioSistema);
 
 		Expression<Func<Priorities, bool>> criterioPrioridad = prioridad => prioridad.PriorityId > 0;
-		prioridadesList = await prioridadesServices.Listar(criterioPrioridad);
+		prioridadesList = await prioridadesService.Listar(criterioPrioridad);
 
 		if (ticketId > 0)
-			ticket = await ticketsServices.BuscarId(ticketId);
+			ticket = await ticketsService.BuscarId(ticketId);
 	}
 
 	public async Task Modificar()
 	{
-		var crear = await ticketsServices.Crear(ticket);
+		var crear = await ticketsService.Crear(ticket);
 		if (crear)
 		{
 			mensaje = "El ticket se ha creado con exito";
@@ -168,7 +168,7 @@
 		if (valor != null)
 		{
 			int clienteid = int.Parse(valor);
-			var id = await clientesServices.BuscarId(clienteid);
+			var id = await clientesService.BuscarId(clienteid);
 			if (id != null)
 			{
 				Console.WriteLine("Cliente");
@@ -184,7 +184,7 @@
 		if (valor != null)
 		{
 			int prioridadid = int.Parse(valor);
-			var id = await prioridadesServices.BuscarId(prioridadid);
+			var id = await prioridadesService.BuscarId(prioridadid);
 			if (id != null)
 			{
 				Console.WriteLine("Prioridad");

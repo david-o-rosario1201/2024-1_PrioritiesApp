@@ -1,7 +1,7 @@
 ﻿@page "/DetailsClientes"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
-@inject ClientesService clientesServices
+@inject ClientesService clientesService
 @inject NavigationManager NavigationManager;
 
 <PageTitle>Detalles de Clientes</PageTitle>
@@ -69,7 +69,7 @@
 	{
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
-		clientesList = await clientesServices.Listar(criterio);
+		clientesList = await clientesService.Listar(criterio);
 	}
 
 	void VolverAInicio()

@@ -1,8 +1,8 @@
 ﻿@page "/DeletePrioridades"
 @page "/DeletePrioridades/prioridadId={prioridadId:int}"
 @rendermode InteractiveServer
-@inject PrioritiesService prioritiesServices;
-@inject NavigationManager NavigationManager;
+@inject PrioritiesService prioritiesService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Eliminar Prioridad</PageTitle>
 <div class="container">
@@ -43,12 +43,12 @@
 	{
 		await Task.Delay(500);
 		if (prioridadId > 0)
-			prioridad = await prioritiesServices.BuscarId(prioridadId);
+			prioridad = await prioritiesService.BuscarId(prioridadId);
 	}
 
 	public async Task Eliminar()
 	{
-		var eliminar = await prioritiesServices.Eliminar(prioridad);
+		var eliminar = await prioritiesService.Eliminar(prioridad);
 		if (eliminar)
 		{
 			mensaje = "La prioridad ha sido eliminada con exito";
