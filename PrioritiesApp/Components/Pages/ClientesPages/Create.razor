@@ -19,7 +19,7 @@
 				@*ID*@
 				<div class="mb-3">
 					<div class="col-4">
-						<label class="row" for="clienteId"><strong>Cliente_Id:</strong></label>
+						<label class="row" for="clienteId"><strong>ClienteId:</strong></label>
 						<InputNumber id="clienteId" class="form-control" @bind-Value="cliente.ClienteId"></InputNumber>
 					</div>
 				</div>
@@ -98,7 +98,7 @@
 			return;
 		else
 		{
-			var crear = await clientesServices.Crear(cliente);
+			var crear = await clientesService.Crear(cliente);
 			if (crear)
 			{
 				mensaje = "El cliente se ha creado con exito";
@@ -119,8 +119,8 @@
 
 	public async Task<bool> Validar()
 	{
-		var nombre = await clientesServices.BuscarCliente(cliente.Nombre);
-		var rnc = await clientesServices.BuscarRNC(cliente.RNC);
+		var nombre = await clientesService.BuscarCliente(cliente.Nombre);
+		var rnc = await clientesService.BuscarRNC(cliente.RNC);
 		if (nombre != null)
 		{
 			mensaje = "Error, ya existe un cliente con este nombre";

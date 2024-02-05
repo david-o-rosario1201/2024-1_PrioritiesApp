@@ -29,7 +29,7 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Cliente_Id</th>
+							<th>ClienteId</th>
 							<th>Nombre</th>
 							<th>Tel&eacute;fono</th>
 							<th>Celular</th>
@@ -72,7 +72,7 @@
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
 
-		cliente = await clientesServices.Listar(criterio);
+		cliente = await clientesService.Listar(criterio);
 	}
 
 	void IrACrear()

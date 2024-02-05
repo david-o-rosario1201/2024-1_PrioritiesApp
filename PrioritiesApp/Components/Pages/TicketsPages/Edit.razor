@@ -23,7 +23,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Ticket ID*@
-						<label class="form-label" for="ticketId"><strong>Ticket_Id:</strong></label>
+						<label class="form-label" for="ticketId"><strong>TicketId:</strong></label>
 						<div class="input-group">
 							<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId"></InputNumber>
 						</div>
@@ -40,7 +40,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Solicitado Por*@
-						<label class="form-label" for="solicitado"><strong>Solicitado_Por:</strong></label>
+						<label class="form-label" for="solicitado"><strong>SolicitadoPor:</strong></label>
 						<InputSelect id="solicitado" class="form-select" @bind-Value="ticket.SolicitadoPor" @oninput="(e) => ActualizarClienteId(e.Value.ToString())">
 							<option>------------------</option>
 							@foreach (var clientes in clientesList)
@@ -54,7 +54,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Cliente ID*@
-						<label class="form-label" for="clienteid"><strong>Cliente_Id:</strong></label>
+						<label class="form-label" for="clienteid"><strong>ClienteId:</strong></label>
 						<InputNumber id="clienteid" class="form-control" @bind-Value="ticket.ClienteId" readonly></InputNumber>
 						<ValidationMessage For="@(() => ticket.ClienteId)"></ValidationMessage>
 					</div>
@@ -62,7 +62,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Sistema ID*@
-						<label class="form-label" for="sistemaid"><strong>Sistema_Id:</strong></label>
+						<label class="form-label" for="sistemaid"><strong>SistemaId:</strong></label>
 						<InputSelect id="sistemaid" class="form-select" @bind-Value="ticket.SistemaId">
 							<option>------------------</option>
 							@foreach (var sistemas in sistemasList)
@@ -90,7 +90,7 @@
 				<div class="mb-3">
 					<div class="col-4">
 						@*Prioridad ID*@
-						<label class="form-label" for="prioridadid"><strong>Prioridad_Id:</strong></label>
+						<label class="form-label" for="prioridadid"><strong>PrioridadId:</strong></label>
 						<InputNumber id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId" readonly></InputNumber>
 						<ValidationMessage For="@(() => ticket.PriorityId)"></ValidationMessage>
 					</div>
