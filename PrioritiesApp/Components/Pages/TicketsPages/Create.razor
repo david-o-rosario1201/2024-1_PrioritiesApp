@@ -23,7 +23,7 @@
 					<div class="col-4">
 						@*Ticket ID*@
 						<label class="form-label" for="ticketId"><strong>TicketId:</strong></label>
-						<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId"></InputNumber>
+						<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId" readonly></InputNumber>
 					</div>
 				</div>
 				<div class="mb-3">
@@ -36,15 +36,17 @@
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
+						@*Asunto*@
+						<label class="form-label" for="asunto"><strong>Asunto:</strong></label>
+						<InputText id="asunto" class="form-control" @bind-Value="ticket.Asunto" placeholder="Ingrese un asunto"></InputText>
+						<ValidationMessage For="@(() => ticket.Asunto)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
 						@*Solicitado Por*@
 						<label class="form-label" for="solicitado"><strong>SolicitadoPor:</strong></label>
-						<InputSelect id="solicitado" class="form-select" @bind-Value="ticket.SolicitadoPor" @oninput="(e) => ActualizarClienteId(e.Value.ToString())">
-							<option>------------------</option>
-							@foreach (var clientes in clientesList)
-							{
-								<option value="@clientes.Nombre">@clientes.Nombre</option>
-							}
-						</InputSelect>
+						<InputText id="solicitado" class="form-control" @bind-Value="ticket.SolicitadoPor" placeholder="Ingrese el nombre de quien solicita el ticket"></InputText>
 						<ValidationMessage For="@(() => ticket.SolicitadoPor)"></ValidationMessage>
 					</div>
 				</div>
@@ -52,7 +54,13 @@
 					<div class="col-4">
 						@*Cliente ID*@
 						<label class="form-label" for="clienteid"><strong>ClienteId:</strong></label>
-						<InputNumber id="clienteid" class="form-control" @bind-Value="ticket.ClienteId" readonly></InputNumber>
+						<InputSelect id="clienteid" class="form-select" @bind-Value="ticket.ClienteId">
+							<option>------------------</option>
+							@foreach (var clientes in clientesList)
+							{
+								<option value="@clientes.ClienteId">@clientes.Nombre</option>
+							}
+						</InputSelect>
 						<ValidationMessage For="@(() => ticket.ClienteId)"></ValidationMessage>
 					</div>
 				</div>
@@ -72,32 +80,24 @@
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
-						@*Descripción*@
-						<label class="form-label" for="descripcion"><strong>Descripci&oacute;n:</strong></label>
-						<InputSelect id="descripcion" class="form-select" @bind-Value="ticket.Descripcion" @oninput="(e) => ActualizarPrioridadId(e.Value.ToString())">
-							<option>------------------</option>
-							@foreach(var prioridades in prioridadesList)
-							{
-								<option value="@prioridades.Description">@prioridades.Description</option>
-							}
-						</InputSelect>
-						<ValidationMessage For="@(() => ticket.Descripcion)"></ValidationMessage>
-					</div>
-				</div>
-				<div class="mb-3">
-					<div class="col-4">
 						@*Prioridad ID*@
 						<label class="form-label" for="prioridadid"><strong>PrioridadId:</strong></label>
-						<InputNumber id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId" readonly></InputNumber>
+						<InputSelect id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId">
+							<option>------------------</option>
+							@foreach (var prioridades in prioridadesList)
+							{
+								<option value="@prioridades.PriorityId">@prioridades.Description</option>
+							}
+						</InputSelect>
 						<ValidationMessage For="@(() => ticket.PriorityId)"></ValidationMessage>
 					</div>
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
-						@*Asunto*@
-						<label class="form-label" for="asunto"><strong>Asunto:</strong></label>
-						<InputText id="asunto" class="form-control" @bind-Value="ticket.Asunto" placeholder="Ingrese un asunto"></InputText>
-						<ValidationMessage For="@(() => ticket.Asunto)"></ValidationMessage>
+						@*Descripción*@
+						<label class="form-label" for="descripcion"><strong>Descripci&oacute;n:</strong></label>
+						<InputTextArea id="descripcion" class="form-control" @bind-Value="ticket.Descripcion" placeholder="Ingrese una descripción"></InputTextArea>
+						<ValidationMessage For="@(() => ticket.Descripcion)"></ValidationMessage>
 					</div>
 				</div>
 				<div class="mb-3"></div>

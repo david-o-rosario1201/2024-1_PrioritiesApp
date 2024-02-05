@@ -24,9 +24,7 @@
 					<div class="col-4">
 						@*Ticket ID*@
 						<label class="form-label" for="ticketId"><strong>TicketId:</strong></label>
-						<div class="input-group">
-							<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId"></InputNumber>
-						</div>
+						<InputNumber id="ticketId" class="form-control" @bind-Value="ticket.TicketId" readonly></InputNumber>
 					</div>
 				</div>
 				<div class="mb-3">
@@ -39,15 +37,17 @@
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
+						@*Asunto*@
+						<label class="form-label" for="asunto"><strong>Asunto:</strong></label>
+						<InputText id="asunto" class="form-control" @bind-Value="ticket.Asunto" placeholder="Ingrese un asunto"></InputText>
+						<ValidationMessage For="@(() => ticket.Asunto)"></ValidationMessage>
+					</div>
+				</div>
+				<div class="mb-3">
+					<div class="col-4">
 						@*Solicitado Por*@
 						<label class="form-label" for="solicitado"><strong>SolicitadoPor:</strong></label>
-						<InputSelect id="solicitado" class="form-select" @bind-Value="ticket.SolicitadoPor" @oninput="(e) => ActualizarClienteId(e.Value.ToString())">
-							<option>------------------</option>
-							@foreach (var clientes in clientesList)
-							{
-								<option value="@clientes.Nombre">@clientes.Nombre</option>
-							}
-						</InputSelect>
+						<InputText id="solicitado" class="form-control" @bind-Value="ticket.SolicitadoPor" placeholder="Ingrese el nombre de quien solicita el ticket"></InputText>
 						<ValidationMessage For="@(() => ticket.SolicitadoPor)"></ValidationMessage>
 					</div>
 				</div>
@@ -55,7 +55,13 @@
 					<div class="col-4">
 						@*Cliente ID*@
 						<label class="form-label" for="clienteid"><strong>ClienteId:</strong></label>
-						<InputNumber id="clienteid" class="form-control" @bind-Value="ticket.ClienteId" readonly></InputNumber>
+						<InputSelect id="clienteid" class="form-select" @bind-Value="ticket.ClienteId">
+							<option>------------------</option>
+							@foreach (var clientes in clientesList)
+							{
+								<option value="@clientes.ClienteId">@clientes.Nombre</option>
+							}
+						</InputSelect>
 						<ValidationMessage For="@(() => ticket.ClienteId)"></ValidationMessage>
 					</div>
 				</div>
@@ -75,32 +81,24 @@
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
-						@*Descripción*@
-						<label class="form-label" for="descripcion"><strong>Descripci&oacute;n:</strong></label>
-						<InputSelect id="descripcion" class="form-select" @bind-Value="ticket.Descripcion" @oninput="(e) => ActualizarPrioridadId(e.Value.ToString())">
+						@*Prioridad ID*@
+						<label class="form-label" for="prioridadid"><strong>PrioridadId:</strong></label>
+						<InputSelect id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId">
 							<option>------------------</option>
 							@foreach (var prioridades in prioridadesList)
 							{
-								<option value="@prioridades.Description">@prioridades.Description</option>
+								<option value="@prioridades.PriorityId">@prioridades.Description</option>
 							}
 						</InputSelect>
-						<ValidationMessage For="@(() => ticket.Descripcion)"></ValidationMessage>
-					</div>
-				</div>
-				<div class="mb-3">
-					<div class="col-4">
-						@*Prioridad ID*@
-						<label class="form-label" for="prioridadid"><strong>PrioridadId:</strong></label>
-						<InputNumber id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId" readonly></InputNumber>
 						<ValidationMessage For="@(() => ticket.PriorityId)"></ValidationMessage>
 					</div>
 				</div>
 				<div class="mb-3">
 					<div class="col-4">
-						@*Asunto*@
-						<label class="form-label" for="asunto"><strong>Asunto:</strong></label>
-						<InputText id="asunto" class="form-control" @bind-Value="ticket.Asunto" placeholder="Ingrese un asunto"></InputText>
-						<ValidationMessage For="@(() => ticket.Asunto)"></ValidationMessage>
+						@*Descripción*@
+						<label class="form-label" for="descripcion"><strong>Descripci&oacute;n:</strong></label>
+						<InputTextArea id="descripcion" class="form-control" @bind-Value="ticket.Descripcion" placeholder="Ingrese una descripción"></InputTextArea>
+						<ValidationMessage For="@(() => ticket.Descripcion)"></ValidationMessage>
 					</div>
 				</div>
 				<div class="mb-3"></div>
@@ -161,37 +159,5 @@
 	void IrAPaginaDestino()
 	{
 		NavigationManager.NavigateTo("/DetailsTickets");
-	}
-
-	public async Task ActualizarClienteId(string valor)
-	{
-		if (valor != null)
-		{
-			int clienteid = int.Parse(valor);
-			var id = await clientesService.BuscarId(clienteid);
-			if (id != null)
-			{
-				Console.WriteLine("Cliente");
-				ticket.ClienteId = id.ClienteId;
-				ticket.SolicitadoPor = id.Nombre;
-				StateHasChanged();
-			}
-		}
-	}
-
-	public async Task ActualizarPrioridadId(string valor)
-	{
-		if (valor != null)
-		{
-			int prioridadid = int.Parse(valor);
-			var id = await prioridadesService.BuscarId(prioridadid);
-			if (id != null)
-			{
-				Console.WriteLine("Prioridad");
-				ticket.PriorityId = id.PriorityId;
-				ticket.Descripcion = id.Description;
-				StateHasChanged();
-			}
-		}
 	}
 }
