@@ -1,67 +1,49 @@
 ﻿@page "/DetailsPrioridades"
+@page "/DetailsPrioridades/prioridadId={prioridadId:int}"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @inject PrioritiesService prioritiesService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Detalles de Prioridades</PageTitle>
+<PageTitle>Detalle de Prioridad</PageTitle>
 <div class="cotainer">
 	<div class="card shadow-lg">
 		@*Header*@
 		<div class="card-header">
-			<h3><strong>Detalles de Prioridades</strong></h3>
-			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+				<h3><strong>Detalle de Prioridad</strong></h3>
 		</div>
 		@*Body*@
 		<div class="card-body">
-			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			@if(prioridadesList.Count == 0)
-			{
-				<p><em>Cargando..</em></p>
-			}
-			else
-			{
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>PrioridadId</th>
-							<th>Descripci&oacute;n</th>
-							<th>D&iacute;asCompromiso</th>
-							<th>Editar</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tBody>
-						@foreach(var prioridades in prioridadesList)
-						{
-							<tr>
-								<td>@prioridades.PriorityId</td>
-								<td>@prioridades.Description</td>
-								<td>@prioridades.DaysCommitment</td>
-								<td><a href="/EditPrioridades/prioridadId=@prioridades.PriorityId"><em><i class="bi bi-pencil-square" /></em></a></td>
-								<td><a href="/DeletePrioridades/prioridadId=@prioridades.PriorityId"><em><i class="bi bi-trash3-fill" /></em></a></td>
-							</tr>
-						}
-					</tBody>
-				</table>
-			}
+			@*Datos*@
+			<div class="mb-1">
+				<p class="mb-0">PrioridadId: @prioridad.PriorityId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Descripci&oacute;n: @prioridad.Description</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">D&iacute;asCompromiso: @prioridad.DaysCommitment</p>
+			</div>
 		</div>
 		@*Footer*@
-		<div class="card-footer">
-			<p><strong>Total de Prioridades:</strong> @prioridadesList.Count</p>
+		<div class="card-footer d-flex justify-content-center">
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio"><i class="bi bi-box-arrow-left" /> Volver</button>
 		</div>
 	</div>
 </div>
 
 @code {
+	[Parameter]
+	public int prioridadId { get; set; }
 	public Priorities prioridad { get; set; } = new Priorities();
 	public List<Priorities> prioridadesList = new List<Priorities>();
 
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
-		Expression<Func<Priorities, bool>> criterio = prioridad => prioridad.PriorityId > 0;
-		prioridadesList = await prioritiesService.Listar(criterio);
+
+		if (prioridadId > 0)
+			prioridad = await prioritiesService.BuscarId(prioridadId);
 	}
 
 	void VolverAInicio()
