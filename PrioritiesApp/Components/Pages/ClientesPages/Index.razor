@@ -12,21 +12,55 @@
 			<h3><strong>Clientes</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear"><i class="bi bi-plus-circle"/> Crear</button>
 				</div>
-				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
 		<div class="card-body">
-			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			@if(cliente.Count == 0)
+
+			@if(loading)
 			{
-				<p><em>Cargando...</em></p>
+				<div class="d-flex justify-content-center">
+					<div class="spinner-border text-info" role="status">
+						<span class="visually-hidden">Cargando...</span>
+					</div>
+				</div>
+			}
+			else if (clientes.Count == 0)
+			{
+				<h1 class="miMensaje"><i class="bi bi-exclamation-triangle" /> No hay aportes creados</h1>
 			}
 			else
 			{
-				<table class="table table-bordered">
+				@*Campos a Filtrar*@
+				<div class="mb-3">
+					<div class="row align-items-center">
+						<label class="form-label" for="filtro"><strong>Campo a Filtrar:</strong></label>
+						<div class="col-3">
+							<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+								<option>Elije una opci&oacute;n</option>
+								<option value="id">Id</option>
+								<option value="nombre">Nombre</option>
+								<option value="rnc">RNC</option>
+							</InputSelect>
+						</div>
+						<div class="col-auto miFlecha">
+							<p>→</p>
+						</div>
+						<div class="col-4">
+							<div class="input-group">
+								<InputText class="form-control" @bind-Value="valorFiltro" placeholder="Ingrese un dato para filtrar"></InputText>
+								<button type="button" class="btn btn-outline-primary" @onclick="Buscar"><i class="bi bi-search" /></button>
+							</div>
+						</div>
+						<div class="col-3">
+							<button type="button" class="btn btn-outline-secondary" @onclick="Restablecer"><i class="bi bi-arrow-clockwise" /> Restablecer</button>
+						</div>
+					</div>
+				</div>
+
+				<table class="table table-bordered miTabla">
 					<thead>
 						<tr>
 							<th>ClienteId</th>
@@ -36,19 +70,25 @@
 							<th>RNC</th>
 							<th>Email</th>
 							<th>Direcci&oacute;n</th>
+							<th>Ver</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var cli in cliente)
+						@foreach (var cliente in clientes)
 						{
 							<tr>
-								<td>@cli.ClienteId</td>
-								<td>@cli.Nombre</td>
-								<td>@cli.Telefono</td>
-								<td>@cli.Celular</td>
-								<td>@cli.RNC</td>
-								<td>@cli.Email</td>
-								<td>@cli.Direccion</td>
+								<td>@cliente.ClienteId</td>
+								<td>@cliente.Nombre</td>
+								<td>@cliente.Telefono</td>
+								<td>@cliente.Celular</td>
+								<td>@cliente.RNC</td>
+								<td>@cliente.Email</td>
+								<td>@cliente.Direccion</td>
+								<td><button type="button" class="btn btn-outline-info" @onclick="()=> IrADetalles(cliente.ClienteId)"><i class="bi bi-eye"/></button></td>
+								<td><button type="button" class="btn btn-outline-warning" @onclick="()=> IrAEditar(cliente.ClienteId)"><i class="bi bi-pencil-square"/></button></td>
+								<td><button type="button" class="btn btn-outline-danger" @onclick="()=> IrAEliminar(cliente.ClienteId)"><i class="bi bi-trash3-fill"/></button></td>
 							</tr>
 						}
 					</tbody>
@@ -58,21 +98,92 @@
 		<div class="mb-3"></div>
 		@*Footer*@
 		<div class="card-footer">
-			<p><strong>Total de Clientes:</strong> @cliente.Count</p>
+			<p><strong>Total de Clientes:</strong> @clientes.Count</p>
 		</div>
 	</div>
 	<div class="card-footer d-flex justify-content-center"></div>
 </div>
+@mensaje
 
 @code {
-	public List<Clientes> cliente = new List<Clientes>();
+	public List<Clientes> clientes = new List<Clientes>();
+	public bool loading { get; set; } = true;
+	public string filtro { get; set; }
+	public string valorFiltro { get; set; }
+	public string mensaje { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
 		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
+		clientes = await clientesService.Listar(criterio);
 
-		cliente = await clientesService.Listar(criterio);
+		loading = false;
+
+		if (clientes.Count == 0)
+			StateHasChanged();
+	}
+
+	public async Task Buscar()
+	{
+		if (valorFiltro == null)
+		{
+			mensaje = "Debe ingresar un dato";
+			await Task.Delay(3000);
+			return;
+		}
+
+		if (filtro == null)
+		{
+			mensaje = "Debe elegir un método parar filtrar";
+			await Task.Delay(3000);
+			return;
+		}
+
+		List<Clientes> filtradoList1 = new List<Clientes>();
+
+		switch(filtro)
+		{
+			case "id":
+				if (int.TryParse(valorFiltro, out int id))
+				{
+					filtradoList1 = await clientesService.Listar(c => c.ClienteId == id);
+					DatosFiltrados(filtradoList1);
+				}
+				else
+				{
+					mensaje = "El valor ingresado para AporteId no es válido";
+					await Task.Delay(3000);
+				}
+				break;
+
+			case "nombre":
+				filtradoList1 = await clientesService.Listar(a => a.Nombre.ToLower().Contains(valorFiltro.ToLower()));
+				DatosFiltrados(filtradoList1);
+				break;
+
+			case "rnc":
+				filtradoList1 = await clientesService.Listar(a => a.RNC.Contains(valorFiltro));
+				DatosFiltrados(filtradoList1);
+				break;
+		}
+	}
+
+	public async Task Restablecer()
+	{
+		clientes = await clientesService.Listar(a => a.ClienteId > 0);
+		mensaje = "Lo datos fueron restablecidos";
+	}
+
+	public async Task DatosFiltrados(List<Clientes> valor)
+	{
+		if (valor.Count !=  0)
+		{
+			clientes = valor;
+			mensaje = "Se encontraron resultados";
+		}
+		else
+			mensaje = "No se encontraron resultados";
 	}
 
 	void IrACrear()
@@ -80,8 +191,16 @@
 		NavigationManager.NavigateTo("/CreateClientes");
 	}
 
-	void IrADetalles()
+	void IrADetalles(int id)
 	{
-		NavigationManager.NavigateTo("/DetailsClientes");
+		NavigationManager.NavigateTo($"/DetailsClientes/clienteId={id}");
+	}
+	void IrAEditar(int id)
+	{
+		NavigationManager.NavigateTo($"/EditClientes/clienteId={id}");
+	}
+	void IrAEliminar(int id)
+	{
+		NavigationManager.NavigateTo($"/DeleteClientes/clienteId={id}");
 	}
 }

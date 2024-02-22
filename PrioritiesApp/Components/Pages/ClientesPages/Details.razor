@@ -1,75 +1,60 @@
 ﻿@page "/DetailsClientes"
+@page "/DetailsClientes/clienteId={clienteId:int}"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @inject ClientesService clientesService
 @inject NavigationManager NavigationManager;
 
-<PageTitle>Detalles de Clientes</PageTitle>
+<PageTitle>Detalle de Cliente</PageTitle>
 <div class="container">
 	<div class="card shadow-lg">
 		@*Header*@
 		<div class="card-header">
-			<h3><strong>Detalles de Clientes</strong></h3>
-			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+			<h3><strong>Detalle de Cliente</strong></h3>
 		</div>
 		@*Body*@
 		<div class="card-body">
-			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			@if(clientesList.Count == 0)
-			{
-				<p><em>Cargando...</em></p>
-			}
-			else
-			{
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>ClienteId</th>
-							<th>Nombre</th>
-							<th>Tel&eacute;fono</th>
-							<th>Celular</th>
-							<th>RNC</th>
-							<th>Email</th>
-							<th>Direcci&oacute;n</th>
-							<th>Editar</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach(var clientes in clientesList)
-						{
-							<tr>
-								<td>@clientes.ClienteId</td>
-								<td>@clientes.Nombre</td>
-								<td>@clientes.Telefono</td>
-								<td>@clientes.Celular</td>
-								<td>@clientes.RNC</td>
-								<td>@clientes.Email</td>
-								<td>@clientes.Direccion</td>
-								<td><a href="/EditClientes/clienteId=@clientes.ClienteId"><em><i class="bi bi-pencil-square" /></em></a></td>
-								<td><a href="/DeleteClientes/clienteId=@clientes.ClienteId"><em><i class="bi bi-trash3-fill" /></em></a></td>
-							</tr>	
-						}
-					</tbody>
-				</table>
-			}
+			@*Datos*@
+			<div class="mb-1">
+				<p class="mb-0">ClienteId: @cliente.ClienteId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Nombre: @cliente.Nombre</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Tel&eacute;fono: @cliente.Telefono</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Celular: @cliente.Celular</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">RNC: @cliente.RNC</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Email: @cliente.Email</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Direcci&oacute;n: @cliente.Direccion</p>
+			</div>
 		</div>
 		@*Footer*@
-		<div class="card-footer">
-			<p><strong>Total de Clientes:</strong> @clientesList.Count</p>
+		<div class="card-footer d-flex justify-content-center">
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio"><i class="bi bi-box-arrow-left"/> Volver</button>
 		</div>
 	</div>
 </div>
 
 @code {
+	[Parameter]
+	public int clienteId { get; set; }
 	public Clientes cliente { get; set; } = new Clientes();
 	public List<Clientes> clientesList = new List<Clientes>();
 
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
-		Expression<Func<Clientes, bool>> criterio = cliente => cliente.ClienteId > 0;
-		clientesList = await clientesService.Listar(criterio);
+		if (clienteId > 0)
+			cliente = await clientesService.BuscarId(clienteId);
 	}
 
 	void VolverAInicio()
