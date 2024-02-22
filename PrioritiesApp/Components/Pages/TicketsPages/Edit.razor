@@ -56,7 +56,7 @@
 						@*Cliente ID*@
 						<label class="form-label" for="clienteid"><strong>ClienteId:</strong></label>
 						<InputSelect id="clienteid" class="form-select" @bind-Value="ticket.ClienteId">
-							<option>------------------</option>
+							<option>Elija una opci&oacute;n</option>
 							@foreach (var clientes in clientesList)
 							{
 								<option value="@clientes.ClienteId">@clientes.Nombre</option>
@@ -70,7 +70,7 @@
 						@*Sistema ID*@
 						<label class="form-label" for="sistemaid"><strong>SistemaId:</strong></label>
 						<InputSelect id="sistemaid" class="form-select" @bind-Value="ticket.SistemaId">
-							<option>------------------</option>
+							<option>Elija una opci&oacute;n</option>
 							@foreach (var sistemas in sistemasList)
 							{
 								<option value="@sistemas.SistemaId">@sistemas.Nombre</option>
@@ -83,8 +83,8 @@
 					<div class="col-4">
 						@*Prioridad ID*@
 						<label class="form-label" for="prioridadid"><strong>PrioridadId:</strong></label>
-						<InputSelect id="prioridadid" class="form-control" @bind-Value="ticket.PriorityId">
-							<option>------------------</option>
+						<InputSelect id="prioridadid" class="form-select" @bind-Value="ticket.PriorityId">
+							<option>Elija una opci&oacute;n</option>
 							@foreach (var prioridades in prioridadesList)
 							{
 								<option value="@prioridades.PriorityId">@prioridades.Description</option>
@@ -106,7 +106,7 @@
 			@*Boton*@
 			<div class="card-footer d-flex justify-content-center">
 				<div class="px-2">
-					<button type="button" class="btn btn-outline-primary" @onclick="IrAPaginaDestino">Volver</button>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrAPaginaDestino"><i class="bi bi-box-arrow-left"/> Volver</button>
 				</div>
 				<button type="submit" class="btn btn-outline-success">
 					<i class="bi bi-floppy-fill" /> Modificar
@@ -130,14 +130,10 @@
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
-		Expression<Func<Clientes, bool>> criterioCliente = cliente => cliente.ClienteId > 0;
-		clientesList = await clientesService.Listar(criterioCliente);
 
-		Expression<Func<Sistemas, bool>> criterioSistema = sistema => sistema.SistemaId > 0;
-		sistemasList = await sistemasService.Listar(criterioSistema);
-
-		Expression<Func<Priorities, bool>> criterioPrioridad = prioridad => prioridad.PriorityId > 0;
-		prioridadesList = await prioridadesService.Listar(criterioPrioridad);
+		clientesList = await clientesService.Listar(c => c.ClienteId > 0);
+		sistemasList = await sistemasService.Listar(s => s.SistemaId > 0);
+		prioridadesList = await prioridadesService.Listar(p => p.PriorityId > 0);
 
 		if (ticketId > 0)
 			ticket = await ticketsService.BuscarId(ticketId);
@@ -158,6 +154,6 @@
 
 	void IrAPaginaDestino()
 	{
-		NavigationManager.NavigateTo("/DetailsTickets");
+		NavigationManager.NavigateTo("/Tickets");
 	}
 }
