@@ -13,26 +13,36 @@
 			<h3><strong>Prioridades</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear"><i class="bi bi-plus-circle"/> Crear</button>
 				</div>
-				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
 		<div class="card-body">
 			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			@if(prioridadesList.Count ==0)
+			@if(loading)
 			{
-				<p><em>Cargando...</em></p>
+				<div class="d-flex justify-content-center">
+					<div class="spinner-border text-info" role="status">
+						<span class="visually-hidden">Cargando...</span>
+					</div>
+				</div>
+			}
+			else if (prioridadesList.Count == 0)
+			{
+				<h1 class="miMensaje"><i class="bi bi-exclamation-triangle" /> No hay prioridades creadas</h1>
 			}
 			else
 			{
-				<table class="table table-bordered">
+				<table class="table table-bordered miTabla">
 					<thead>
 						<tr>
 							<th>PrioridadId</th>
 							<th>Descripci&oacute;n</th>
 							<th>D&iacute;asCompromiso</th>
+							<th>Ver</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -42,6 +52,9 @@
 								<td>@prioridades.PriorityId</td>
 								<td>@prioridades.Description</td>
 								<td>@prioridades.DaysCommitment</td>
+								<td><button type="button" class="btn btn-outline-info" @onclick="()=> IrADetalles(prioridades.PriorityId)"><i class="bi bi-eye"/></button></td>
+								<td><button type="button" class="btn btn-outline-warning" @onclick="()=> IrAEditar(prioridades.PriorityId)"><i class="bi bi-pencil-square" /></button></td>
+								<td><button type="button" class="btn btn-outline-danger" @onclick="()=> IrAEliminar(prioridades.PriorityId)"><i class="bi bi-trash3-fill" /></button></td>
 							</tr>
 						}
 					</tbody>
@@ -58,12 +71,18 @@
 @code {
 	public Priorities prioridad { get; set; } = new Priorities();
 	public List<Priorities> prioridadesList = new List<Priorities>();
+	public bool loading { get; set; } = true;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
 		Expression<Func<Priorities, bool>> criterio = prioridad => prioridad.PriorityId > 0;
 		prioridadesList = await prioritiesService.Listar(criterio);
+
+		loading = false;
+
+		if (prioridadesList.Count == 0)
+			StateHasChanged();
 	}
 
 	void IrACrear()
@@ -71,8 +90,16 @@
 		NavigationManager.NavigateTo("/CreatePrioridades");
 	}
 
-	void IrADetalles()
+	void IrADetalles(int id)
 	{
-		NavigationManager.NavigateTo("/DetailsPrioridades");
+		NavigationManager.NavigateTo($"/DetailsPrioridades/prioridadId={id}");
+	}
+	void IrAEditar(int id)
+	{
+		NavigationManager.NavigateTo($"/EditPrioridades/prioridadId={id}");
+	}
+	void IrAEliminar(int id)
+	{
+		NavigationManager.NavigateTo($"/DeletePrioridades/prioridadId={id}");
 	}
 }
