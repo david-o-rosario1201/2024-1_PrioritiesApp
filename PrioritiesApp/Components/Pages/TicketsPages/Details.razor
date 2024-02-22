@@ -1,77 +1,63 @@
 ﻿@page "/DetailsTickets"
+@page "/DetailsTickets/ticketId={ticketId:int}"
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @inject TicketsService ticketsService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Detalles de Tickets</PageTitle>
+<PageTitle>Detalle de Ticket</PageTitle>
 <div class="container">
 	<div class="card shadow-lg">
 		@*Header*@
 		<div class="card-header">
-			<h3><strong>Detalles de Tickets</strong></h3>
-			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio">Volver</button>
+			<h3><strong>Detalle de Ticket</strong></h3>
 		</div>
 		@*Body*@
 		<div class="card-body">
-			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-			@if (ticketsList.Count == 0)
-			{
-				<p><em>Cargando...</em></p>
-			}
-			else
-			{
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>TicketId</th>
-							<th>Fecha</th>
-							<th>SolicitadoPor</th>
-							<th>ClienteId</th>
-							<th>SistemaId</th>
-							<th>Descripci&oacute;n</th>
-							<th>PrioridadId</th>
-							<th>Asunto</th>
-							<th>Editar</th>
-							<th>Eliminar</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var tickets in ticketsList)
-						{
-							<tr>
-								<td>@tickets.TicketId</td>
-								<td>@tickets.Fecha</td>
-								<td>@tickets.SolicitadoPor</td>
-								<td>@tickets.ClienteId</td>
-								<td>@tickets.SistemaId</td>
-								<td>@tickets.Descripcion</td>
-								<td>@tickets.PriorityId</td>
-								<td>@tickets.Asunto</td>
-								<td><a href="/EditTickets/ticketId=@tickets.TicketId"><em><i class="bi bi-pencil-square" /></em></a></td>
-								<td><a href="/DeleteTickets/ticketId=@tickets.TicketId"><em><i class="bi bi-trash3-fill" /></em></a></td>
-							</tr>
-						}
-					</tbody>
-				</table>
-			}
+			@*Datos*@
+			<div class="mb-1">
+				<p class="mb-0">TicketId: @ticket.TicketId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Fecha: @ticket.Fecha</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">SolicitadoPor: @ticket.SolicitadoPor</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">ClienteId: @ticket.ClienteId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">SistemaId: @ticket.SistemaId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Descripci&oacute;n: @ticket.Descripcion</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">PrioridadId: @ticket.PriorityId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Asunto: @ticket.Asunto</p>
+			</div>
 		</div>
 		@*Footer*@
-		<div class="card-footer">
-			<p><strong>Total de Tickets:</strong> @ticketsList.Count</p>
+		<div class="card-footer d-flex justify-content-center">
+			<button type="button" class="btn btn-outline-primary" @onclick="VolverAInicio"><i class="bi bi-box-arrow-left"/> Volver</button>
 		</div>
 	</div>
 </div>
 
 @code {
+	[Parameter]
+	public int ticketId { get; set; }
 	public Tickets ticket { get; set; } = new Tickets();
 	public List<Tickets> ticketsList = new List<Tickets>();
 
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
-		Expression<Func<Tickets, bool>> criterio = cliente => cliente.ClienteId > 0;
-		ticketsList = await ticketsService.Listar(criterio);
+		if (ticketId > 0)
+			ticket = await ticketsService.BuscarId(ticketId);
 	}
 
 	void VolverAInicio()
