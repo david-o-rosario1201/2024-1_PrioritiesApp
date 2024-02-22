@@ -10,7 +10,7 @@ public class Tickets
 
 	[Required(ErrorMessage = "Error, la fecha es requerida")]
 	[DataType(DataType.Date)]
-	public DateTime Fecha { get; set; } = DateTime.Now;
+	public DateTime Fecha { get; set; } = DateTime.Today;
 
 	[ForeignKey("Clientes")]
 	[Required(ErrorMessage = "Error, debe llenar este campo")]
