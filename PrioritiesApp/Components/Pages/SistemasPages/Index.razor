@@ -12,25 +12,60 @@
 			<h3><strong>Sistemas</strong></h3>
 			<div class="d-flex align-items-start">
 				<div class="px-2">
-					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear">Crear</button>
+					<button type="button" class="btn btn-outline-primary" @onclick="IrACrear"><i class="bi bi-plus-circle"/> Crear</button>
 				</div>
-				<button type="button" class="btn btn-outline-info" @onclick="IrADetalles">Detalles</button>
 			</div>
 		</div>
 		@*Body*@
 			<div class="card-body">
-				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4"></div>
-				@if(sistemasList.Count == 0)
+				@if(loading)
 				{
-					<p><em>Cargando...</em></p>
+					<div class="d-flex justify-content-center">
+						<div class="spinner-border text-info" role="status">
+							<span class="visually-hidden">Cargando...</span>
+						</div>
+					</div>
+				}
+				else if (sistemasList.Count == 0)
+				{
+					<h1 class="miMensaje"><i class="bi bi-exclamation-triangle" /> No hay aportes creados</h1>
 				}
 				else
 				{
-				<table class="table table-bordered">
+					@*Campos a Filtrar*@
+					<div class="mb-3">
+						<div class="row align-items-center">
+							<label class="form-label" for="filtro"><strong>Campo a Filtrar:</strong></label>
+							<div class="col-3">
+								<InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+									<option>Elije una opci&oacute;n</option>
+									<option value="id">Id</option>
+									<option value="sistema">Sistema</option>
+								</InputSelect>
+							</div>
+							<div class="col-auto miFlecha">
+								<p>→</p>
+							</div>
+							<div class="col-4">
+								<div class="input-group">
+									<InputText class="form-control" @bind-Value="valorFiltro" placeholder="Ingrese un dato para filtrar"></InputText>
+									<button type="button" class="btn btn-outline-primary" @onclick="Buscar"><i class="bi bi-search" /></button>
+								</div>
+							</div>
+							<div class="col-3">
+								<button type="button" class="btn btn-outline-secondary" @onclick="Restablecer"><i class="bi bi-arrow-clockwise" /> Restablecer</button>
+							</div>
+						</div>
+					</div>
+
+					<table class="table table-bordered miTabla">
 						<thead>
 							<tr>
 								<th>SistemaId</th>
 								<th>Nombre</th>
+								<th>Ver</th>
+								<th>Editar</th>
+								<th>Eliminar</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -39,6 +74,9 @@
 								<tr>
 									<td>@sistemas.SistemaId</td>
 									<td>@sistemas.Nombre</td>
+									<td><button type="button" class="btn btn-outline-info" @onclick="()=> IrADetalles(sistemas.SistemaId)"><i class="bi bi-eye"/></button></td>
+									<td><button type="button" class="btn btn-outline-warning" @onclick="()=> IrAEditar(sistemas.SistemaId)"><i class="bi bi-pencil-square"/></button></td>
+									<td><button type="button" class="btn btn-outline-danger" @onclick="()=> IrAEliminar(sistemas.SistemaId)"><i class="bi bi-trash3-fill"/></button></td>
 								</tr>
 							}
 						</tbody>
@@ -51,16 +89,83 @@
 			</div>
 	</did>
 </div>
+@mensaje
 
 @code {
 	public Sistemas sistema { get; set; } = new Sistemas();
 	public List<Sistemas> sistemasList = new List<Sistemas>();
+	public bool loading { get; set; } = true;
+	public string filtro { get; set; }
+	public string valorFiltro { get; set; }
+	public string mensaje { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
 		await Task.Delay(500);
 		Expression<Func<Sistemas, bool>> criterio = sistema => sistema.SistemaId > 0;
 		sistemasList = await sistemasService.Listar(criterio);
+
+		loading = false;
+
+		if (sistemasList.Count == 0)
+			StateHasChanged();
+	}
+
+	public async Task Buscar()
+	{
+		if (valorFiltro == null)
+		{
+			mensaje = "Debe ingresar un dato";
+			await Task.Delay(3000);
+			return;
+		}
+
+		if (filtro == null)
+		{
+			mensaje = "Debe elegir un método parar filtrar";
+			await Task.Delay(3000);
+			return;
+		}
+
+		List<Sistemas> filtradoList1 = new List<Sistemas>();
+
+		switch (filtro)
+		{
+			case "id":
+				if (int.TryParse(valorFiltro, out int id))
+				{
+					filtradoList1 = await sistemasService.Listar(s => s.SistemaId == id);
+					DatosFiltrados(filtradoList1);
+				}
+				else
+				{
+					mensaje = "El valor ingresado para SistemaId no es válido";
+					await Task.Delay(3000);
+				}
+				break;
+
+			case "sistema":
+				filtradoList1 = await sistemasService.Listar(a => a.Nombre.ToLower().Contains(valorFiltro.ToLower()));
+				DatosFiltrados(filtradoList1);
+				break;
+		}
+	}
+
+	public async Task Restablecer()
+	{
+		sistemasList = await sistemasService.Listar(a => a.SistemaId > 0);
+		mensaje = "Lo datos fueron restablecidos";
+	}
+
+	public async Task DatosFiltrados(List<Sistemas> valor)
+	{
+		if (valor.Count != 0)
+		{
+			sistemasList = valor;
+			mensaje = "Se encontraron resultados";
+		}
+		else
+			mensaje = "No se encontraron resultados";
 	}
 
 	void IrACrear()
@@ -68,8 +173,16 @@
 		NavigationManager.NavigateTo("/CreateSistemas");
 	}
 
-	void IrADetalles()
+	void IrADetalles(int id)
 	{
-		NavigationManager.NavigateTo("/DetailsSistemas");
+		NavigationManager.NavigateTo($"/DetailsSistemas/sistemaId={id}");
+	}
+	void IrAEditar(int id)
+	{
+		NavigationManager.NavigateTo($"/EditSistemas/sistemaId={id}");
+	}
+	void IrAEliminar(int id)
+	{
+		NavigationManager.NavigateTo($"/DeleteSistemas/sistemaId={id}");
 	}
 }
